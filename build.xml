@@ -1,0 +1,123 @@
+<project name="brew" default="compile" basedir=".">
+
+    <property name="name" value="brew"/>
+
+    <loadfile property="version" srcFile="${basedir}/.version">
+        <filterchain>
+            <striplinebreaks/>
+        </filterchain>
+    </loadfile>
+
+    <path id="compile.classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement location="target/classes"/>
+    </path>
+
+    <path id="build.classpath">
+        <path refid="compile.classpath"/>
+        <fileset dir="build/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="gen.classpath">
+        <pathelement location="target/build-classes"/>
+        <path refid="build.classpath"/>
+    </path>
+
+    <target name="env">
+        <input
+                message="App env: "
+                validargs="dev,prod"
+                addproperty="app.env"
+                defaultvalue="dev"
+        />
+    </target>
+
+    <target name="gen">
+        <taskdef name="bgen" classname="com.rcc.bgen.BGenTask" classpathref="build.classpath"/>
+
+        <mkdir dir="target/generated/com/rcc/brew/bean/gen"/>
+        <bgen
+                destdir="target/generated/com/rcc/brew/bean/gen"
+                templateFile="build/resources/Bean.java.vm"
+                classpathref="gen.classpath">
+            <fileset dir="build/resources/bean" includes="*.properties"/>
+            <globmapper from="*.properties" to="*.java"/>
+            <templateContext name="helper" classname="com.rcc.bgen.BeanHelper"/>
+        </bgen>
+    </target>
+
+    <target name="clean" description="Remove generated files">
+        <delete dir="target"/>
+    </target>
+
+    <target name="compile" description="Compile" depends="gen">
+        <mkdir dir="target/classes"/>
+
+        <copy todir="target/classes">
+            <fileset dir="src/main/resources"/>
+        </copy>
+
+        <javac
+                debug="true"
+                srcdir="src/main/java:target/generated"
+                destdir="target/classes"
+                classpathref="compile.classpath"/>
+    </target>
+
+    <target name="jar" description="Create jar" depends="compile">
+        <jar destfile="target/${name}-${version}.jar" basedir="target/classes"/>
+    </target>
+
+    <target name="war-dir" description="Create war" depends="jar,env">
+        <mkdir dir="target/${name}-${version}-${app.env}"/>
+
+        <copy todir="target/${name}-${version}-${app.env}">
+            <filterset refid="filters"/>
+            <filterset refid="colorFilters"/>
+            <filterset>
+                <filter token="WEBAPP" value="cfr"/>
+                <filter token="VERSION" value="${version}"/>
+                <filter token="APP.ENV" value="${app.env}"/>
+                <filter token="INDEX.DIR" value="${index.dir}"/>
+                <filter token="VAR.DIR" value="${var.dir}"/>
+                <filter token="LOG.DIR" value="${log.dir}"/>
+            </filterset>
+
+            <fileset dir="src/main/webapp">
+                <exclude name="**/*.jpg"/>
+                <exclude name="**/*.gif"/>
+            </fileset>
+        </copy>
+
+        <copy todir="target/${name}-${version}-${app.env}">
+            <fileset dir="src/main/webapp">
+                <include name="**/*.jpg"/>
+                <include name="**/*.gif"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="target/${name}-${version}-${app.env}/WEB-INF/lib"/>
+        <copy file="target/${name}-${version}.jar"
+                todir="target/${name}-${version}-${app.env}/WEB-INF/lib"/>
+        <copy todir="target/${name}-${version}-${app.env}/WEB-INF/lib">
+            <fileset dir="lib"/>
+        </copy>
+    </target>
+
+    <target name="war" description="Create war" depends="war-dir">
+        <jar destfile="target/${name}-${version}-${app.env}.war"
+                basedir="target/${name}-${version}-${app.env}"/>
+    </target>
+
+    <target name="deploy" depends="war-dir,env">
+        <mkdir dir="${deploy.dir}/${name}"/>
+        <copy todir="${deploy.dir}/${name}">
+            <fileset dir="target/${name}-${version}-${app.env}"/>
+        </copy>
+    </target>
+
+</project>

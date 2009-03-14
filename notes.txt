@@ -1,0 +1,20 @@
+This application will assist in recipe formulation, recording, and calculating.
+
+FORMULATION
+* Target gravity
+* Target IBUs
+* FG
+
+RECORDING
+* grains
+* mash (temps, steps, and times)
+* hops
+* yeast
+* fermentation
+* SG readings
+
+CALCULATIONS
+* Measuring mash efficiency
+* ABV
+* Evaporation constant
+* Apparent attenuation

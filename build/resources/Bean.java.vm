@@ -1,0 +1,66 @@
+package $bean.java.packageName;
+
+#foreach ($i in $bean.java.imports)
+import $i;
+#end
+
+public class $bean.java.className
+    #if ($bean.java.implements && !${bean.java.implements.isEmpty()})
+    implements ${helper.listToDelimitedString(${bean.java.implements})}
+    #end
+{
+    #foreach ($f in $bean.fields)
+    #if ($f.validation.maxLength)@MaxLength($f.validation.maxLength)#end
+    #if ($f.validation.minLength)@MinLength($f.validation.minLength)#end
+    #if ($f.validation.notBlank)@NotBlank()#end
+    #if ($f.validation.notNull)@NotNull()#end
+    protected $f.java.type $f.name;
+    #end
+
+    #foreach ($f in $bean.fields)
+    #set ($uname = $helper.upcaseFirstChar(${f.name}))
+    public void set${uname}($f.java.type value) {
+        this.${f.name} = value;
+    }
+
+    #foreach ($a in $f.get.annotations)
+    $a
+    #end
+    public $f.java.type get${uname}() {
+        return this.${f.name};
+    }
+
+    #if ($f.java.type == 'boolean' && $f.name.startsWith('is'))
+    #set ($bname = $f.name.substring(2))
+    public void set${bname}(boolean value) {
+        this.${f.name} = value;
+    }
+
+    public boolean ${f.name}() {
+        return this.${f.name};
+    }
+    #end
+
+    #if (!$helper.isPrimitive($f.java.type))
+    public boolean has${uname}() {
+        return this.${f.name} != null;
+    }
+    #end
+    #end
+
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+
+        #foreach ($f in $bean.fields)
+        #set ($uname = $helper.upcaseFirstChar(${f.name}))
+        #if (!$helper.isPrimitive($f.java.type))
+        if (this.${f.name} != null) {
+        #end
+        buf.append("$f.name: [" + this.${f.name} + "] ");
+        #if (!$helper.isPrimitive($f.java.type))
+        }
+        #end
+        #end
+        return buf.toString();
+    }
+}
