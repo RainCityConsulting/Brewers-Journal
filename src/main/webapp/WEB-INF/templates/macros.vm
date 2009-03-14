@@ -1,0 +1,22 @@
+#macro(showErrors)
+  #if ($status.errors.hasErrors())
+  <div class="form-errors">
+    <ul>
+    #foreach ($m in $status.errorMessages)
+      <li>$m</li>
+    #end
+    </ul>
+  </div>
+  #end
+#end
+
+#macro(showBeanErrors $path)
+  #springBind($path)
+  #if ($status.errors.hasErrors())
+  <ul class="form-errors">
+    #foreach ($m in $status.errorMessages)
+    <li>$m</li>
+    #end
+  </ul>
+  #end
+#end

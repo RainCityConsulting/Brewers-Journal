@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/${app.env}.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="maxActive" value="${db.pool.max.active.connections}"/>
+        <property name="maxIdle" value="${db.pool.max.idle.connections}"/>
+        <property name="maxWait" value="${db.pool.max.wait.ms}"/>
+    </bean>
+
+    <bean id="transactionManager"
+            class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="modelTxn" abstract="true"
+            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED,ISOLATION_DEFAULT</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/sql/config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="model" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.ModelImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="passwordAuthenticator" class="com.rcc.mail.PasswordAuthenticator">
+        <constructor-arg value="${mail.user}"/>
+        <constructor-arg value="${mail.password}"/>
+    </bean>
+
+    <bean id="mailSession" class="javax.mail.Session" factory-method="getInstance">
+        <constructor-arg>
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+            </props>
+        </constructor-arg>
+        <constructor-arg ref="passwordAuthenticator"/>
+    </bean>
+
+    <bean id="mailer" class="com.rcc.mail.MailerImpl">
+        <property name="mailSender">
+            <bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+                <property name="host" value="${mail.host}"/>
+                <property name="session" ref="mailSession"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="velocityMailer" class="com.rcc.mail.VelocityMailer">
+        <property name="mailer" ref="mailer"/>
+        <property name="velocity">
+            <bean class="org.apache.velocity.app.VelocityEngine">
+                <constructor-arg>
+                    <props>
+                        <prop key="resource.loader">cp</prop>
+                        <prop key="cp.resource.loader.description">
+                            Velocity Classpath Resource Loader
+                        </prop>
+                        <prop key="cp.resource.loader.class">
+                                org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                        </prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

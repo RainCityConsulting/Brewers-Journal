@@ -1,0 +1,33 @@
+#if ($flash.hasAny())
+<div class="flash">
+    #if ($flash.hasErrors())
+    <div class="errors">
+        <ul>
+        #foreach ($s in $flash.errors)
+            <li>$!s</li>
+        #end
+        </ul>
+    </div>
+    #end
+
+    #if ($flash.hasWarnings())
+    <div class="warnings">
+        <ul>
+        #foreach ($s in $flash.warnings)
+            <li>$!s</li>
+        #end
+        </ul>       
+    </div>              
+    #end                
+                        
+    #if ($flash.hasMessages())
+    <div class="messages">
+        <ul>            
+        #foreach ($s in $flash.messages)
+            <li>$!s</li>    
+        #end            
+        </ul>           
+    </div>              
+    #end                
+</div>              
+#end

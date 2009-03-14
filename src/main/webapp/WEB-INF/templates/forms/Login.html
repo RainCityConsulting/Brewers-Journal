@@ -1,0 +1,39 @@
+#springBind("login")
+#if ($status.errors.hasErrors())
+<ul class="form-errors">
+  #foreach ($m in $status.errorMessages)
+  <li>$m</li>
+  #end
+</ul>
+#end
+
+<form method="POST">
+
+  <table class="form view">
+
+    <tr>
+      <th>Email</th>
+      <td>
+        #springFormInput("login.mail" "size='48' tabindex='1'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr>
+      <th>Password</th>
+      <td>
+        #springFormPasswordInput("login.password" "size='24' tabindex='2'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr class="button">
+      <th></th>
+      <td>
+        <input type="submit" value="Login" tabindex="4"/>
+      </td>
+    </tr>
+
+  </table>
+
+</form>

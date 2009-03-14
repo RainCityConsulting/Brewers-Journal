@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+
+    <resultMap id="user" class="com.rcc.brew.bean.User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mail" column="mail"/>
+        <result property="encryptedPassword" column="enc_password"/>
+        <result property="salt" column="salt"/>
+        <result property="authToken" column="auth_token"/>
+        <result property="isAuthenticated" column="is_authenticated"/>
+    </resultMap>
+
+    <select id="findUserById" parameterClass="int" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    WHERE id = #value#
+    </select>
+
+    <select id="findAllUsers" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    ORDER BY id
+    </select>
+
+    <select id="findUserByName" parameterClass="string" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    WHERE LOWER(name) = LOWER(#value#)
+    </select>
+
+    <select id="findUserByNameAndClearPassword" parameterClass="map" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    WHERE LOWER(name) = LOWER(#name#)
+    AND enc_password = SHA1(CONCAT(CONCAT(#salt#, '--'), SHA1(#password#)))
+    </select>
+
+    <select id="findUserByMail" parameterClass="string" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    WHERE LOWER(mail) = LOWER(#value#)
+    </select>
+
+    <select id="findUserByMailAndClearPassword" parameterClass="map" resultMap="user">
+    SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
+    FROM users
+    WHERE LOWER(mail) = LOWER(#mail#)
+    AND enc_password = SHA1(CONCAT(CONCAT(#salt#, '--'), SHA1(#password#)))
+    </select>
+
+    <insert id="insertUser" parameterClass="com.rcc.brew.bean.User">
+    INSERT INTO users
+    (name, mail, enc_password, salt, auth_token, is_authenticated)
+    VALUES (#name#, #mail#, #encryptedPassword#, #salt#, #authToken#, #isAuthenticated#)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateUser" parameterClass="com.rcc.brew.bean.User">
+    UPDATE users
+    SET name = #name#,
+    mail = #mail#,
+    enc_password = #encryptedPassword#,
+    salt = #salt#,
+    auth_token = #authToken#,
+    is_authenticated = #isAuthenticated#
+    WHERE id = #id#
+    </update>
+
+</sqlMap>

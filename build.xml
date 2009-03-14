@@ -1,6 +1,7 @@
 <project name="brew" default="compile" basedir=".">
 
     <property name="name" value="brew"/>
+    <property name="deploy.dir" value="/home/ian/work/max/trunk/dist/dev/tomcat/webapps"/>
 
     <loadfile property="version" srcFile="${basedir}/.version">
         <filterchain>
@@ -27,6 +28,10 @@
         <path refid="build.classpath"/>
     </path>
 
+    <filterset id="colorFilters">
+        <filtersfile file="build/resources/color-filters.properties"/>
+    </filterset>
+
     <target name="env">
         <input
                 message="App env: "
@@ -34,6 +39,10 @@
                 addproperty="app.env"
                 defaultvalue="dev"
         />
+
+        <filterset id="filters">
+            <filtersfile file="build/resources/filters-${app.env}.properties"/>
+        </filterset>
     </target>
 
     <target name="gen">
@@ -45,6 +54,16 @@
                 templateFile="build/resources/Bean.java.vm"
                 classpathref="gen.classpath">
             <fileset dir="build/resources/bean" includes="*.properties"/>
+            <globmapper from="*.properties" to="*.java"/>
+            <templateContext name="helper" classname="com.rcc.bgen.BeanHelper"/>
+        </bgen>
+
+        <mkdir dir="target/generated/com/rcc/brew/web/bean/gen"/>
+        <bgen
+                destdir="target/generated/com/rcc/brew/web/bean/gen"
+                templateFile="build/resources/Bean.java.vm"
+                classpathref="gen.classpath">
+            <fileset dir="build/resources/bean/web" includes="*.properties"/>
             <globmapper from="*.properties" to="*.java"/>
             <templateContext name="helper" classname="com.rcc.bgen.BeanHelper"/>
         </bgen>
@@ -79,12 +98,8 @@
             <filterset refid="filters"/>
             <filterset refid="colorFilters"/>
             <filterset>
-                <filter token="WEBAPP" value="cfr"/>
-                <filter token="VERSION" value="${version}"/>
-                <filter token="APP.ENV" value="${app.env}"/>
-                <filter token="INDEX.DIR" value="${index.dir}"/>
-                <filter token="VAR.DIR" value="${var.dir}"/>
-                <filter token="LOG.DIR" value="${log.dir}"/>
+                <filter token="version" value="${version}"/>
+                <filter token="app.env" value="${app.env}"/>
             </filterset>
 
             <fileset dir="src/main/webapp">

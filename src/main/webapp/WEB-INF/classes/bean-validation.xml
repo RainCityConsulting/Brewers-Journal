@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<validation xmlns="http://www.springmodules.org/validation/bean"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springmodules.org/validation/bean
+                http://www.springmodules.org/validation/bean/validation.xsd">
+
+    <class name="com.rcc.brew.web.bean.Register">
+
+        <property name="name">
+            <email/>
+            <not-null/>
+            <not-blank/>
+            <length max="24"/>
+        </property>
+
+        <property name="mail">
+            <email/>
+            <not-null/>
+            <not-blank/>
+            <length max="128"/>
+        </property>
+
+        <property name="password">
+            <not-null/>
+            <not-blank/>
+            <length max="128"/>
+        </property>
+
+        <property name="passwordCheck">
+            <not-null/>
+            <not-blank/>
+            <length max="128"/>
+        </property>
+
+    </class>
+
+    <class name="com.rcc.brew.web.bean.Login">
+
+        <property name="mail">
+            <email/>
+            <not-null/>
+            <not-blank/>
+            <length max="128"/>
+        </property>
+
+        <property name="password">
+            <not-null/>
+            <not-blank/>
+            <length max="128"/>
+        </property>
+
+    </class>
+
+</validation>

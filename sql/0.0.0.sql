@@ -33,7 +33,7 @@ DELIMITER ;
 
 INSERT INTO users
 (name, mail, enc_password, salt, is_authenticated, creation_user_id, last_updated_user_id)
-VALUES ('root', 'ian@raincityconsulting.com', SHA1('abc123test'), 'abc123', 1, 1, 1);
+VALUES ('root', 'ian@raincityconsulting.com', SHA1(CONCAT('abc123--', SHA1('test'))), 'abc123', 1, 1, 1);
 
 ALTER TABLE users
 ADD FOREIGN KEY (creation_user_id) REFERENCES users (id),

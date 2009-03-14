@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="handlerInterceptor" class="com.rcc.brew.web.HandlerInterceptor"/>
+
+    <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
+
+    <bean id="layoutHandlerInterceptor" class="com.rcc.web.LayoutHandlerInterceptor">
+        <property name="defaultViewName" value="Layout"/>
+    </bean>
+
+    <!-- URL MAPPINGS -->
+
+    <!-- VIEW MAPPINGS -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref local="handlerInterceptor"/>
+                <ref local="layoutHandlerInterceptor"/>
+                <ref local="flashHandlerInterceptor"/>
+            </list>
+        </property>
+
+        <property name="mappings">
+            <props>
+                <prop key="/index.s">mainController</prop>
+                <prop key="/user/register.s">registrationController</prop>
+
+                <prop key="/user/auth/mail.s">userController</prop>
+                <prop key="/user/auth.s">userController</prop>
+                <prop key="/user/logout.s">userController</prop>
+
+                <prop key="/user/login.s">loginController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- VIEW -->
+
+    <bean id="velocityConfig"
+            class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/templates/"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="velocimacro.library">macros.vm</prop>
+                <prop key="velocimacro.library.autoreload">@velocity.velocimacro.library.autoreload@</prop>
+                <prop key="velocity.file.resource.loader.cache">@velocity.file.resource.loader.cache@</prop>
+                <prop key="directive.foreach.counter.initial.value">0</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="velocityViewResolver"
+            class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+    </bean>
+
+
+
+    <!-- VALIDATION -->
+
+    <bean id="validator" class="org.springmodules.validation.bean.BeanValidator">
+        <property name="configurationLoader">
+            <bean class="org.springmodules.validation.bean.conf.loader.xml.DefaultXmlBeanValidationConfigurationLoader">
+                <property name="resource" value="classpath:/bean-validation.xml"/>
+            </bean>
+        </property>
+
+        <property name="errorCodeConverter">
+            <bean class="org.springmodules.validation.bean.converter.KeepAsIsErrorCodeConverter"/>
+        </property>
+    </bean>
+
+    <!-- END VALIDATION -->
+
+
+
+    <!-- MESSAGES -->
+    <bean id="messageSource"
+            class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>validation</value>
+                <value>message</value>
+            </list>
+        </property>
+    </bean>
+    <!-- END MESSAGES -->
+
+
+
+    <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar"/>
+
+
+    <!-- CONTROLLERS -->
+
+    <bean id="mainController" class="com.rcc.brew.web.controller.MainController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+                <property name="paramName" value="m"/>
+                <property name="defaultMethodName" value="view"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="registrationController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.RegistrationController">
+                <property name="commandName" value="r"/>
+                <property name="commandClass" value="com.rcc.brew.web.bean.Register"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                        <bean class="com.rcc.brew.web.bean.validation.RegisterValidator">
+                            <property name="model" ref="model"/>
+                        </bean>
+                    </list>
+                </property>
+
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="userController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.UserController">
+
+                <property name="methodNameResolver">
+                    <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                        <property name="mappings">
+                            <props>
+                                <prop key="/user/auth/mail.s">sendAuthMail</prop>
+                                <prop key="/user/auth.s">auth</prop>
+                                <prop key="/user/logout.s">logout</prop>
+                            </props>
+                        </property>
+                    </bean>
+                </property>
+
+                <property name="model" ref="model"/>
+                <property name="velocityMailer" ref="velocityMailer"/>
+
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="loginController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.LoginController">
+                <property name="commandName" value="login"/>
+                <property name="commandClass" value="com.rcc.brew.web.bean.Login"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                        <bean class="com.rcc.brew.web.bean.validation.LoginValidator">
+                            <property name="model" ref="model"/>
+                        </bean>
+                    </list>
+                </property>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

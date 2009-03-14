@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+    <title>BrewKeeper</title>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/reset.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/style.css')"></link>
+    <script type="text/javascript" src="#springUrl('/js/jquery-1.2.6.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/sorttable.js')"></script>
+  </head>
+
+  <body>
+
+    <table width="100%">
+
+      <!-- HEADER -->
+      <tr>
+        <td colspan="2">
+
+          <div id="header">
+            <div style="float: left; width: 500px;">
+              <h1>BrewKeeper</h1>
+            </div>
+
+            <div style="float: right; width: 300px;">
+              #if ($user)
+              Logged in as <i>$user.mail</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
+              <div><a href="#springUrl('/user/logout.s')">Logout</a></div>
+              #else
+              <a href="#springUrl('/user/login.s')">Login</a> or <a href="#springUrl('/user/register.s')">Register</a>
+              #end
+            </div>
+            <div style="clear: both;"></div>
+          </div>
+
+        </td>
+      </tr>
+      <!-- END HEADER -->
+
+      <tr>
+
+        <!-- LEFT NAV -->
+        <td style="width: 172px; vertical-align: top;">
+          <div id="left_nav">
+            <ul>
+              <li><a href="#springUrl('/index.s')">Home</a></li>
+              #if ($user)
+              <li><a href="#springUrl('/edit/list.s')">New List</a></li>
+              <li><a href="#springUrl('/lists.s')">My Lists</a></li>
+              #end
+            </ul>
+          </div>
+        </td>
+        <!-- END LEFT NAV -->
+
+        <!-- CONTENT -->
+        <td id="content_td" width="*" style="vertical-align: top;">
+
+          <table width="100%">
+
+            <tr>
+              <td>
+                <!-- FLASH -->
+                #parse("/includes/Flash.html")
+                <!-- END FLASH -->
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div id="content">
+                  #parse("/${content}.html")
+                </div>
+              </td>
+            </tr>
+
+          </table>
+
+        </td>
+        <!-- END CONTENT -->
+
+      </tr>
+
+      <!-- FOOTER -->
+      <tr>
+
+        <td></td>
+
+        <td>
+          <div id="footer">
+            <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The MMM Team</a></p>
+          </div>
+        </td>
+
+      </tr>
+      <!-- END FOOTER -->
+
+    </table>
+
+  </body>
+
+</html>
