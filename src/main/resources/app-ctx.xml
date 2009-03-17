@@ -12,15 +12,33 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${db.driverClassName}"/>
-        <property name="url" value="${db.url}"/>
-        <property name="username" value="${db.username}"/>
-        <property name="password" value="${db.password}"/>
-        <property name="defaultAutoCommit" value="false"/>
-        <property name="maxActive" value="${db.pool.max.active.connections}"/>
-        <property name="maxIdle" value="${db.pool.max.idle.connections}"/>
-        <property name="maxWait" value="${db.pool.max.wait.ms}"/>
+    <bean id="dataSourceInterceptor" class="com.rcc.brew.util.DataSourceInterceptor"/>
+
+    <bean id="dataSource" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <list> 
+                <value>javax.sql.DataSource</value>
+            </list>
+        </property>
+
+        <property name="interceptorNames">
+            <list> 
+                <value>dataSourceInterceptor</value>
+            </list>
+        </property> 
+
+        <property name="target">
+            <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+                <property name="driverClassName" value="${db.driverClassName}"/>
+                <property name="url" value="${db.url}"/>
+                <property name="username" value="${db.username}"/>
+                <property name="password" value="${db.password}"/>
+                <property name="defaultAutoCommit" value="false"/>
+                <property name="maxActive" value="${db.pool.max.active.connections}"/>
+                <property name="maxIdle" value="${db.pool.max.idle.connections}"/>
+                <property name="maxWait" value="${db.pool.max.wait.ms}"/>
+            </bean>
+        </property>
     </bean>
 
     <bean id="transactionManager"

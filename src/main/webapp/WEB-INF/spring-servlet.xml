@@ -6,7 +6,7 @@
 <beans>
 
     <bean id="handlerInterceptor" class="com.rcc.brew.web.HandlerInterceptor"/>
-
+    <bean id="contextHandlerInterceptor" class="com.rcc.brew.web.ContextHandlerInterceptor"/>
     <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
 
     <bean id="layoutHandlerInterceptor" class="com.rcc.web.LayoutHandlerInterceptor">
@@ -20,6 +20,7 @@
         <property name="interceptors">
             <list>
                 <ref local="handlerInterceptor"/>
+                <ref local="contextHandlerInterceptor"/>
                 <ref local="layoutHandlerInterceptor"/>
                 <ref local="flashHandlerInterceptor"/>
             </list>
@@ -33,6 +34,7 @@
                 <prop key="/user/auth/mail.s">userController</prop>
                 <prop key="/user/auth.s">userController</prop>
                 <prop key="/user/logout.s">userController</prop>
+                <prop key="/user/profile.s">userController</prop>
 
                 <prop key="/user/login.s">loginController</prop>
             </props>
@@ -145,6 +147,7 @@
                                 <prop key="/user/auth/mail.s">sendAuthMail</prop>
                                 <prop key="/user/auth.s">auth</prop>
                                 <prop key="/user/logout.s">logout</prop>
+                                <prop key="/user/profile.s">profile</prop>
                             </props>
                         </property>
                     </bean>

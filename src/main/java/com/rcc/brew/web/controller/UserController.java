@@ -95,4 +95,14 @@ public class UserController extends MultiActionController {
 
         return new ModelAndView("redirect:/index.s");
     }
+
+    public ModelAndView profile(HttpServletRequest request, HttpServletResponse response) {
+        User user = (User) request.getSession().getAttribute("user");
+
+        ModelAndView mav = new ModelAndView();
+
+        mav.addObject("content", "UserProfile");
+
+        return mav;
+    }
 }

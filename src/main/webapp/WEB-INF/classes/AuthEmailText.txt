@@ -1,0 +1,9 @@
+Welcome to BrewKeeper, $user.name
+
+Please authenticate your account by clicking the following link:
+
+@base.url@/user/auth.s?id=$user.id&token=$user.authToken
+
+Thank you,
+
+The BrewKeeper Team

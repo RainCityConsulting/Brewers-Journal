@@ -8,7 +8,6 @@
     <class name="com.rcc.brew.web.bean.Register">
 
         <property name="name">
-            <email/>
             <not-null/>
             <not-blank/>
             <length max="24"/>

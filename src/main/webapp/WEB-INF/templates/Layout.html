@@ -28,7 +28,7 @@
 
             <div style="float: right; width: 300px;">
               #if ($user)
-              Logged in as <i>$user.mail</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
+              Logged in as <i>$user.name</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
               <div><a href="#springUrl('/user/logout.s')">Logout</a></div>
               #else
               <a href="#springUrl('/user/login.s')">Login</a> or <a href="#springUrl('/user/register.s')">Register</a>
@@ -48,9 +48,8 @@
           <div id="left_nav">
             <ul>
               <li><a href="#springUrl('/index.s')">Home</a></li>
-              #if ($user)
-              <li><a href="#springUrl('/edit/list.s')">New List</a></li>
-              <li><a href="#springUrl('/lists.s')">My Lists</a></li>
+              #if ($user.hasRole('Admin'))
+              <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
               #end
             </ul>
           </div>
@@ -92,7 +91,7 @@
 
         <td>
           <div id="footer">
-            <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The MMM Team</a></p>
+            <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The BrewKeeper Team</a></p>
           </div>
         </td>
 

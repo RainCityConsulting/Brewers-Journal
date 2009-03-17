@@ -1,5 +1,6 @@
 package com.rcc.brew.web.controller;
 
+import com.rcc.brew.bean.Audit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.web.bean.Register;
 import com.rcc.brew.model.Model;
@@ -39,17 +40,21 @@ public class RegistrationController extends AbstractFormController {
         String salt = DigestUtils.createSalt();
 
         User user = new User();
+        user.setName(r.getName());
         user.setMail(r.getMail());
         user.setEncryptedPassword(DigestUtils.clearPasswordDigest(r.getPassword(), salt));
         user.setSalt(salt);
         user.setAuthToken(salt.substring(0, 4));
         user.setAuthenticated(false);
+        user.setAudit(new Audit());
+        user.getAudit().setCreationUserId(1);
+        user.getAudit().setLastUpdatedUserId(1);
 
         int id = this.model.createUser(user);
 
         user = this.model.findUserById(id);
 
-        FlashUtils.messageCode("register.success", request, user.getMail());
+        FlashUtils.messageCode("register.success", request, user.getName(), user.getMail());
 
         request.getSession().setAttribute("nonAuthUser", user);
 

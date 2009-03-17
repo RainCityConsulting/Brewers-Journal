@@ -35,9 +35,12 @@ public class LoginController extends AbstractFormController {
     {
         Login login = (Login) command;
 
-        User user = this.model.findUserByMail(login.getMail());
-        
-        FlashUtils.messageCode("login.success", request, user.getMail());
+        User user = this.model.findUserByMail(login.getName());
+        if (user == null) {
+            user = this.model.findUserByName(login.getName());
+        }
+
+        FlashUtils.messageCode("login.success", request, user.getName());
 
         request.getSession().setAttribute("user", user);
 

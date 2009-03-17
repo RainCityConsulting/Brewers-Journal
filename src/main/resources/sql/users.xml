@@ -13,7 +13,20 @@
         <result property="salt" column="salt"/>
         <result property="authToken" column="auth_token"/>
         <result property="isAuthenticated" column="is_authenticated"/>
+        <result property="roles" column="id" select="findRolesByUser"/>
     </resultMap>
+
+    <resultMap id="userRole" class="com.rcc.brew.bean.UserRole">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findRolesByUser" parameterClass="int" resultMap="userRole">
+    SELECT r.id, r.name
+    FROM users_roles ur, user_roles r
+    WHERE ur.user_id = #value#
+    AND ur.user_role_id = r.id
+    </select>
 
     <select id="findUserById" parameterClass="int" resultMap="user">
     SELECT id, name, mail, enc_password, salt, auth_token, is_authenticated
@@ -55,8 +68,10 @@
 
     <insert id="insertUser" parameterClass="com.rcc.brew.bean.User">
     INSERT INTO users
-    (name, mail, enc_password, salt, auth_token, is_authenticated)
-    VALUES (#name#, #mail#, #encryptedPassword#, #salt#, #authToken#, #isAuthenticated#)
+    (name, mail, enc_password, salt, auth_token, is_authenticated,
+    creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mail#, #encryptedPassword#, #salt#, #authToken#, #isAuthenticated#,
+    #audit.creationUserId#, #audit.lastUpdatedUserId#)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>

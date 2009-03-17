@@ -27,11 +27,14 @@ public class LoginValidator implements Validator, InitializingBean {
     public void validate(Object obj, Errors errors) {
         Login login = (Login) obj;
 
-        if (login.hasMail()) {
-            User user = this.model.findUserByMail(login.getMail());
+        if (login.hasName()) {
+            User user = this.model.findUserByMail(login.getName());
             if (user == null) {
-                errors.reject("login.fail");
-                return;
+                user = this.model.findUserByName(login.getName());
+                if (user == null) {
+                    errors.reject("login.fail");
+                    return;
+                }
             }
 
             if (login.hasPassword()) {
