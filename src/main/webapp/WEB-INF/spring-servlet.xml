@@ -9,9 +9,8 @@
     <bean id="contextHandlerInterceptor" class="com.rcc.brew.web.ContextHandlerInterceptor"/>
     <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
 
-    <bean id="layoutHandlerInterceptor" class="com.rcc.web.LayoutHandlerInterceptor">
-        <property name="defaultViewName" value="Layout"/>
-    </bean>
+    <bean id="requestLoggingHandlerInterceptor"
+            class="com.rcc.web.RequestLoggingHandlerInterceptor"/>
 
     <!-- URL MAPPINGS -->
 
@@ -19,16 +18,22 @@
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
             <list>
+                <ref local="requestLoggingHandlerInterceptor"/>
                 <ref local="handlerInterceptor"/>
                 <ref local="contextHandlerInterceptor"/>
-                <ref local="layoutHandlerInterceptor"/>
                 <ref local="flashHandlerInterceptor"/>
+
+                <bean class="com.rcc.web.LayoutHandlerInterceptor">
+                    <property name="defaultViewName" value="Layout"/>
+                </bean>
+
             </list>
         </property>
 
         <property name="mappings">
             <props>
                 <prop key="/index.s">mainController</prop>
+                <prop key="/recipe.s">mainController</prop>
                 <prop key="/user/register.s">registrationController</prop>
 
                 <prop key="/user/auth/mail.s">userController</prop>
@@ -37,6 +42,47 @@
                 <prop key="/user/profile.s">userController</prop>
 
                 <prop key="/user/login.s">loginController</prop>
+
+                <prop key="/edit/recipe.s">recipeEditController</prop>
+
+                <prop key="/ac/grain.s">grainAutoCompleteController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref local="requestLoggingHandlerInterceptor"/>
+                <ref local="handlerInterceptor"/>
+                <ref local="contextHandlerInterceptor"/>
+                <ref local="flashHandlerInterceptor"/>
+
+                <bean class="com.rcc.web.LayoutHandlerInterceptor">
+                    <property name="defaultViewName" value="admin/Layout"/>
+                </bean>
+
+                <bean class="com.rcc.brew.web.UserRoleAuthorizationHandlerInterceptor">
+                    <property name="authorizedRoleNames">
+                        <set>
+                            <value>Admin</value>
+                        </set>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+
+        <property name="mappings">
+            <props>
+                <prop key="/admin/index.s">admin.mainController</prop>
+                <prop key="/admin/mfg.s">admin.mainController</prop>
+                <prop key="/admin/grain.s">admin.mainController</prop>
+                <prop key="/admin/search.s">admin.searchIndexController</prop>
+                <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
+
+                <prop key="/admin/edit/mfg.s">admin.mfgEditController</prop>
+                <prop key="/admin/edit/grain.s">admin.grainEditController</prop>
             </props>
         </property>
     </bean>
@@ -105,11 +151,17 @@
 
     <bean id="mainController" class="com.rcc.brew.web.controller.MainController">
         <property name="methodNameResolver">
-            <bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-                <property name="paramName" value="m"/>
-                <property name="defaultMethodName" value="view"/>
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/index.s">view</prop>
+                        <prop key="/recipe.s">recipe</prop>
+                    </props>
+                </property>
             </bean>
         </property>
+
+        <property name="model" ref="model"/>
     </bean>
 
     <bean id="registrationController" parent="modelTxn">
@@ -182,5 +234,123 @@
             </bean>
         </property>
     </bean>
+
+    <bean id="recipeEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.RecipeEditController">
+                <property name="commandName" value="r"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="RecipeCreate"/>
+                <property name="editContent" value="RecipeEdit"/>
+
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="grainAutoCompleteController" class="com.rcc.web.controller.AutoCompleteController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/ac/grain.s">search</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="indexReader" ref="grainIndexReader"/>
+    </bean>
+
+
+    <!-- Admin -->
+
+    <bean id="admin.mainController" class="com.rcc.brew.web.controller.admin.MainController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/admin/index.s">view</prop>
+                        <prop key="/admin/mfg.s">mfg</prop>
+                        <prop key="/admin/grain.s">grain</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="model" ref="model"/>
+    </bean>
+
+    <bean id="admin.searchIndexController"
+            class="com.rcc.brew.web.controller.admin.SearchIndexController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/admin/search.s">view</prop>
+                        <prop key="/admin/search/rebuild/grain.s">rebuildGrainIndex</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="model" ref="model"/>
+        <property name="grainIndexWriter" ref="grainIndexWriter"/>
+    </bean>
+
+    <bean id="admin.mfgEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.MfgEditController">
+                <property name="commandName" value="m"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+                <property name="createContent" value="admin/MfgCreate"/>
+                <property name="editContent" value="admin/MfgEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="admin.grainEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.GrainEditController">
+                <property name="commandName" value="g"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="admin/GrainCreate"/>
+                <property name="editContent" value="admin/GrainEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- END Admin -->
 
 </beans>

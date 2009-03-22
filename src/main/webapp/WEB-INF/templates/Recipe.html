@@ -1,0 +1,42 @@
+<h2>Recipe: $recipe.name</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
+    <li>$recipe.name</li>
+  </ul>
+</div>
+
+<div class="page-functions">
+  <ul>
+    <li><a href="#springUrl('/edit/recipe.s')?id=$recipe.id">Edit</a></li>
+  </ul>
+</div>
+
+<table class="view">
+
+  <tr>
+    <th>Name</th>
+    <td>$recipe.name</td>
+  </tr>
+
+</table>
+
+<h3>Grains</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Grain</th>
+    <th>Weight</th>
+  </tr>
+
+  #foreach ($g in $recipe.grains)
+  <tr>
+    <th>$g.grain.name</th>
+    <th>#weight($g.weight)</th>
+  </tr>
+  #end
+
+</table>

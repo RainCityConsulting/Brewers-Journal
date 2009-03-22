@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="admin">
+
+    <resultMap id="grain" class="com.rcc.brew.bean.Grain">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mfg" column="manufacturer_id" select="findMfgById"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
+    <resultMap id="mfg" class="com.rcc.brew.bean.Mfg">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
+    <!-- MFG -->
+    <select id="findAllMfgs" resultMap="mfg">
+    SELECT id, name, creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM manufacturers
+    ORDER BY name
+    </select>
+
+    <select id="findMfgById" parameterClass="int" resultMap="mfg">
+    SELECT id, name, creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM manufacturers
+    WHERE id = #value#
+    </select>
+
+    <insert id="insertMfg" parameterClass="com.rcc.brew.bean.Mfg">
+    INSERT INTO manufacturers
+    (name, creation_user_id, last_updated_user_id)
+    VALUES (#name#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateMfg" parameterClass="com.rcc.brew.bean.Mfg">
+    UPDATE manufacturers
+    SET name = #name#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END MFG -->
+
+
+    <!-- GRAIN -->
+    <select id="findAllGrains" resultMap="grain">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM grains
+    ORDER BY name
+    </select>
+
+    <select id="findGrainById" parameterClass="int" resultMap="grain">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM grains
+    WHERE id = #value#
+    </select>
+
+    <insert id="insertGrain" parameterClass="com.rcc.brew.bean.Grain">
+    INSERT INTO grains
+    (name, manufacturer_id, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mfg.id#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateGrain" parameterClass="com.rcc.brew.bean.Grain">
+    UPDATE grains
+    SET name = #name#,
+    manufacturer_id = #mfg.id#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END GRAIN -->
+
+</sqlMap>

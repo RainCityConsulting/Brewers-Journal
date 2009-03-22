@@ -1,0 +1,62 @@
+<form method="POST">
+
+  <table class="form view">
+
+    <tr>
+      <th>Name</th>
+      <td>
+        #springFormInput("r.name" "size='48' tabindex='1'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+  </table>
+
+  <h3>Grains</h3>
+  <table class="list">
+
+    <tr>
+      <th>Grain</th>
+      <th colspan="2">Weight</th>
+    </tr>
+
+    #set ($i = 0)
+    #foreach ($g in $r.grains)
+    <tr>
+
+      <td>
+        <select name="grains[$i].grain">
+          <option value="0"></option>
+          #foreach ($g in $grains)
+          <option value="g.id"
+              #if ("$!r.grains[$i].grain.id" == "$g.id")
+              selected="selected"
+              #end >$g.name</option>
+          #end
+        </select>
+      </td>
+
+      <td><input type="text" name="grains[$i].weight.value" size="4"/></td>
+
+      <td>
+        <select name="grains[$i].weight.unit.id">
+          #foreach ($u in $weightUnits)
+          <option value="$u.id"
+              #if ("$!r.grains[$i].weight.unit.id" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+    </tr>
+    #set ($i = $i + 1)
+    #end
+
+  </table>
+
+  <div class="buttons">
+    <input type="submit" value="$submitValue"/>
+  </div>
+
+</form>

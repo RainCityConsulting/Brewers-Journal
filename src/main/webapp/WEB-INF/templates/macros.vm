@@ -20,3 +20,7 @@
   </ul>
   #end
 #end
+
+#macro(weight $w)
+$w.value $w.unit.name
+#end

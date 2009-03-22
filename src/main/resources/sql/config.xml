@@ -6,6 +6,9 @@
 
 <sqlMapConfig>
 
+    <sqlMap resource="sql/admin.xml"/>
+    <sqlMap resource="sql/domain.xml"/>
+    <sqlMap resource="sql/recipe.xml"/>
     <sqlMap resource="sql/users.xml"/>
 
 </sqlMapConfig>

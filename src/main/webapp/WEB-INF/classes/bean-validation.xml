@@ -51,4 +51,13 @@
 
     </class>
 
+    <class name="com.rcc.brew.bean.Recipe">
+
+        <property name="name">
+            <not-null/>
+            <not-blank/>
+        </property>
+
+    </class>
+
 </validation>

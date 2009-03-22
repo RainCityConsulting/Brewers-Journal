@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
   <head>
-    <title>BrewKeeper</title>
+    <title>BrewKeeper Admin</title>
     <link rel="stylesheet" type="text/css" href="#springUrl('/reset.css')"></link>
     <link rel="stylesheet" type="text/css" href="#springUrl('/style.css')"></link>
     <script type="text/javascript" src="#springUrl('/js/jquery-1.2.6.js')"></script>
@@ -15,7 +15,7 @@
 
   <body>
 
-    <table id="top_layout">
+    <table width="100%">
 
       <!-- HEADER -->
       <tr>
@@ -23,7 +23,7 @@
 
           <div id="header">
             <div style="float: left; width: 500px;">
-              <h1>BrewKeeper</h1>
+              <h1>BrewKeeper Admin</h1>
             </div>
 
             <div style="float: right; width: 300px;">
@@ -47,18 +47,12 @@
         <td style="width: 172px; vertical-align: top;">
           <div id="left_nav">
             <ul>
-
               <li><a href="#springUrl('/index.s')">Home</a></li>
-
-              #if ($user.hasRole('Admin'))
-              <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
-              #end
-
-              #if ($user)
-              <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
-              <li><a href="#springUrl('/edit/recipe.s')">New Recipe</a></li>
-              #end
-
+              <li><a href="#springUrl('/admin/search.s')">Search Index</a></li>
+              <li><a href="#springUrl('/admin/edit/mfg.s')">New Mfg</a></li>
+              <li><a href="#springUrl('/admin/edit/grain.s')">New Grain</a></li>
+              <li><a href="#springUrl('/admin/edit/adjunct.s')">New Adjunct</a></li>
+              <li><a href="#springUrl('/admin/edit/hop.s')">New Hop</a></li>
             </ul>
           </div>
         </td>

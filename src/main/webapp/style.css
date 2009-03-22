@@ -1,0 +1,330 @@
+body {
+  margin-left: 48px;
+  margin-right: 48px;
+  margin-top: 24px;
+  margin-bottom: 64px;
+  font-size: 14px;
+  font-family: arial;
+
+  background-color: @color5@;
+}
+
+/* HEADINGS */
+h2 {
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 26;
+  font-weight: bold;
+  color: @color3@;
+}
+
+h4 {
+  margin-top: 6px;
+  margin-bottom: 3px;
+  font-size: 12;
+  font-weight: bold;
+  color: @color3@;
+}
+/* END HEADINGS */
+
+/* TABLES */
+td, th {
+  vertical-align: top;
+}
+
+table#top_layout {
+  width: 100%;
+}
+
+table.sortable th {
+  cursor: pointer;
+}
+
+table.sortable th.sorttable_nosort {
+  cursor: auto;
+}
+
+table.list table.list {
+  border: 0;
+}
+
+table.list table.list th {
+  padding-right: 4px;
+  padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: white;
+  color: @color3@;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+table.list {
+  border: 1px solid @color3@;
+}
+
+table.list tbody {
+  background-color: white;
+}
+
+table.list tr.inactive {
+  background-color: #CCC;
+}
+
+table.list th {
+  vertical-align: bottom;
+}
+
+table.list tr:hover {
+  background-color: #FFF380;
+}
+
+table.list tr th {
+  padding-right: 4px;
+  padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: @color3@;
+  color: white;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+table.list tr td {
+  padding-right: 4px;
+  padding-left: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+td.number, th.number {
+  text-align: right;
+}
+
+table.form td {
+  padding-bottom: 8px;
+}
+
+table.form tr.heading th {
+  padding-top: 12px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+table.view th {
+  padding-right: 6px;
+  text-align: right;
+  font-size: 12px;
+  padding-bottom: 3px;
+  background-color: white;
+  color: #888;
+  font-weight: normal;
+}
+
+table.view td {
+  font-size: 14px;
+  padding-bottom: 3px;
+}
+
+/* END TABLES */
+
+div#heading {
+  background-color: @color3@;
+  padding: 8px;
+
+  border-top: 2px solid @color4@;
+  border-bottom: 1px solid @color4@;
+  border-right: 1px solid @color4@;
+  border-left: 2px solid @color4@;
+}
+
+div#heading h1 {
+  font-size: 24;
+  font-weight: bold;
+  color: @color5@;
+}
+
+div#content {
+  background-color: @color5@;
+  padding: 10px;
+  margin-top: 8px;
+}
+
+div#content img {
+  border: solid 1px @color4@;
+}
+
+div#nav {
+  background-color: white;
+
+  padding: 8px;
+
+  margin-right: 8px;
+  margin-top: 8px;
+
+  border-top: 2px solid @color4@;
+  border-bottom: 1px solid @color4@;
+  border-left: 2px solid @color4@;
+  border-right: 1px solid @color4@;
+}
+
+div#nav a {
+  display: block;
+  padding: 2px;
+  white-space: nowrap;
+}
+
+div#nav a:hover {
+  color: @color5@;
+  background-color: @color2@;
+}
+
+div#footer {
+  padding: 6px;
+}
+
+/* ANCHORS */
+a {
+  color: @color2@;
+  text-decoration: none;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+a:hover {
+  color: @color5@;
+  background-color: @color2@;
+}
+/* END ANCHORS */
+
+div.page-functions {
+  background-color: white;
+  margin-left: 36px;
+  padding: 8px;
+  padding-bottom: 24px;
+  border-top: 2px solid @color4@;
+  border-bottom: 1px solid @color4@;
+  border-left: 2px solid @color4@;
+  border-right: 1px solid @color4@;
+  width: 200px;
+  float: right;
+}
+
+div.page-functions a {
+  display: block;
+  padding: 2px;
+}
+
+div.page-functions a:hover {
+  color: @color5@;
+  background-color: @color2@;
+}
+
+div.page-functions table.form tr th {
+  font-size: 10px;
+  padding-left: 3px;
+}
+
+div.page-functions table td {
+  padding-right: 3px;
+}
+
+/* FLASH */
+div.flash {
+  margin-top: 12px;
+  width: 600px;
+  font-size: 16px;
+  background-color: white;
+}
+
+div.flash ul li {
+    padding-bottom: 10px;
+}
+
+div.flash div.messages {
+  padding: 16px;
+  border: 2px solid @color1@;
+  margin-top: 8px;
+}
+
+div.flash div.warnings {
+  padding: 16px;
+  border: 2px solid @color2@;
+  margin-top: 8px;
+}
+
+div.flash div.errors {
+  padding: 16px;
+  border: 2px solid @color3@;
+  margin-top: 8px;
+}
+/* END FLASH */
+
+div.breadcrumbs {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  padding: 3px;
+  border: 1px solid @color4@;
+  background-color: white;
+}
+
+div.breadcrumbs ul li {
+  display: inline;
+  padding-right: 8px;
+  list-style-type: square;
+}
+
+div.breadcrumbs a {
+  padding-left: 2px;
+  padding-right: 6px;
+}
+
+
+div.breadcrumbs a:hover {
+  color: @color5@;
+  background-color: @color2@;
+}
+
+div.pager {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+a.pager-page, span.pager-page {
+  border: 1px solid @color3@;
+  background: white;
+  padding: 2px;
+}
+
+a.pager-page:hover {
+  color: white;
+  background-color: @color2@;
+}
+
+span.active-pager-page {
+  background: @color3@;
+  color: white;
+}
+
+div.help {
+  width: 600px;
+  background-color: white;
+  padding: 2px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border: 1px solid @color3@;
+}
+
+div.help div.handle {
+  cursor: pointer;
+}
+
+div.help div.body {
+  display: none;
+}
+
+p {
+  margin-top: 6px;
+  margin-bottom: 4px;
+}

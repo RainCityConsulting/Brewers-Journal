@@ -114,4 +114,19 @@
         </property>
     </bean>
 
+
+    <!-- SEARCH -->
+    <bean id="grainDocumentFactory" class="com.rcc.brew.search.GrainDocumentFactory"/>
+
+    <bean id="grainIndexWriter" class="com.rcc.search.IndexWriterImpl">
+        <property name="indexDir" value="${index.dir}/grain"/>
+        <property name="documentFactory" ref="grainDocumentFactory"/>
+    </bean>
+
+    <bean id="grainIndexReader" class="com.rcc.search.IndexReaderImpl">
+        <property name="indexDir" value="${index.dir}/grain"/>
+        <property name="documentFactory" ref="grainDocumentFactory"/>
+    </bean>
+    <!-- END SEARCH -->
+
 </beans>

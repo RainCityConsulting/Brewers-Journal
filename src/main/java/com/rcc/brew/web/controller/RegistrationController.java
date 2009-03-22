@@ -54,7 +54,7 @@ public class RegistrationController extends AbstractFormController {
 
         user = this.model.findUserById(id);
 
-        FlashUtils.messageCode("register.success", request, user.getName(), user.getMail());
+        FlashUtils.messageCode("register.success", request, user.getName());
 
         request.getSession().setAttribute("nonAuthUser", user);
 

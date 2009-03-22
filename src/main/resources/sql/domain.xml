@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="domain">
+
+    <resultMap id="weightUnit" class="com.rcc.brew.bean.WeightUnit">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="conversion" column="gram_conversion"/>
+    </resultMap>
+
+    <resultMap id="volumeUnit" class="com.rcc.brew.bean.VolumeUnit">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="conversion" column="liter_conversion"/>
+    </resultMap>
+
+    <!-- WEIGHT -->
+    <select id="findAllWeightUnits" resultMap="weightUnit">
+    SELECT id, name, gram_conversion
+    FROM weight_units
+    ORDER BY gram_conversion
+    </select>
+
+    <select id="findGramWeightUnit" resultMap="weightUnit">
+    SELECT id, name, gram_conversion
+    FROM weight_units
+    WHERE name = 'g'
+    </select>
+    <!-- END WEIGHT -->
+
+    <!-- VOLUME -->
+    <select id="findAllVolumeUnits" resultMap="volumeUnit">
+    SELECT id, name, liter_conversion
+    FROM volume_units
+    ORDER BY liter_conversion
+    </select>
+    <!-- END VOLUME -->
+
+</sqlMap>

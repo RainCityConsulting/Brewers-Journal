@@ -1,0 +1,28 @@
+<h2>My Recipes</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li>My Recipes</li>
+  </ul>
+</div>
+
+<div class="page-functions">
+  <ul>
+    <li><a href="#springUrl('/edit/recipe.s')">New Recipe</a></li>
+  </ul>
+</div>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Name</th>
+  </tr>
+
+  #foreach ($r in $recipes)
+  <tr>
+    <td><a href="#springUrl('/recipe.s')?id=$r.id">$r.name</a></td>
+  </tr>
+  #end
+
+</table>

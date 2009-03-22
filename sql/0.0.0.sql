@@ -93,6 +93,24 @@ DELIMITER ;
 INSERT INTO users_roles (user_id, user_role_id, creation_user_id, last_updated_user_id)
 VALUES (1, @admin_user_role_id, 1, 1);
 
+CREATE TABLE weight_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  gram_conversion DECIMAL(12, 8)
+) ENGINE = InnoDB;
+
+INSERT INTO weight_units (name, gram_conversion)
+VALUES ('oz', 28.349523), ('lb', 453.59237), ('kg', 1000), ('g', 1);
+
+CREATE TABLE volume_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  liter_conversion DECIMAL(12, 8)
+) ENGINE = InnoDB;
+
+INSERT INTO volume_units (name, liter_conversion)
+VALUES ('gal', 3.7843), ('oz', 0.0296), ('qt', 0.9461), ('cup', 0.2366), ('liter', 1);
+
 CREATE TABLE recipes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
@@ -115,6 +133,15 @@ CREATE TRIGGER recipes_bu_trig BEFORE UPDATE ON recipes FOR EACH ROW BEGIN
 SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
+
+CREATE TABLE recipe_grains (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  grain_id INTEGER UNSIGNED NOT NULL,
+  weight INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (grain_id) REFERENCES grains (id)
+) ENGINE = InnoDB;
 
 CREATE TABLE mash_step_types (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="recipe">
+
+    <resultMap id="recipe" class="com.rcc.brew.bean.Recipe">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="grains" column="id" select="findRecipeGrainsByRecipe"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
+    <resultMap id="grainInstance" class="com.rcc.brew.bean.GrainInstance">
+        <result property="id" column="id"/>
+        <result property="grain" column="grain_id" select="findGrainById"/>
+        <result property="weight.value" column="weight" select="findGrainInstancesByRecipe"/>
+        <result property="weight.unit" select="findGramWeightUnit"/>
+    </resultMap>
+
+    <!-- RECIPE -->
+    <insert id="insertRecipe" parameterClass="com.rcc.brew.bean.Recipe">
+    INSERT INTO recipes
+    (name, creation_user_id, last_updated_user_id)
+    VALUES (#name#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateRecipe" parameterClass="com.rcc.brew.bean.Recipe">
+    UPDATE recipes
+    SET name = #name#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+
+    <select id="findRecipeById" parameterClass="int" resultMap="recipe">
+    SELECT id, name,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM recipes
+    WHERE id = #value#
+    </select>
+
+    <select id="findRecipesByUser" parameterClass="int" resultMap="recipe">
+    SELECT id, name,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM recipes
+    WHERE creation_user_id = #value#
+    ORDER BY creation_date DESC
+    </select>
+
+    <insert id="insertRecipeGrain" parameterClass="map">
+    INSERT INTO recipe_grains
+    (recipe_id, grain_id, weight)
+    VALUES (#recipeId#, #instance.grain.id#, #instance.gramWeight#)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <select id="findRecipeGrainsByRecipe" parameterClass="int" resultMap="grainInstance">
+    SELECT id, grain_id, weight
+    FROM recipe_grains
+    WHERE recipe_id = #value#
+    </select>
+    <!-- END RECIPE -->
+
+</sqlMap>
