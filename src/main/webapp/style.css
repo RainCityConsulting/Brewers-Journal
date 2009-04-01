@@ -328,3 +328,8 @@ p {
   margin-top: 6px;
   margin-bottom: 4px;
 }
+
+input.autocomplete {
+  border: 1px solid @color2@;
+  border-left: 3px solid @color2@;
+}
