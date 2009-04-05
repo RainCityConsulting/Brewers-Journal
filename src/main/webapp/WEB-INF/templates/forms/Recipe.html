@@ -25,7 +25,9 @@
     <tr>
 
       <td>
-        <input class="grain_autocomplete autocomplete" type="text" size="20"/>
+        #springBind("r.grains[$i].grain")
+        <input class="grain_autocomplete autocomplete" type="text" size="20"
+            name="$status.expression" value="$status.value"/>
         <!--
         <select name="grains[$i].grain">
           <option value="0"></option>
@@ -39,13 +41,17 @@
         -->
       </td>
 
-      <td><input type="text" name="grains[$i].weight.value" size="4"/></td>
+      <td>
+        #springBind("r.grains[$i].weight.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+      </td>
 
       <td>
-        <select name="grains[$i].weight.unit.id">
+        #springBind("r.grains[$i].weight.unit")
+        <select name="$status.expression">
           #foreach ($u in $weightUnits)
           <option value="$u.id"
-              #if ("$!r.grains[$i].weight.unit.id" == "$u.id")
+              #if ("$!status.value" == "$u.id")
               selected="selected"
               #end >$u.name</option>
           #end

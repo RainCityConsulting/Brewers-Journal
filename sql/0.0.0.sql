@@ -134,57 +134,6 @@ SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
 
-CREATE TABLE recipe_grains (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  recipe_id INTEGER UNSIGNED NOT NULL,
-  grain_id INTEGER UNSIGNED NOT NULL,
-  weight INTEGER UNSIGNED NOT NULL,
-  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
-  FOREIGN KEY (grain_id) REFERENCES grains (id)
-) ENGINE = InnoDB;
-
-CREATE TABLE mash_step_types (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(16) NOT NULL,
-  description VARCHAR(64) NOT NULL,
-  creation_date DATETIME NOT NULL DEFAULT 0,
-  creation_user_id INTEGER UNSIGNED NOT NULL,
-  last_updated_date DATETIME NOT NULL DEFAULT 0,
-  last_updated_user_id INTEGER UNSIGNED NOT NULL,
-  FOREIGN KEY (creation_user_id) REFERENCES users (id),
-  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
-  UNIQUE KEY (name)
-) ENGINE = InnoDB;
-
-DELIMITER ;;
-CREATE TRIGGER mash_step_types_bi_trig BEFORE INSERT ON mash_step_types FOR EACH ROW BEGIN
-SET NEW.creation_date = NOW();
-SET NEW.last_updated_date = NOW();
-END ;;
-
-CREATE TRIGGER mash_step_types_bu_trig BEFORE UPDATE ON mash_step_types FOR EACH ROW BEGIN
-SET NEW.last_updated_date = NOW();
-END ;;
-DELIMITER ;
-
-INSERT INTO mash_step_types
-(name, description, creation_user_id, last_updated_user_id)
-VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1), ('mash_out', 'Mash Out', 1, 1);
-
-/*
-CREATE TABLE recipe_mash_steps (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  recipe_id INTEGER UNSIGNED NOT NULL,
-  ordinal INTEGER UNSIGNED NOT NULL,
-  mash_step_type_id INTEGER UNSIGNED NOT NULL,
-  length_of_time INTEGER UNSIGNED NULL,
-  start_temp FLOAT(5, 2) UNSIGNED NULL,
-  end_temp FLOAT(5, 2) UNSIGNED NULL,
-  FOREIGN KEY (recipe_id) REFERENCES recipies (id)
-  UNIQUE KEY (recipe_id, ordinal)
-) ENGINE = InnoDB;
-*/
-
 CREATE TABLE manufacturers (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
@@ -311,3 +260,91 @@ CREATE TRIGGER yeast_bu_trig BEFORE UPDATE ON yeast FOR EACH ROW BEGIN
 SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
+
+CREATE TABLE hop_addition_types (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(32) NOT NULL,
+  description TEXT NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  UNIQUE KEY (name)
+) ENGINE = InnoDB;
+
+DELIMITER ;;
+CREATE TRIGGER hop_addition_types_bi_trig BEFORE INSERT ON hop_addition_types FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER hop_addition_types_bu_trig BEFORE UPDATE ON hop_addition_types FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
+
+CREATE TABLE recipe_hops (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  hops_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NOT NULL,
+  weight_unit_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (hops_id) REFERENCES hops (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE recipe_grains (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  grain_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NOT NULL,
+  weight_unit_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (grain_id) REFERENCES grains (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE mash_step_types (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(16) NOT NULL,
+  description VARCHAR(64) NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  UNIQUE KEY (name)
+) ENGINE = InnoDB;
+
+DELIMITER ;;
+CREATE TRIGGER mash_step_types_bi_trig BEFORE INSERT ON mash_step_types FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER mash_step_types_bu_trig BEFORE UPDATE ON mash_step_types FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
+
+INSERT INTO mash_step_types
+(name, description, creation_user_id, last_updated_user_id)
+VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1), ('mash_out', 'Mash Out', 1, 1);
+
+/*
+CREATE TABLE recipe_mash_steps (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  ordinal INTEGER UNSIGNED NOT NULL,
+  mash_step_type_id INTEGER UNSIGNED NOT NULL,
+  length_of_time INTEGER UNSIGNED NULL,
+  start_temp FLOAT(5, 2) UNSIGNED NULL,
+  end_temp FLOAT(5, 2) UNSIGNED NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipies (id)
+  UNIQUE KEY (recipe_id, ordinal)
+) ENGINE = InnoDB;
+*/

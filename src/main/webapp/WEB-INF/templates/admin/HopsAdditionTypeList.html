@@ -1,0 +1,37 @@
+<h2>Hop Addition Types</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
+    <li>Hop Addition Types</li>
+  </ul>
+</div>
+
+<table class="list sortable">
+  <tr>
+    <th>Name</th>
+    <th class="sorttable_nosort">Description</th>
+    <th class="sorttable_nosort"></th>
+  </tr>
+
+  #foreach ($hat in $hats)
+  <tr>
+
+    <td>$hat.name</td>
+
+    <td>
+<textarea readonly="true">
+$hat.description
+</textarea>
+    </td>
+
+    <td>
+      <a href="#springUrl('/admin/edit/hat.s')?id=$hat.id" title="Edit $hat.name">E</a>
+      <a href="#springUrl('/admin/delete/hat.s')?id=$hat.id" title="Delete $hat.name">X</a>
+    </td>
+
+  </tr>
+  #end
+
+</table>

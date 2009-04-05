@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.User;
@@ -92,11 +93,39 @@ public class ModelImpl extends ModelBase implements Model {
     public List<Grain> findAllGrains() {
         return (List<Grain>) this.getSqlMapClientTemplate().queryForList("findAllGrains");
     }
+
+    public List<Grain> findAllGrains(int offset, int limit) {
+        return (List<Grain>) this.getSqlMapClientTemplate().queryForList(
+                "findAllGrains", offset, limit);
+    }
+
+    public int findGrainCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findGrainCount");
+        
+    }
     /* END GRAIN */
 
     /* WEIGHT */
+    public WeightUnit findWeightUnitById(int id) {
+        return (WeightUnit) this.getSqlMapClientTemplate().queryForObject("findWeightUnitById", id);
+    }
+
+    public WeightUnit findWeightUnitByName(String name) {
+        return (WeightUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findWeightUnitByName", name);
+    }
+
     public List<WeightUnit> findAllWeightUnits() {
         return (List<WeightUnit>) this.getSqlMapClientTemplate().queryForList("findAllWeightUnits");
+    }
+
+    public List<WeightUnit> findAllWeightUnits(int offset, int limit) {
+        return (List<WeightUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllWeightUnits", offset, limit);
+    }
+
+    public int findWeightUnitCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findWeightUnitCount");
     }
     /* END WEIGHT */
 
@@ -128,8 +157,49 @@ public class ModelImpl extends ModelBase implements Model {
 
     public int createRecipeGrain(int recipeId, GrainInstance g) {
         Integer id = (Integer) this.getSqlMapClientTemplate().insert(
-                "insertRecipeGraion", this.createParams("recipeId", recipeId, "instance", g));
+                "insertRecipeGrain", this.createParams("recipeId", recipeId, "instance", g));
         return id.intValue();
     }
+
+    public int deleteRecipeGrainsByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeGrainsByRecipe", id);
+    }
     /* END RECIPE */
+
+    /* HOP ADDITION TYPE */
+    public int createHopsAdditionType(HopsAdditionType hat) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertHopsAdditionType", hat);
+        return id.intValue();
+    }
+
+    public void updateHopsAdditionType(HopsAdditionType hat) {
+        this.getSqlMapClientTemplate().update("updateHopsAdditionType", hat);
+    }
+
+    public HopsAdditionType findHopsAdditionTypeById(int id) {
+        HopsAdditionType hat = (HopsAdditionType) this.getSqlMapClientTemplate().queryForObject(
+                "findHopsAdditionTypeById", id);
+        if (hat == null) { throw new ObjectNotFoundException("Hop addition type ID: " + id); }
+        return hat;
+    }
+
+    public HopsAdditionType findHopsAdditionTypeByName(String name) {
+        return (HopsAdditionType) this.getSqlMapClientTemplate().queryForObject(
+                "findHopsAdditionTypeByName", name);
+    }
+
+    public List<HopsAdditionType> findAllHopsAdditionTypes() {
+        return (List<HopsAdditionType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllHopsAdditionTypes");
+    }
+
+    public List<HopsAdditionType> findAllHopsAdditionTypes(int offset, int limit) {
+        return (List<HopsAdditionType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllHopsAdditionTypes", offset, limit);
+    }
+
+    public int findHopsAdditionTypeCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findHopsAdditionTypeCount");
+    }
+    /* END HOP ADDITION TYPE */
 }

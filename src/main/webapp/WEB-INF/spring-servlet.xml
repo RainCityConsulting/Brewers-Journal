@@ -5,7 +5,14 @@
 
 <beans>
 
-    <bean id="handlerInterceptor" class="com.rcc.brew.web.HandlerInterceptor"/>
+    <bean id="handlerInterceptor" class="com.rcc.brew.web.HandlerInterceptor">
+        <property name="format">
+            <bean class="com.rcc.brew.web.Format">
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="contextHandlerInterceptor" class="com.rcc.brew.web.ContextHandlerInterceptor"/>
     <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
 
@@ -78,11 +85,13 @@
                 <prop key="/admin/index.s">admin.mainController</prop>
                 <prop key="/admin/mfg.s">admin.mainController</prop>
                 <prop key="/admin/grain.s">admin.mainController</prop>
+                <prop key="/admin/hat.s">admin.mainController</prop>
                 <prop key="/admin/search.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
 
                 <prop key="/admin/edit/mfg.s">admin.mfgEditController</prop>
                 <prop key="/admin/edit/grain.s">admin.grainEditController</prop>
+                <prop key="/admin/edit/hat.s">admin.hopsAdditionTypeEditController</prop>
             </props>
         </property>
     </bean>
@@ -144,7 +153,15 @@
 
 
 
-    <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar"/>
+    <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar">
+        <property name="grainQuery" ref="grainQuery"/>
+
+        <property name="weightUnitEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="weightUnitQuery"/>
+            </bean>
+        </property>
+    </bean>
 
 
     <!-- CONTROLLERS -->
@@ -283,6 +300,7 @@
                         <prop key="/admin/index.s">view</prop>
                         <prop key="/admin/mfg.s">mfg</prop>
                         <prop key="/admin/grain.s">grain</prop>
+                        <prop key="/admin/hat.s">hopsAdditionType</prop>
                     </props>
                 </property>
             </bean>
@@ -346,6 +364,28 @@
 
                 <property name="createContent" value="admin/GrainCreate"/>
                 <property name="editContent" value="admin/GrainEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="admin.hopsAdditionTypeEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.HopsAdditionTypeEditController">
+                <property name="commandName" value="hat"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="admin/HopsAdditionTypeCreate"/>
+                <property name="editContent" value="admin/HopsAdditionTypeEdit"/>
                 <property name="model" ref="model"/>
             </bean>
         </property>

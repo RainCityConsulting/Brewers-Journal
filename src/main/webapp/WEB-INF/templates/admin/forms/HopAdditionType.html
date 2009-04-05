@@ -1,0 +1,30 @@
+<form method="POST">
+
+  <table class="form view">
+
+    <tr>
+      <th>Name</th>
+      <td>
+        #springFormInput("hat.name" "size='48' tabindex='1'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr>
+      <th>Description</th>
+      <td>
+        #springFormTextarea("hat.description" "size='48' tabindex='2'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr class="button">
+      <th></th>
+      <td>
+        <input type="submit" value="$submitValue" tabindex="3"/>
+      </td>
+    </tr>
+
+  </table>
+
+</form>

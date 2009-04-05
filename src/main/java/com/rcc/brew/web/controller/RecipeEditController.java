@@ -61,10 +61,10 @@ public class RecipeEditController extends AbstractEditController {
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
         throws Exception
     {
-        GrainIdPropertyEditor ed = new GrainIdPropertyEditor();
-        ed.setModel(this.model);
-        binder.registerCustomEditor(Grain.class, ed);
-        binder.registerCustomEditor(Float.class, new FloatPropertyEditor());
+        //GrainIdPropertyEditor ed = new GrainIdPropertyEditor();
+        //ed.setModel(this.model);
+        //binder.registerCustomEditor(Grain.class, ed);
+        //binder.registerCustomEditor(Float.class, new FloatPropertyEditor());
     }
 
     protected ModelAndView processCreateFormSubmission(
@@ -94,6 +94,20 @@ public class RecipeEditController extends AbstractEditController {
             Identifiable command, BindException errors)
         throws Exception
     {
-        return null;
+        Recipe recipe = (Recipe) command;
+        this.model.updateRecipe(recipe);
+        this.model.deleteRecipeGrainsByRecipe(recipe.getId());
+
+        log.debug("GrainInstance count: " + recipe.getGrains().size());
+        for (GrainInstance g : recipe.getGrains()) {
+            log.debug("GrainInstance: " + g);
+            if (g.hasGrain()) {
+                this.model.createRecipeGrain(recipe.getId(), g);
+            }
+        }
+
+        FlashUtils.messageCode("recipe.update.success", request, recipe.getName());
+
+        return new ModelAndView("redirect:/recipe.s?id=" + recipe.getId());
     }
 }

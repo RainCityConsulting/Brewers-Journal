@@ -69,6 +69,24 @@
         </property>
     </bean>
 
+    <bean id="grainQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.GrainQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="weightUnitQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.WeightUnitQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="passwordAuthenticator" class="com.rcc.mail.PasswordAuthenticator">
         <constructor-arg value="${mail.user}"/>
         <constructor-arg value="${mail.password}"/>

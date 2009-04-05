@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.User;
@@ -33,10 +34,16 @@ public interface Model {
     public Grain findGrainById(int id);
     public Grain findGrainByName(String name);
     public List<Grain> findAllGrains();
+    public List<Grain> findAllGrains(int offset, int limit);
+    public int findGrainCount();
     /* END GRAIN */
 
     /* WEIGHT */
+    public WeightUnit findWeightUnitById(int id);
+    public WeightUnit findWeightUnitByName(String name);
     public List<WeightUnit> findAllWeightUnits();
+    public List<WeightUnit> findAllWeightUnits(int offset, int limit);
+    public int findWeightUnitCount();
     /* END WEIGHT */
 
     /* VOLUME */
@@ -49,5 +56,16 @@ public interface Model {
     public Recipe findRecipeById(int id);
     public List<Recipe> findRecipesByUser(int id);
     public int createRecipeGrain(int recipeId, GrainInstance g);
+    public int deleteRecipeGrainsByRecipe(int id);
     /* END RECIPE */
+
+    /* HOP ADDITION TYPE */
+    public int createHopsAdditionType(HopsAdditionType hat);
+    public void updateHopsAdditionType(HopsAdditionType hat);
+    public HopsAdditionType findHopsAdditionTypeById(int id);
+    public HopsAdditionType findHopsAdditionTypeByName(String name);
+    public List<HopsAdditionType> findAllHopsAdditionTypes();
+    public List<HopsAdditionType> findAllHopsAdditionTypes(int offset, int limit);
+    public int findHopsAdditionTypeCount();
+    /* END HOP ADDITION TYPE */
 }

@@ -24,6 +24,16 @@
         <result property="audit.lastUpdatedDate" column="last_updated_date"/>
     </resultMap>
 
+    <resultMap id="hopsAdditionType" class="com.rcc.brew.bean.HopsAdditionType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
     <!-- MFG -->
     <select id="findAllMfgs" resultMap="mfg">
     SELECT id, name, creation_user_id, creation_date, last_updated_user_id, last_updated_date
@@ -70,6 +80,10 @@
     WHERE id = #value#
     </select>
 
+    <select id="findGrainCount" resultClass="int">
+    SELECT COUNT(*) FROM grains
+    </select>
+
     <insert id="insertGrain" parameterClass="com.rcc.brew.bean.Grain">
     INSERT INTO grains
     (name, manufacturer_id, creation_user_id, last_updated_user_id)
@@ -87,5 +101,49 @@
     WHERE id = #id#
     </update>
     <!-- END GRAIN -->
+
+    <!-- HOP ADDITION TYPE -->
+    <insert id="insertHopsAdditionType" parameterClass="com.rcc.brew.bean.HopsAdditionType">
+    INSERT INTO hop_addition_types
+    (name, description, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #description#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateHopsAdditionType" parameterClass="com.rcc.brew.bean.HopsAdditionType">
+    UPDATE hop_addition_types
+    SET name = #name#,
+    description = #description#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+
+    <select id="findHopsAdditionTypeById" parameterClass="int" resultMap="hopsAdditionType">
+    SELECT id, name, description,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM hop_addition_types
+    WHERE id = #value#
+    </select>
+
+    <select id="findHopsAdditionTypeByName" parameterClass="string" resultMap="hopsAdditionType">
+    SELECT id, name, description,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM hop_addition_types
+    WHERE name = #value#
+    </select>
+
+    <select id="findAllHopsAdditionTypes" resultMap="hopsAdditionType">
+    SELECT id, name, description,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM hop_addition_types
+    ORDER BY name
+    </select>
+
+    <select id="findHopsAdditionTypeCount" resultClass="int">
+    SELECT COUNT(*) FROM hop_addition_types
+    </select>
+    <!-- END HOP ADDITION TYPE -->
 
 </sqlMap>

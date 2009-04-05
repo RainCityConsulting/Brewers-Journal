@@ -22,5 +22,5 @@
 #end
 
 #macro(weight $w)
-$w.value $w.unit.name
+$format.formatWeight($w)
 #end

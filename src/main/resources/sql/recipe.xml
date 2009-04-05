@@ -18,8 +18,8 @@
     <resultMap id="grainInstance" class="com.rcc.brew.bean.GrainInstance">
         <result property="id" column="id"/>
         <result property="grain" column="grain_id" select="findGrainById"/>
-        <result property="weight.value" column="weight" select="findGrainInstancesByRecipe"/>
-        <result property="weight.unit" select="findGramWeightUnit"/>
+        <result property="weight.value" column="weight"/>
+        <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
     </resultMap>
 
     <!-- RECIPE -->
@@ -56,18 +56,22 @@
 
     <insert id="insertRecipeGrain" parameterClass="map">
     INSERT INTO recipe_grains
-    (recipe_id, grain_id, weight)
-    VALUES (#recipeId#, #instance.grain.id#, #instance.gramWeight#)
+    (recipe_id, grain_id, weight, weight_unit_id)
+    VALUES (#recipeId#, #instance.grain.id#, #instance.weight.value#, #instance.weight.unit.id#)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>
     </insert>
 
     <select id="findRecipeGrainsByRecipe" parameterClass="int" resultMap="grainInstance">
-    SELECT id, grain_id, weight
+    SELECT id, grain_id, weight, weight_unit_id
     FROM recipe_grains
     WHERE recipe_id = #value#
     </select>
+
+    <delete id="deleteRecipeGrainsByRecipe" parameterClass="int">
+    DELETE FROM recipe_grains WHERE recipe_id = #value#
+    </delete>
     <!-- END RECIPE -->
 
 </sqlMap>
