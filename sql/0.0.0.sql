@@ -291,9 +291,11 @@ CREATE TABLE recipe_hops (
   hops_id INTEGER UNSIGNED NOT NULL,
   weight DECIMAL(9,2) UNSIGNED NOT NULL,
   weight_unit_id INTEGER UNSIGNED NOT NULL,
+  hop_addition_type_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes (id),
   FOREIGN KEY (hops_id) REFERENCES hops (id),
-  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id),
+  FOREIGN KEY (hop_addition_type_id) REFERENCES hop_addition_types (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE recipe_grains (

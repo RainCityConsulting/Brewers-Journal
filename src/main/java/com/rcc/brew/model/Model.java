@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
@@ -37,6 +38,16 @@ public interface Model {
     public List<Grain> findAllGrains(int offset, int limit);
     public int findGrainCount();
     /* END GRAIN */
+
+    /* HOPS */
+    public int createHops(Hops h);
+    public void updateHops(Hops h);
+    public Hops findHopsById(int id);
+    public Hops findHopsByName(String name);
+    public List<Hops> findAllHops();
+    public List<Hops> findAllHops(int offset, int limit);
+    public int findHopsCount();
+    /* END HOPS */
 
     /* WEIGHT */
     public WeightUnit findWeightUnitById(int id);

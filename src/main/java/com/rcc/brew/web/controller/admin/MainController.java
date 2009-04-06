@@ -1,6 +1,7 @@
 package com.rcc.brew.web.controller.admin;
 
 import com.rcc.brew.bean.Grain;
+import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.model.Model;
@@ -74,6 +75,25 @@ public class MainController extends MultiActionController {
         List<HopsAdditionType> hats = this.model.findAllHopsAdditionTypes();
         mav.addObject("content", "admin/HopsAdditionTypeList");
         mav.addObject("hats", hats);
+
+        return mav;
+    }
+
+    public ModelAndView hops(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        ModelAndView mav = new ModelAndView();
+
+        int id = com.rcc.web.controller.ControllerUtils.getIntParam(request, "id", 0);
+        if (id == 0) {
+            List<Hops> hops = this.model.findAllHops();
+            mav.addObject("content", "admin/HopsList");
+            mav.addObject("hops", hops);
+        } else {
+            Hops hops = this.model.findHopsById(id);
+            mav.addObject("content", "admin/Hops");
+            mav.addObject("hops", hops);
+        }
 
         return mav;
     }

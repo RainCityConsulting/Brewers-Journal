@@ -2,6 +2,8 @@ package com.rcc.brew.web.controller;
 
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.HopsAdditionType;
+import com.rcc.brew.bean.HopsInstance;
 import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.Weight;
@@ -46,6 +48,15 @@ public class RecipeEditController extends AbstractEditController {
         }
         recipe.setGrains(grains);
 
+        List<HopsInstance> hops = new ArrayList<HopsInstance>();
+        for (int i = 0; i < 8; i++) {
+            HopsInstance hi = new HopsInstance();
+            hi.setWeight(new Weight(new WeightUnit()));
+            hi.setAdditionType(new HopsAdditionType());
+            hops.add(hi);
+        }
+        recipe.setHops(hops);
+
         return recipe;
     }
 
@@ -56,6 +67,7 @@ public class RecipeEditController extends AbstractEditController {
     protected void referenceData(Map map) {
         map.put("grains", this.model.findAllGrains());
         map.put("weightUnits", this.model.findAllWeightUnits());
+        map.put("hats", this.model.findAllHopsAdditionTypes());
     }
 
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)

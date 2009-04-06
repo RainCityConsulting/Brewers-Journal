@@ -1,0 +1,29 @@
+<h2>Hops</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
+    <li>All Hops</li>
+  </ul>
+</div>
+
+<table class="list sortable">
+  <tr>
+    <th>Name</th>
+    <th>Mfg</th>
+  </tr>
+
+  #foreach ($h in $hops)
+  <tr>
+    <td sorttable_customkey="$h.name"><a href="#springUrl('/admin/hops.s')?id=$h.id">$h.name</a></td>
+    <td sorttable_customkey="$!h.mfg.name">
+      #if ($h.hasMfg())
+      <a href="#springUrl('/admin/mfg.s')?id=$h.mfg.id">$h.mfg.name</a>
+      #end
+    </td>
+
+  </tr>
+  #end
+
+</table>

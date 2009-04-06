@@ -78,6 +78,24 @@
         </property>
     </bean>
 
+    <bean id="hopsAdditionTypeQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.HopsAdditionTypeQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="hopsQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.HopsQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="weightUnitQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.WeightUnitQueryImpl">
@@ -134,6 +152,19 @@
 
 
     <!-- SEARCH -->
+    <bean id="hopsDocumentFactory" class="com.rcc.brew.search.HopsDocumentFactory"/>
+
+    <bean id="hopsIndexWriter" class="com.rcc.search.IndexWriterImpl">
+        <property name="indexDir" value="${index.dir}/hops"/>
+        <property name="documentFactory" ref="hopsDocumentFactory"/>
+    </bean>
+
+    <bean id="hopsIndexReader" class="com.rcc.search.IndexReaderImpl">
+        <property name="indexDir" value="${index.dir}/hops"/>
+        <property name="documentFactory" ref="hopsDocumentFactory"/>
+    </bean>
+
+
     <bean id="grainDocumentFactory" class="com.rcc.brew.search.GrainDocumentFactory"/>
 
     <bean id="grainIndexWriter" class="com.rcc.search.IndexWriterImpl">

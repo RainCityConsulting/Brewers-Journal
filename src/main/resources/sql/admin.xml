@@ -15,6 +15,16 @@
         <result property="audit.lastUpdatedDate" column="last_updated_date"/>
     </resultMap>
 
+    <resultMap id="hops" class="com.rcc.brew.bean.Hops">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mfg" column="manufacturer_id" select="findMfgById"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
     <resultMap id="mfg" class="com.rcc.brew.bean.Mfg">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -63,6 +73,43 @@
     WHERE id = #id#
     </update>
     <!-- END MFG -->
+
+    <!-- HOPS -->
+    <select id="findAllHops" resultMap="hops">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM hops
+    ORDER BY name
+    </select>
+
+    <select id="findHopsById" parameterClass="int" resultMap="hops">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM hops
+    WHERE id = #value#
+    </select>
+
+    <select id="findHopsCount" resultClass="int">
+    SELECT COUNT(*) FROM hops
+    </select>
+
+    <insert id="insertHops" parameterClass="com.rcc.brew.bean.Hops">
+    INSERT INTO hops
+    (name, manufacturer_id, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mfg.id#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateHops" parameterClass="com.rcc.brew.bean.Hops">
+    UPDATE hops
+    SET name = #name#,
+    manufacturer_id = #mfg.id#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END HOPS -->
 
 
     <!-- GRAIN -->

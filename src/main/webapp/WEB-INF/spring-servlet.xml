@@ -53,6 +53,7 @@
                 <prop key="/edit/recipe.s">recipeEditController</prop>
 
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
+                <prop key="/ac/hops.s">hopsAutoCompleteController</prop>
             </props>
         </property>
     </bean>
@@ -85,13 +86,16 @@
                 <prop key="/admin/index.s">admin.mainController</prop>
                 <prop key="/admin/mfg.s">admin.mainController</prop>
                 <prop key="/admin/grain.s">admin.mainController</prop>
+                <prop key="/admin/hops.s">admin.mainController</prop>
                 <prop key="/admin/hat.s">admin.mainController</prop>
                 <prop key="/admin/search.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
+                <prop key="/admin/search/rebuild/hops.s">admin.searchIndexController</prop>
 
                 <prop key="/admin/edit/mfg.s">admin.mfgEditController</prop>
                 <prop key="/admin/edit/grain.s">admin.grainEditController</prop>
                 <prop key="/admin/edit/hat.s">admin.hopsAdditionTypeEditController</prop>
+                <prop key="/admin/edit/hops.s">admin.hopsEditController</prop>
             </props>
         </property>
     </bean>
@@ -159,6 +163,18 @@
         <property name="weightUnitEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="weightUnitQuery"/>
+            </bean>
+        </property>
+
+        <property name="hopsAdditionTypeEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="hopsAdditionTypeQuery"/>
+            </bean>
+        </property>
+
+        <property name="hopsEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor">
+                <property name="query" ref="hopsQuery"/>
             </bean>
         </property>
     </bean>
@@ -289,6 +305,20 @@
         <property name="indexReader" ref="grainIndexReader"/>
     </bean>
 
+    <bean id="hopsAutoCompleteController" class="com.rcc.web.controller.AutoCompleteController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/ac/hops.s">search</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="indexReader" ref="hopsIndexReader"/>
+    </bean>
+
 
     <!-- Admin -->
 
@@ -300,6 +330,7 @@
                         <prop key="/admin/index.s">view</prop>
                         <prop key="/admin/mfg.s">mfg</prop>
                         <prop key="/admin/grain.s">grain</prop>
+                        <prop key="/admin/hops.s">hops</prop>
                         <prop key="/admin/hat.s">hopsAdditionType</prop>
                     </props>
                 </property>
@@ -317,6 +348,7 @@
                     <props>
                         <prop key="/admin/search.s">view</prop>
                         <prop key="/admin/search/rebuild/grain.s">rebuildGrainIndex</prop>
+                        <prop key="/admin/search/rebuild/hops.s">rebuildHopsIndex</prop>
                     </props>
                 </property>
             </bean>
@@ -324,6 +356,7 @@
 
         <property name="model" ref="model"/>
         <property name="grainIndexWriter" ref="grainIndexWriter"/>
+        <property name="hopsIndexWriter" ref="hopsIndexWriter"/>
     </bean>
 
     <bean id="admin.mfgEditController" parent="modelTxn">
@@ -364,6 +397,28 @@
 
                 <property name="createContent" value="admin/GrainCreate"/>
                 <property name="editContent" value="admin/GrainEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="admin.hopsEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.HopsEditController">
+                <property name="commandName" value="h"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="admin/HopsCreate"/>
+                <property name="editContent" value="admin/HopsEdit"/>
                 <property name="model" ref="model"/>
             </bean>
         </property>

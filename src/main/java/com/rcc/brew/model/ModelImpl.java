@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
@@ -69,6 +70,41 @@ public class ModelImpl extends ModelBase implements Model {
         return (List<Mfg>) this.getSqlMapClientTemplate().queryForList("findAllMfgs");
     }
     /* END MFG */
+
+    /* HOPS */
+    public int createHops(Hops g) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertHops", g);
+        return id.intValue();
+    }
+
+    public void updateHops(Hops g) {
+        this.getSqlMapClientTemplate().update("updateHops", g);
+    }
+
+    public Hops findHopsById(int id) {
+        Hops g = (Hops) this.getSqlMapClientTemplate().queryForObject("findHopsById", id);
+        if (g == null) { throw new ObjectNotFoundException("Hops ID: " + id); }
+        return g;
+    }
+
+    public Hops findHopsByName(String name) {
+        return (Hops) this.getSqlMapClientTemplate().queryForObject("findHopsByName", name);
+    }
+
+    public List<Hops> findAllHops() {
+        return (List<Hops>) this.getSqlMapClientTemplate().queryForList("findAllHops");
+    }
+
+    public List<Hops> findAllHops(int offset, int limit) {
+        return (List<Hops>) this.getSqlMapClientTemplate().queryForList(
+                "findAllHops", offset, limit);
+    }
+
+    public int findHopsCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findHopsCount");
+        
+    }
+    /* END HOPS */
 
     /* GRAIN */
     public int createGrain(Grain g) {

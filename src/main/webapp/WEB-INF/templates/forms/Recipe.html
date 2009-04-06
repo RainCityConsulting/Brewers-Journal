@@ -28,17 +28,6 @@
         #springBind("r.grains[$i].grain")
         <input class="grain_autocomplete autocomplete" type="text" size="20"
             name="$status.expression" value="$status.value"/>
-        <!--
-        <select name="grains[$i].grain">
-          <option value="0"></option>
-          #foreach ($g in $grains)
-          <option value="g.id"
-              #if ("$!r.grains[$i].grain.id" == "$g.id")
-              selected="selected"
-              #end >$g.name</option>
-          #end
-        </select>
-        -->
       </td>
 
       <td>
@@ -54,6 +43,60 @@
               #if ("$!status.value" == "$u.id")
               selected="selected"
               #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+    </tr>
+    #set ($i = $i + 1)
+    #end
+
+  </table>
+
+  <h3>Hops</h3>
+  <table class="list">
+
+    <tr>
+      <th>Hops</th>
+      <th colspan="2">Weight</th>
+      <th>Type</th>
+    </tr>
+
+    #set ($i = 0)
+    #foreach ($h in $r.hops)
+    <tr>
+
+      <td>
+        #springBind("r.hops[$i].hops")
+        <input class="hops_autocomplete autocomplete" type="text" size="20"
+            name="$status.expression" value="$status.value"/>
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].weight.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].weight.unit")
+        <select name="$status.expression">
+          #foreach ($u in $weightUnits)
+          <option value="$u.id"
+              #if ("$!status.value" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].additionType.id")
+        <select name="$status.expression">
+          #foreach ($t in $hats)
+          <option value="$t.id"
+              #if ("$!status.value" == "$t.id")
+              selected="selected"
+              #end >$t.name</option>
           #end
         </select>
       </td>
