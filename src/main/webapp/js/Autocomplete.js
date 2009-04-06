@@ -8,7 +8,6 @@ com.rcc.brew.ac.init = function(e) {
   // GRAIN
 
   $('input.grain_autocomplete').each(function(i) {
-    alert("Grain AC");
     $(this).autocomplete("@base.url@/ac/grain.s",
         {
           formatItem: function(row, idx, count, query) {
@@ -37,7 +36,6 @@ com.rcc.brew.ac.init = function(e) {
   // HOPS
 
   $('input.hops_autocomplete').each(function(i) {
-    alert('Hops AC');
     $(this).autocomplete("@base.url@/ac/hops.s",
         {
           formatItem: function(row, idx, count, query) {
