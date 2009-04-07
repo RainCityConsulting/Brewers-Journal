@@ -60,6 +60,8 @@
       <th>Hops</th>
       <th colspan="2">Weight</th>
       <th>Type</th>
+      <th colspan="2">Time</th>
+      <th>Alpha%</th>
     </tr>
 
     #set ($i = 0)
@@ -99,6 +101,30 @@
               #end >$t.name</option>
           #end
         </select>
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].time.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        #springShowErrors("<br/>" "form-error")
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].time.unit")
+        <select name="$status.expression">
+          #foreach ($u in $timeUnits)
+          <option value="$u.id"
+              #if ("$!status.value" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+      <td>
+        #springBind("r.hops[$i].alpha")
+        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        #springShowErrors("<br/>" "form-error")
       </td>
 
     </tr>

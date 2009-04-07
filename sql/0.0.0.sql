@@ -1,7 +1,5 @@
 /*
  * All times are in milliseconds
- * All temperatures are in celcius
- * All weights are in grams
  */
 
 CREATE TABLE users (
@@ -92,6 +90,15 @@ DELIMITER ;
 
 INSERT INTO users_roles (user_id, user_role_id, creation_user_id, last_updated_user_id)
 VALUES (1, @admin_user_role_id, 1, 1);
+
+CREATE TABLE time_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  second_conversion DECIMAL(12, 8)
+) ENGINE = InnoDB;
+
+INSERT INTO time_units (name, second_conversion)
+VALUES ('m', 60), ('h', 3600), ('s', 1), ('d', 86400);
 
 CREATE TABLE weight_units (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -261,7 +268,7 @@ SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
 
-CREATE TABLE hop_addition_types (
+CREATE TABLE hops_addition_types (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(32) NOT NULL,
   description TEXT NOT NULL,
@@ -291,11 +298,15 @@ CREATE TABLE recipe_hops (
   hops_id INTEGER UNSIGNED NOT NULL,
   weight DECIMAL(9,2) UNSIGNED NOT NULL,
   weight_unit_id INTEGER UNSIGNED NOT NULL,
-  hop_addition_type_id INTEGER UNSIGNED NOT NULL,
+  hops_addition_type_id INTEGER UNSIGNED NOT NULL,
+  time INTEGER UNSIGNED NULL,
+  time_unit_id INTEGER UNSIGNED NULL,
+  alpha DECIMAL(5,2) UNSIGNED NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes (id),
   FOREIGN KEY (hops_id) REFERENCES hops (id),
   FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id),
-  FOREIGN KEY (hop_addition_type_id) REFERENCES hop_addition_types (id)
+  FOREIGN KEY (time_unit_id) REFERENCES time_units (id),
+  FOREIGN KEY (hops_addition_type_id) REFERENCES hops_addition_types (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE recipe_grains (

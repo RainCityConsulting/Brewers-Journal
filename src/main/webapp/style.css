@@ -1,7 +1,7 @@
 body {
-  margin-left: 48px;
-  margin-right: 48px;
-  margin-top: 24px;
+  margin-left: 128px;
+  margin-right: 128px;
+  margin-top: 64px;
   margin-bottom: 64px;
   font-size: 14px;
   font-family: arial;
@@ -9,11 +9,23 @@ body {
   background-color: @color5@;
 }
 
+form {
+  margin-top: 24px;
+}
+
 /* HEADINGS */
 h2 {
   margin-top: 12px;
   margin-bottom: 6px;
-  font-size: 26;
+  font-size: 26px;
+  font-weight: bold;
+  color: @color3@;
+}
+
+h3 {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 20px;
   font-weight: bold;
   color: @color3@;
 }
@@ -21,7 +33,7 @@ h2 {
 h4 {
   margin-top: 6px;
   margin-bottom: 3px;
-  font-size: 12;
+  font-size: 12px;
   font-weight: bold;
   color: @color3@;
 }
@@ -129,9 +141,10 @@ table.view td {
 
 /* END TABLES */
 
-div#heading {
+div#header {
+  color: white;
   background-color: @color3@;
-  padding: 8px;
+  padding: 16px;
 
   border-top: 2px solid @color4@;
   border-bottom: 1px solid @color4@;
@@ -139,29 +152,34 @@ div#heading {
   border-left: 2px solid @color4@;
 }
 
-div#heading h1 {
-  font-size: 24;
+div#header h1 {
+  font-size: 32px;
   font-weight: bold;
   color: @color5@;
 }
 
+div#header a {
+  font-weight: bold;
+}
+
 div#content {
   background-color: @color5@;
-  padding: 10px;
-  margin-top: 8px;
+  padding-left: 32px;
+  padding-bottom: 64;
+  margin-top: 16px;
 }
 
 div#content img {
   border: solid 1px @color4@;
 }
 
-div#nav {
+div#left_nav {
   background-color: white;
 
   padding: 8px;
 
   margin-right: 8px;
-  margin-top: 8px;
+  margin-top: 16px;
 
   border-top: 2px solid @color4@;
   border-bottom: 1px solid @color4@;
@@ -169,13 +187,13 @@ div#nav {
   border-right: 1px solid @color4@;
 }
 
-div#nav a {
+div#left_nav a {
   display: block;
   padding: 2px;
   white-space: nowrap;
 }
 
-div#nav a:hover {
+div#left_nav a:hover {
   color: @color5@;
   background-color: @color2@;
 }
@@ -232,7 +250,8 @@ div.page-functions table td {
 
 /* FLASH */
 div.flash {
-  margin-top: 12px;
+  margin-left: 32px;
+  margin-top: 16px;
   width: 600px;
   font-size: 16px;
   background-color: white;
@@ -244,28 +263,29 @@ div.flash ul li {
 
 div.flash div.messages {
   padding: 16px;
-  border: 2px solid @color1@;
+  border: 1px solid @color1@;
   margin-top: 8px;
 }
 
 div.flash div.warnings {
   padding: 16px;
-  border: 2px solid @color2@;
+  border: 1px solid @color2@;
   margin-top: 8px;
 }
 
 div.flash div.errors {
   padding: 16px;
-  border: 2px solid @color3@;
+  border: 1px solid @color3@;
   margin-top: 8px;
 }
 /* END FLASH */
 
 div.breadcrumbs {
-  margin-top: 12px;
-  margin-bottom: 8px;
+  margin-top: 24px;
+  margin-bottom: 20px;
   padding: 3px;
-  border: 1px solid @color4@;
+  border-top: 1px solid @color4@;
+  border-bottom: 1px solid @color4@;
   background-color: white;
 }
 

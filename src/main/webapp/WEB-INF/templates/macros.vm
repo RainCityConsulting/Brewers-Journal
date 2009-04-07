@@ -24,3 +24,7 @@
 #macro(weight $w)
 $format.formatWeight($w)
 #end
+
+#macro(time $t)
+$format.formatTime($t)
+#end

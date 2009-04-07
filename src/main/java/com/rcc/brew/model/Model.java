@@ -4,8 +4,10 @@ import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
+import com.rcc.brew.bean.HopsInstance;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
+import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
 import com.rcc.brew.bean.WeightUnit;
@@ -70,7 +72,7 @@ public interface Model {
     public int deleteRecipeGrainsByRecipe(int id);
     /* END RECIPE */
 
-    /* HOP ADDITION TYPE */
+    /* HOPS ADDITION TYPE */
     public int createHopsAdditionType(HopsAdditionType hat);
     public void updateHopsAdditionType(HopsAdditionType hat);
     public HopsAdditionType findHopsAdditionTypeById(int id);
@@ -78,5 +80,18 @@ public interface Model {
     public List<HopsAdditionType> findAllHopsAdditionTypes();
     public List<HopsAdditionType> findAllHopsAdditionTypes(int offset, int limit);
     public int findHopsAdditionTypeCount();
-    /* END HOP ADDITION TYPE */
+    /* END HOPS ADDITION TYPE */
+
+    /* RECIPE HOPS */
+    public int createRecipeHops(int recipeId, HopsInstance h);
+    public int deleteRecipeHopsByRecipe(int id);
+    /* END RECIPE HOPS */
+
+    /* TIME */
+    public TimeUnit findTimeUnitById(int id);
+    public TimeUnit findTimeUnitByName(String name);
+    public List<TimeUnit> findAllTimeUnits();
+    public List<TimeUnit> findAllTimeUnits(int offset, int limit);
+    public int findTimeUnitCount();
+    /* END TIME */
 }

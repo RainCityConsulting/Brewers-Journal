@@ -105,6 +105,15 @@
         </property>
     </bean>
 
+    <bean id="timeUnitQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.TimeUnitQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="passwordAuthenticator" class="com.rcc.mail.PasswordAuthenticator">
         <constructor-arg value="${mail.user}"/>
         <constructor-arg value="${mail.password}"/>

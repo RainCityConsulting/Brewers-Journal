@@ -160,6 +160,12 @@
     <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar">
         <property name="grainQuery" ref="grainQuery"/>
 
+        <property name="timeUnitEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="timeUnitQuery"/>
+            </bean>
+        </property>
+
         <property name="weightUnitEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="weightUnitQuery"/>
@@ -174,6 +180,9 @@
 
         <property name="hopsEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor">
+                <property name="nameResolver">
+                    <bean class="com.rcc.brew.web.bean.propertyeditor.HopsNameResolver"/>
+                </property>
                 <property name="query" ref="hopsQuery"/>
             </bean>
         </property>

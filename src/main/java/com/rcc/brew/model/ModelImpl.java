@@ -4,8 +4,10 @@ import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
+import com.rcc.brew.bean.HopsInstance;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Recipe;
+import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
 import com.rcc.brew.bean.WeightUnit;
@@ -238,4 +240,40 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findHopsAdditionTypeCount");
     }
     /* END HOP ADDITION TYPE */
+
+    /* RECIPE HOPS */
+    public int createRecipeHops(int recipeId, HopsInstance h) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertRecipeHops", this.createParams("recipeId", recipeId, "instance", h));
+        return id.intValue();
+    }
+
+    public int deleteRecipeHopsByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeGrainsByRecipe", id);
+    }
+    /* END RECIPE HOPS */
+
+    /* TIME */
+    public TimeUnit findTimeUnitById(int id) {
+        return (TimeUnit) this.getSqlMapClientTemplate().queryForObject("findTimeUnitById", id);
+    }
+
+    public TimeUnit findTimeUnitByName(String name) {
+        return (TimeUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findTimeUnitByName", name);
+    }
+
+    public List<TimeUnit> findAllTimeUnits() {
+        return (List<TimeUnit>) this.getSqlMapClientTemplate().queryForList("findAllTimeUnits");
+    }
+
+    public List<TimeUnit> findAllTimeUnits(int offset, int limit) {
+        return (List<TimeUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllTimeUnits", offset, limit);
+    }
+
+    public int findTimeUnitCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findTimeUnitCount");
+    }
+    /* END TIME */
 }

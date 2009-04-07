@@ -5,6 +5,12 @@
 
 <sqlMap namespace="domain">
 
+    <resultMap id="timeUnit" class="com.rcc.brew.bean.TimeUnit">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="conversion" column="second_conversion"/>
+    </resultMap>
+
     <resultMap id="weightUnit" class="com.rcc.brew.bean.WeightUnit">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -16,6 +22,30 @@
         <result property="name" column="name"/>
         <result property="conversion" column="liter_conversion"/>
     </resultMap>
+
+    <!-- TIME -->
+    <select id="findTimeUnitById" resultMap="timeUnit" parameterClass="int">
+    SELECT id, name, second_conversion
+    FROM time_units
+    WHERE id = #value#
+    </select>
+
+    <select id="findTimeUnitByName" resultMap="timeUnit" parameterClass="string">
+    SELECT id, name, second_conversion
+    FROM time_units
+    WHERE name = #value#
+    </select>
+
+    <select id="findAllTimeUnits" resultMap="timeUnit">
+    SELECT id, name, second_conversion
+    FROM time_units
+    ORDER BY second_conversion
+    </select>
+
+    <select id="findTimeUnitCount" resultClass="int">
+    SELECT COUNT(*) FROM time_units
+    </select>
+    <!-- END TIME -->
 
     <!-- WEIGHT -->
     <select id="findWeightUnitById" resultMap="weightUnit" parameterClass="int">

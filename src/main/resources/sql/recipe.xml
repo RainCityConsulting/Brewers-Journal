@@ -9,6 +9,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="grains" column="id" select="findRecipeGrainsByRecipe"/>
+        <result property="hops" column="id" select="findRecipeHopsByRecipe"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
@@ -20,6 +21,17 @@
         <result property="grain" column="grain_id" select="findGrainById"/>
         <result property="weight.value" column="weight"/>
         <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
+    </resultMap>
+
+    <resultMap id="hopsInstance" class="com.rcc.brew.bean.HopsInstance">
+        <result property="id" column="id"/>
+        <result property="hops" column="hops_id" select="findHopsById"/>
+        <result property="weight.value" column="weight"/>
+        <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
+        <result property="additionType" column="hops_addition_type_id" select="findHopsAdditionTypeById"/>
+        <result property="time.value" column="time"/>
+        <result property="time.unit" column="time_unit_id" select="findTimeUnitById"/>
+        <result property="alpha" column="alpha"/>
     </resultMap>
 
     <!-- RECIPE -->
@@ -71,6 +83,25 @@
 
     <delete id="deleteRecipeGrainsByRecipe" parameterClass="int">
     DELETE FROM recipe_grains WHERE recipe_id = #value#
+    </delete>
+
+    <insert id="insertRecipeHops" parameterClass="map">
+    INSERT INTO recipe_hops
+    (recipe_id, hops_id, weight, weight_unit_id, hops_addition_type_id, alpha, time, time_unit_id)
+    VALUES (#recipeId#, #instance.hops.id#, #instance.weight.value#, #instance.weight.unit.id#, #instance.additionType.id#, #instance.alpha#, #instance.time.value#, #instance.time.unit.id#)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <select id="findRecipeHopsByRecipe" parameterClass="int" resultMap="hopsInstance">
+    SELECT id, hops_id, weight, weight_unit_id, hops_addition_type_id, alpha, time, time_unit_id
+    FROM recipe_hops
+    WHERE recipe_id = #value#
+    </select>
+
+    <delete id="deleteRecipeHopsByRecipe" parameterClass="int">
+    DELETE FROM recipe_hops WHERE recipe_id = #value#
     </delete>
     <!-- END RECIPE -->
 
