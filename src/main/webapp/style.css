@@ -163,10 +163,12 @@ div#header a {
 }
 
 div#content {
-  background-color: @color5@;
+  background-color: white;
+  padding-top: 8px;
   padding-left: 32px;
-  padding-bottom: 64;
+  padding-bottom: 64px;
   margin-top: 16px;
+  border: 1px solid @color4@;
 }
 
 div#content img {
@@ -252,7 +254,6 @@ div.page-functions table td {
 div.flash {
   margin-left: 32px;
   margin-top: 16px;
-  width: 600px;
   font-size: 16px;
   background-color: white;
 }
@@ -328,20 +329,9 @@ span.active-pager-page {
 }
 
 div.help {
+  color: #AAA;
   width: 600px;
-  background-color: white;
   padding: 2px;
-  margin-top: 16px;
-  margin-bottom: 16px;
-  border: 1px solid @color3@;
-}
-
-div.help div.handle {
-  cursor: pointer;
-}
-
-div.help div.body {
-  display: none;
 }
 
 p {

@@ -282,12 +282,12 @@ CREATE TABLE hops_addition_types (
 ) ENGINE = InnoDB;
 
 DELIMITER ;;
-CREATE TRIGGER hop_addition_types_bi_trig BEFORE INSERT ON hop_addition_types FOR EACH ROW BEGIN
+CREATE TRIGGER hops_addition_types_bi_trig BEFORE INSERT ON hops_addition_types FOR EACH ROW BEGIN
 SET NEW.creation_date = NOW();
 SET NEW.last_updated_date = NOW();
 END ;;
 
-CREATE TRIGGER hop_addition_types_bu_trig BEFORE UPDATE ON hop_addition_types FOR EACH ROW BEGIN
+CREATE TRIGGER hops_addition_types_bu_trig BEFORE UPDATE ON hops_addition_types FOR EACH ROW BEGIN
 SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
