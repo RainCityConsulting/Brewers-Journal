@@ -100,6 +100,15 @@ CREATE TABLE time_units (
 INSERT INTO time_units (name, second_conversion)
 VALUES ('m', 60), ('h', 3600), ('s', 1), ('d', 86400);
 
+CREATE TABLE volume_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  ml_conversion DECIMAL(12, 8)
+) ENGINE = InnoDB;
+
+INSERT INTO volume_units (name, ml_conversion)
+VALUES ('qt', 946.353), ('liter', 1000), ('gallon', 3785.412), ('ml', 1);
+
 CREATE TABLE weight_units (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
@@ -109,24 +118,21 @@ CREATE TABLE weight_units (
 INSERT INTO weight_units (name, gram_conversion)
 VALUES ('oz', 28.349523), ('lb', 453.59237), ('kg', 1000), ('g', 1);
 
-CREATE TABLE volume_units (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(64) NOT NULL,
-  liter_conversion DECIMAL(12, 8)
-) ENGINE = InnoDB;
-
-INSERT INTO volume_units (name, liter_conversion)
-VALUES ('gal', 3.7843), ('oz', 0.0296), ('qt', 0.9461), ('cup', 0.2366), ('liter', 1);
-
 CREATE TABLE recipes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
+  volume DECIMAL(9, 2) UNSIGNED NOT NULL,
+  volume_unit_id INTEGER UNSIGNED NOT NULL,
+  boil_time DECIMAL(9, 2) UNSIGNED NOT NULL,
+  boil_time_unit_id INTEGER UNSIGNED NOT NULL,
   creation_date DATETIME NOT NULL DEFAULT 0,
   creation_user_id INTEGER UNSIGNED NOT NULL,
   last_updated_date DATETIME NOT NULL DEFAULT 0,
   last_updated_user_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
   FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (volume_unit_id) REFERENCES volume_units (id),
+  FOREIGN KEY (boil_time_unit_id) REFERENCES time_units (id),
   UNIQUE KEY (name)
 ) ENGINE = InnoDB;
 
@@ -320,6 +326,14 @@ CREATE TABLE recipe_grains (
   FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
 ) ENGINE = InnoDB;
 
+CREATE TABLE recipe_yeast (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  yeast_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (yeast_id) REFERENCES yeast (id)
+) ENGINE = InnoDB;
+
 CREATE TABLE mash_step_types (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(16) NOT NULL,
@@ -343,6 +357,28 @@ CREATE TRIGGER mash_step_types_bu_trig BEFORE UPDATE ON mash_step_types FOR EACH
 SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
+
+CREATE TABLE object_types (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(16) NOT NULL,
+  UNIQUE KEY (name)
+) ENGINE = InnoDB;
+
+INSERT INTO object_types (name) VALUES ('recipe'), ('grain'), ('yeast'),  ('hops'), ('grain_instance'),  ('yeast_instance'), ('hops_instance');
+
+CREATE TABLE notes (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  object_type_id INTEGER UNSIGNED NOT NULL,
+  object_id INTEGER UNSIGNED NOT NULL,
+  text TEXT NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (object_type_id) REFERENCES object_types (id)
+) ENGINE = InnoDB;
 
 INSERT INTO mash_step_types
 (name, description, creation_user_id, last_updated_user_id)

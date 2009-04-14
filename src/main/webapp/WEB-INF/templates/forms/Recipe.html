@@ -1,3 +1,78 @@
+<script type="text/javascript">
+var grainIdx = $r.grains.size();
+var hopsIdx = $r.hops.size();
+var yeastIdx = $r.yeast.size();
+
+function moreGrains() {
+  var content = '<tr>';
+  content += '<td><input name="grains['+grainIdx+'].grain" value="" type="text" class="autocomplete grain_autocomplete" size="20"/></td>';
+  content += '<td><input type="text" name="grains['+grainIdx+'].weight.value" value="" size="4"/></td>';
+
+  content += '<td><select name="grains['+grainIdx+'].weight.unit">';
+  #foreach($u in $weightUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select></td>';
+
+  content += '</tr>';
+
+  $('#grain_table tr:last').after(content);
+
+  grainIdx++;
+
+  com.rcc.brew.ac.init();
+}
+
+function moreHops() {
+  var content = '<tr>';
+  content += '<td><input name="hops['+hopsIdx+'].hops" value="" type="text" class="autocomplete hops_autocomplete" size="20"/></td>';
+
+  content += '<td><input type="text" name="hops['+hopsIdx+'].weight.value" value="" size="4"/></td>';
+
+  content += '<td><select name="hops['+hopsIdx+'].weight.unit">';
+  #foreach($u in $weightUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select></td>';
+
+  content += '<td><select name="hops['+hopsIdx+'].additionType.id">';
+  #foreach($t in $hats)
+  content += '<option value="$t.id">$t.name</option>';
+  #end
+  content += '</select></td>';
+
+  content += '<td><input type="text" name="hops['+hopsIdx+'].time.value" value="" size="4"/></td>';
+
+  content += '<td><select name="hops['+hopsIdx+'].time.unit">';
+  #foreach($u in $timeUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select></td>';
+
+  content += '<td><input type="text" name="hops['+hopsIdx+'].alpha" value="" size="4"/></td>';
+
+  content += '</tr>';
+
+  $('#hops_table tr:last').after(content);
+
+  hopsIdx++;
+
+  com.rcc.brew.ac.init();
+}
+
+function moreYeast() {
+  var content = '<tr>';
+  content += '<td><input name="yeast['+yeastIdx+'].yeast" value="" type="text" class="autocomplete yeast_autocomplete" size="20"/></td>';
+  content += '</tr>';
+
+  $('#yeast_table tr:last').after(content);
+
+  yeastIdx++;
+
+  com.rcc.brew.ac.init();
+}
+</script>
+
 <form method="POST">
 
   <table class="form view">
@@ -10,16 +85,54 @@
       </td>
     </tr>
 
+    <tr>
+      <th>Boil Length</th>
+      <td>
+        #springFormInput("r.boilTime.value" "size='4' tabindex='2'")
+        #springShowErrors("<br/>" "form-error")
+
+        #springBind("r.boilTime.unit.id")
+        <select name="$status.expression" tabindex="3">
+          #foreach ($u in $timeUnits)
+          <option value="$u.id"
+              #if ("$u.id" == "$!status.value")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Volume</th>
+      <td>
+        #springFormInput("r.volume.value" "size='4' tabindex='4'")
+        #springShowErrors("<br/>" "form-error")
+
+        #springBind("r.volume.unit.id")
+        <select name="$status.expression" tabindex="5">
+          #foreach ($u in $volumeUnits)
+          <option value="$u.id"
+              #if ("$u.id" == "$!status.value")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+    </tr>
+
   </table>
 
+
   <h3>Grains</h3>
-  <table class="list">
+  <table id="grain_table" class="list">
 
     <tr>
       <th>Grain</th>
       <th colspan="2">Weight</th>
     </tr>
 
+    #set ($tabindex = 6)
     #set ($i = 0)
     #foreach ($g in $r.grains)
     <tr>
@@ -27,17 +140,21 @@
       <td>
         #springBind("r.grains[$i].grain")
         <input class="grain_autocomplete autocomplete" type="text" size="20"
-            name="$status.expression" value="$status.value"/>
+            name="$status.expression" value="$status.value" tabindex="$tabindex"/>
       </td>
+
+      #set ($tabindex = $tabindex + 1)
 
       <td>
         #springBind("r.grains[$i].weight.value")
-        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
       </td>
+
+      #set ($tabindex = $tabindex + 1)
 
       <td>
         #springBind("r.grains[$i].weight.unit")
-        <select name="$status.expression">
+        <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $weightUnits)
           <option value="$u.id"
               #if ("$!status.value" == "$u.id")
@@ -47,14 +164,17 @@
         </select>
       </td>
 
+      #set ($tabindex = $tabindex + 1)
+
     </tr>
     #set ($i = $i + 1)
     #end
 
   </table>
+  <div><a onclick="moreGrains();" class="page-action">More grains</a></div>
 
   <h3>Hops</h3>
-  <table class="list">
+  <table id="hops_table" class="list">
 
     <tr>
       <th>Hops</th>
@@ -71,17 +191,21 @@
       <td>
         #springBind("r.hops[$i].hops")
         <input class="hops_autocomplete autocomplete" type="text" size="20"
-            name="$status.expression" value="$status.value"/>
+            name="$status.expression" value="$status.value" tabindex="$tabindex"/>
       </td>
+
+      #set ($tabindex = $tabindex + 1)
 
       <td>
         #springBind("r.hops[$i].weight.value")
-        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
       </td>
+
+      #set ($tabindex = $tabindex + 1)
 
       <td>
         #springBind("r.hops[$i].weight.unit")
-        <select name="$status.expression">
+        <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $weightUnits)
           <option value="$u.id"
               #if ("$!status.value" == "$u.id")
@@ -91,9 +215,11 @@
         </select>
       </td>
 
+      #set ($tabindex = $tabindex + 1)
+
       <td>
         #springBind("r.hops[$i].additionType.id")
-        <select name="$status.expression">
+        <select name="$status.expression" tabindex="$tabindex">
           #foreach ($t in $hats)
           <option value="$t.id"
               #if ("$!status.value" == "$t.id")
@@ -103,15 +229,19 @@
         </select>
       </td>
 
+      #set ($tabindex = $tabindex + 1)
+
       <td>
         #springBind("r.hops[$i].time.value")
-        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
         #springShowErrors("<br/>" "form-error")
       </td>
 
+      #set ($tabindex = $tabindex + 1)
+
       <td>
         #springBind("r.hops[$i].time.unit")
-        <select name="$status.expression">
+        <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $timeUnits)
           <option value="$u.id"
               #if ("$!status.value" == "$u.id")
@@ -121,20 +251,53 @@
         </select>
       </td>
 
+      #set ($tabindex = $tabindex + 1)
+
       <td>
         #springBind("r.hops[$i].alpha")
-        <input type="text" name="$status.expression" value="$!status.value" size="4"/>
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
         #springShowErrors("<br/>" "form-error")
       </td>
+
+      #set ($tabindex = $tabindex + 1)
 
     </tr>
     #set ($i = $i + 1)
     #end
 
   </table>
+  <div><a onclick="moreHops();" class="page-action">More hops</a></div>
+
+
+  <h3>Yeast</h3>
+  <table id="yeast_table" class="list">
+
+    <tr>
+      <th>Yeast</th>
+    </tr>
+
+    #set ($i = 0)
+    #foreach ($y in $r.yeasts)
+    <tr>
+
+      <td>
+        #springBind("r.yeast[$i].yeast")
+        <input class="yeast_autocomplete autocomplete" type="text" size="20"
+            name="$status.expression" value="$status.value" tabindex="$tabindex"/>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+    </tr>
+    #set ($i = $i + 1)
+    #end
+
+  </table>
+  <div><a onclick="moreYeast();" class="page-action">More yeast</a></div>
+
 
   <div class="buttons">
-    <input type="submit" value="$submitValue"/>
+    <input type="submit" value="$submitValue" tabindex="$tabindex"/>
   </div>
 
 </form>

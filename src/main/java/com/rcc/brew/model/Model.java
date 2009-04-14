@@ -11,6 +11,8 @@ import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
 import com.rcc.brew.bean.WeightUnit;
+import com.rcc.brew.bean.Yeast;
+import com.rcc.brew.bean.YeastInstance;
 
 import java.util.List;
 
@@ -41,6 +43,16 @@ public interface Model {
     public int findGrainCount();
     /* END GRAIN */
 
+    /* YEAST */
+    public int createYeast(Yeast y);
+    public void updateYeast(Yeast y);
+    public Yeast findYeastById(int id);
+    public Yeast findYeastByName(String name);
+    public List<Yeast> findAllYeast();
+    public List<Yeast> findAllYeast(int offset, int limit);
+    public int findYeastCount();
+    /* END YEAST */
+
     /* HOPS */
     public int createHops(Hops h);
     public void updateHops(Hops h);
@@ -60,7 +72,11 @@ public interface Model {
     /* END WEIGHT */
 
     /* VOLUME */
+    public VolumeUnit findVolumeUnitById(int id);
+    public VolumeUnit findVolumeUnitByName(String name);
     public List<VolumeUnit> findAllVolumeUnits();
+    public List<VolumeUnit> findAllVolumeUnits(int offset, int limit);
+    public int findVolumeUnitCount();
     /* END VOLUME */
 
     /* RECIPE */
@@ -86,6 +102,11 @@ public interface Model {
     public int createRecipeHops(int recipeId, HopsInstance h);
     public int deleteRecipeHopsByRecipe(int id);
     /* END RECIPE HOPS */
+
+    /* RECIPE YEAST */
+    public int createRecipeYeast(int recipeId, YeastInstance y);
+    public int deleteRecipeYeastByRecipe(int id);
+    /* END RECIPE YEAST */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id);

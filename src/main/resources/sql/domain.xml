@@ -20,7 +20,7 @@
     <resultMap id="volumeUnit" class="com.rcc.brew.bean.VolumeUnit">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="conversion" column="liter_conversion"/>
+        <result property="conversion" column="ml_conversion"/>
     </resultMap>
 
     <!-- TIME -->
@@ -78,10 +78,26 @@
     <!-- END WEIGHT -->
 
     <!-- VOLUME -->
-    <select id="findAllVolumeUnits" resultMap="volumeUnit">
-    SELECT id, name, liter_conversion
+    <select id="findVolumeUnitById" resultMap="volumeUnit" parameterClass="int">
+    SELECT id, name, ml_conversion
     FROM volume_units
-    ORDER BY liter_conversion
+    WHERE id = #value#
+    </select>
+
+    <select id="findVolumeUnitByName" resultMap="volumeUnit" parameterClass="string">
+    SELECT id, name, ml_conversion
+    FROM volume_units
+    WHERE name = #value#
+    </select>
+
+    <select id="findAllVolumeUnits" resultMap="volumeUnit">
+    SELECT id, name, ml_conversion
+    FROM volume_units
+    ORDER BY ml_conversion
+    </select>
+
+    <select id="findVolumeUnitCount" resultClass="int">
+    SELECT COUNT(*) FROM volume_units
     </select>
     <!-- END VOLUME -->
 

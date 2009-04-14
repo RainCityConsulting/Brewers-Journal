@@ -6,7 +6,7 @@
   </ul>
 </div>
 
-<h2>Recipe: $recipe.name</h2>
+<h2>$recipe.name</h2>
 
 <div class="page-functions">
   <ul>
@@ -14,16 +14,19 @@
   </ul>
 </div>
 
-<!--
 <table class="view">
 
   <tr>
-    <th>Name</th>
-    <td>$recipe.name</td>
+    <th>Boil Length</th>
+    <td>#time($recipe.boilTime)</td>
+  </tr>
+
+  <tr>
+    <th>Final Volume</th>
+    <td>#volume($recipe.volume)</td>
   </tr>
 
 </table>
--->
 
 <h3>Grains</h3>
 
@@ -37,7 +40,7 @@
   #foreach ($g in $recipe.grains)
   <tr>
     <td>$g.grain.name</td>
-    <td>#weight($g.weight)</td>
+    <td sorttable_customkey="$g.weight.gramWeight()">#weight($g.weight)</td>
   </tr>
   #end
 
@@ -58,10 +61,28 @@
   #foreach ($h in $recipe.hops)
   <tr>
     <td>$h.hops.name</td>
-    <td>#weight($h.weight)</td>
+    <td sorttable_customkey="$h.weight.gramWeight()">#weight($h.weight)</td>
     <td>$h.additionType.name</td>
-    <td>#time($h.time)</td>
+    <td sorttable_customkey="$!h.time.secondTime()">#time($h.time)</td>
     <td>$!h.alpha</td>
+  </tr>
+  #end
+
+</table>
+
+
+
+<h3>Yeast</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Yeast</th>
+  </tr>
+
+  #foreach ($y in $recipe.yeast)
+  <tr>
+    <td>$y.yeast.name</td>
   </tr>
   #end
 

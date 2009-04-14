@@ -3,6 +3,7 @@ package com.rcc.brew.web.controller.admin;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.Mfg;
+import com.rcc.brew.bean.Yeast;
 import com.rcc.brew.model.Model;
 
 import com.rcc.search.IndexWriter;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SearchIndexController extends MultiActionController {
     private IndexWriter<Grain> grainIndexWriter;
     private IndexWriter<Hops> hopsIndexWriter;
+    private IndexWriter<Yeast> yeastIndexWriter;
     private Model model;
 
     public void setGrainIndexWriter(IndexWriter<Grain> grainIndexWriter) {
@@ -27,6 +29,10 @@ public class SearchIndexController extends MultiActionController {
 
     public void setHopsIndexWriter(IndexWriter<Hops> hopsIndexWriter) {
         this.hopsIndexWriter = hopsIndexWriter;
+    }
+
+    public void setYeastIndexWriter(IndexWriter<Yeast> yeastIndexWriter) {
+        this.yeastIndexWriter = yeastIndexWriter;
     }
 
     public void setModel(Model model) { this.model = model; }
@@ -39,6 +45,17 @@ public class SearchIndexController extends MultiActionController {
         mav.addObject("content", "admin/SearchIndex");
 
         return mav;
+    }
+
+    public ModelAndView rebuildYeastIndex(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        List<Yeast> yeast = this.model.findAllYeast();
+        this.yeastIndexWriter.addAll(yeast, true);
+
+        FlashUtils.messageCode("index.rebuild.success", request, "Yeast");
+
+        return new ModelAndView("redirect:/admin/search.s");
     }
 
     public ModelAndView rebuildGrainIndex(HttpServletRequest request, HttpServletResponse response)

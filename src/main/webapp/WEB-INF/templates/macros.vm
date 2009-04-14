@@ -28,3 +28,7 @@ $format.formatWeight($w)
 #macro(time $t)
 $format.formatTime($t)
 #end
+
+#macro(volume $v)
+$format.formatVolume($v)
+#end

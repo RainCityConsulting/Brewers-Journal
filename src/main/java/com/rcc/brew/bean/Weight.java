@@ -7,7 +7,7 @@ public class Weight extends com.rcc.brew.bean.gen.Weight {
         this.unit = u;
     }
 
-    public int getGramWeight() {
+    public int gramWeight() {
         if (this.unit == null) {
             throw new RuntimeException("Cannot calculate gram weight with a null WeightUnit");
         }

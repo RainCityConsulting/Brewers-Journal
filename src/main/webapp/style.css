@@ -164,10 +164,12 @@ div#header a {
 
 div#content {
   background-color: white;
-  padding-top: 8px;
   padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 8px;
   padding-bottom: 64px;
   margin-top: 16px;
+  margin-left: 16px;
   border: 1px solid @color4@;
 }
 
@@ -252,7 +254,7 @@ div.page-functions table td {
 
 /* FLASH */
 div.flash {
-  margin-left: 32px;
+  margin-left: 16px;
   margin-top: 16px;
   font-size: 16px;
   background-color: white;
@@ -263,26 +265,38 @@ div.flash ul li {
 }
 
 div.flash div.messages {
-  padding: 16px;
   border: 1px solid @color1@;
   margin-top: 8px;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 div.flash div.warnings {
-  padding: 16px;
   border: 1px solid @color2@;
   margin-top: 8px;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 div.flash div.errors {
-  padding: 16px;
   border: 1px solid @color3@;
   margin-top: 8px;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 /* END FLASH */
 
 div.breadcrumbs {
-  margin-top: 24px;
+  margin-top: 8px;
   margin-bottom: 20px;
   padding: 3px;
   border-top: 1px solid @color4@;

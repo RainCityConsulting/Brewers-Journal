@@ -4,6 +4,7 @@ import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.Mfg;
+import com.rcc.brew.bean.Yeast;
 import com.rcc.brew.model.Model;
 
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -62,6 +63,25 @@ public class MainController extends MultiActionController {
             Grain grain = this.model.findGrainById(id);
             mav.addObject("content", "admin/Grain");
             mav.addObject("grain", grain);
+        }
+
+        return mav;
+    }
+
+    public ModelAndView yeast(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        ModelAndView mav = new ModelAndView();
+
+        int id = com.rcc.web.controller.ControllerUtils.getIntParam(request, "id", 0);
+        if (id == 0) {
+            List<Yeast> yeast = this.model.findAllYeast();
+            mav.addObject("content", "admin/YeastList");
+            mav.addObject("yeast", yeast);
+        } else {
+            Yeast yeast = this.model.findYeastById(id);
+            mav.addObject("content", "admin/Yeast");
+            mav.addObject("yeast", yeast);
         }
 
         return mav;

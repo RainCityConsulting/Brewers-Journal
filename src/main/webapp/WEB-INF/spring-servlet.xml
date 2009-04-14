@@ -54,6 +54,7 @@
 
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
                 <prop key="/ac/hops.s">hopsAutoCompleteController</prop>
+                <prop key="/ac/yeast.s">yeastAutoCompleteController</prop>
             </props>
         </property>
     </bean>
@@ -86,14 +87,17 @@
                 <prop key="/admin/index.s">admin.mainController</prop>
                 <prop key="/admin/mfg.s">admin.mainController</prop>
                 <prop key="/admin/grain.s">admin.mainController</prop>
+                <prop key="/admin/yeast.s">admin.mainController</prop>
                 <prop key="/admin/hops.s">admin.mainController</prop>
                 <prop key="/admin/hat.s">admin.mainController</prop>
                 <prop key="/admin/search.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
+                <prop key="/admin/search/rebuild/yeast.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/hops.s">admin.searchIndexController</prop>
 
                 <prop key="/admin/edit/mfg.s">admin.mfgEditController</prop>
                 <prop key="/admin/edit/grain.s">admin.grainEditController</prop>
+                <prop key="/admin/edit/yeast.s">admin.yeastEditController</prop>
                 <prop key="/admin/edit/hat.s">admin.hopsAdditionTypeEditController</prop>
                 <prop key="/admin/edit/hops.s">admin.hopsEditController</prop>
             </props>
@@ -166,6 +170,12 @@
             </bean>
         </property>
 
+        <property name="volumeUnitEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="volumeUnitQuery"/>
+            </bean>
+        </property>
+
         <property name="weightUnitEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="weightUnitQuery"/>
@@ -184,6 +194,15 @@
                     <bean class="com.rcc.brew.web.bean.propertyeditor.HopsNameResolver"/>
                 </property>
                 <property name="query" ref="hopsQuery"/>
+            </bean>
+        </property>
+
+        <property name="yeastEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor">
+                <property name="nameResolver">
+                    <bean class="com.rcc.brew.web.bean.propertyeditor.YeastNameResolver"/>
+                </property>
+                <property name="query" ref="yeastQuery"/>
             </bean>
         </property>
     </bean>
@@ -328,6 +347,20 @@
         <property name="indexReader" ref="hopsIndexReader"/>
     </bean>
 
+    <bean id="yeastAutoCompleteController" class="com.rcc.web.controller.AutoCompleteController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/ac/yeast.s">search</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="indexReader" ref="yeastIndexReader"/>
+    </bean>
+
 
     <!-- Admin -->
 
@@ -339,6 +372,7 @@
                         <prop key="/admin/index.s">view</prop>
                         <prop key="/admin/mfg.s">mfg</prop>
                         <prop key="/admin/grain.s">grain</prop>
+                        <prop key="/admin/yeast.s">yeast</prop>
                         <prop key="/admin/hops.s">hops</prop>
                         <prop key="/admin/hat.s">hopsAdditionType</prop>
                     </props>
@@ -357,6 +391,7 @@
                     <props>
                         <prop key="/admin/search.s">view</prop>
                         <prop key="/admin/search/rebuild/grain.s">rebuildGrainIndex</prop>
+                        <prop key="/admin/search/rebuild/yeast.s">rebuildYeastIndex</prop>
                         <prop key="/admin/search/rebuild/hops.s">rebuildHopsIndex</prop>
                     </props>
                 </property>
@@ -366,6 +401,7 @@
         <property name="model" ref="model"/>
         <property name="grainIndexWriter" ref="grainIndexWriter"/>
         <property name="hopsIndexWriter" ref="hopsIndexWriter"/>
+        <property name="yeastIndexWriter" ref="yeastIndexWriter"/>
     </bean>
 
     <bean id="admin.mfgEditController" parent="modelTxn">
@@ -392,6 +428,28 @@
     <bean id="admin.grainEditController" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.web.controller.admin.GrainEditController">
+                <property name="commandName" value="g"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="admin/GrainCreate"/>
+                <property name="editContent" value="admin/GrainEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="admin.yeastEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.YeastEditController">
                 <property name="commandName" value="g"/>
                 <property name="sessionForm" value="true"/>
                 <property name="bindOnNewForm" value="true"/>

@@ -15,6 +15,16 @@
         <result property="audit.lastUpdatedDate" column="last_updated_date"/>
     </resultMap>
 
+    <resultMap id="yeast" class="com.rcc.brew.bean.Yeast">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mfg" column="manufacturer_id" select="findMfgById"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
     <resultMap id="hops" class="com.rcc.brew.bean.Hops">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -148,6 +158,44 @@
     WHERE id = #id#
     </update>
     <!-- END GRAIN -->
+
+
+    <!-- YEAST -->
+    <select id="findAllYeast" resultMap="yeast">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM yeast
+    ORDER BY name
+    </select>
+
+    <select id="findYeastById" parameterClass="int" resultMap="yeast">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM yeast
+    WHERE id = #value#
+    </select>
+
+    <select id="findYeastCount" resultClass="int">
+    SELECT COUNT(*) FROM yeast
+    </select>
+
+    <insert id="insertYeast" parameterClass="com.rcc.brew.bean.Yeast">
+    INSERT INTO yeast
+    (name, manufacturer_id, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mfg.id#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateYeast" parameterClass="com.rcc.brew.bean.Yeast">
+    UPDATE yeast
+    SET name = #name#,
+    manufacturer_id = #mfg.id#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END YEAST -->
 
     <!-- HOP ADDITION TYPE -->
     <insert id="insertHopsAdditionType" parameterClass="com.rcc.brew.bean.HopsAdditionType">

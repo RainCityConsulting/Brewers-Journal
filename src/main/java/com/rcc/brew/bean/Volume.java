@@ -1,22 +1,22 @@
 package com.rcc.brew.bean;
 
-public class Time extends com.rcc.brew.bean.gen.Time {
-    public Time() { ; }
+public class Volume extends com.rcc.brew.bean.gen.Volume {
+    public Volume() { ; }
 
-    public Time(TimeUnit u) {
+    public Volume(VolumeUnit u) {
         this.unit = u;
     }
 
-    public int secondTime() {
+    public int mlVolume() {
         if (this.unit == null) {
-            throw new RuntimeException("Cannot calculate second time with a null TimeUnit");
+            throw new RuntimeException("Cannot calculate ml volume with a null VolumeUnit");
         }
         return (int) Math.round(this.value * this.unit.getConversion());
     }
 
-    public double convert(TimeUnit u) {
+    public double convert(VolumeUnit u) {
         if (this.unit == null) {
-            throw new RuntimeException("Cannot convert weight with a null TimeUnit");
+            throw new RuntimeException("Cannot convert weight with a null VolumeUnit");
         }
 
         if (this.unit.getId() == u.getId()) {

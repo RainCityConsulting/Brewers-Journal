@@ -11,6 +11,8 @@ import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
 import com.rcc.brew.bean.WeightUnit;
+import com.rcc.brew.bean.Yeast;
+import com.rcc.brew.bean.YeastInstance;
 
 import com.rcc.model.ModelBase;
 
@@ -143,6 +145,41 @@ public class ModelImpl extends ModelBase implements Model {
     }
     /* END GRAIN */
 
+    /* YEAST */
+    public int createYeast(Yeast g) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertYeast", g);
+        return id.intValue();
+    }
+
+    public void updateYeast(Yeast g) {
+        this.getSqlMapClientTemplate().update("updateYeast", g);
+    }
+
+    public Yeast findYeastById(int id) {
+        Yeast g = (Yeast) this.getSqlMapClientTemplate().queryForObject("findYeastById", id);
+        if (g == null) { throw new ObjectNotFoundException("Yeast ID: " + id); }
+        return g;
+    }
+
+    public Yeast findYeastByName(String name) {
+        return (Yeast) this.getSqlMapClientTemplate().queryForObject("findYeastByName", name);
+    }
+
+    public List<Yeast> findAllYeast() {
+        return (List<Yeast>) this.getSqlMapClientTemplate().queryForList("findAllYeast");
+    }
+
+    public List<Yeast> findAllYeast(int offset, int limit) {
+        return (List<Yeast>) this.getSqlMapClientTemplate().queryForList(
+                "findAllYeast", offset, limit);
+    }
+
+    public int findYeastCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findYeastCount");
+        
+    }
+    /* END YEAST */
+
     /* WEIGHT */
     public WeightUnit findWeightUnitById(int id) {
         return (WeightUnit) this.getSqlMapClientTemplate().queryForObject("findWeightUnitById", id);
@@ -168,8 +205,26 @@ public class ModelImpl extends ModelBase implements Model {
     /* END WEIGHT */
 
     /* VOLUME */
+    public VolumeUnit findVolumeUnitById(int id) {
+        return (VolumeUnit) this.getSqlMapClientTemplate().queryForObject("findVolumeUnitById", id);
+    }
+
+    public VolumeUnit findVolumeUnitByName(String name) {
+        return (VolumeUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findVolumeUnitByName", name);
+    }
+
     public List<VolumeUnit> findAllVolumeUnits() {
         return (List<VolumeUnit>) this.getSqlMapClientTemplate().queryForList("findAllVolumeUnits");
+    }
+
+    public List<VolumeUnit> findAllVolumeUnits(int offset, int limit) {
+        return (List<VolumeUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllVolumeUnits", offset, limit);
+    }
+
+    public int findVolumeUnitCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findVolumeUnitCount");
     }
     /* END VOLUME */
 
@@ -243,15 +298,33 @@ public class ModelImpl extends ModelBase implements Model {
 
     /* RECIPE HOPS */
     public int createRecipeHops(int recipeId, HopsInstance h) {
+        if (h.hasTime()) {
+            if (!h.getTime().hasValue()) {
+                h.setTime(null);
+            }
+        }
+
         Integer id = (Integer) this.getSqlMapClientTemplate().insert(
                 "insertRecipeHops", this.createParams("recipeId", recipeId, "instance", h));
         return id.intValue();
     }
 
     public int deleteRecipeHopsByRecipe(int id) {
-        return this.getSqlMapClientTemplate().delete("deleteRecipeGrainsByRecipe", id);
+        return this.getSqlMapClientTemplate().delete("deleteRecipeHopsByRecipe", id);
     }
     /* END RECIPE HOPS */
+
+    /* RECIPE YEAST */
+    public int createRecipeYeast(int recipeId, YeastInstance y) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertRecipeYeast", this.createParams("recipeId", recipeId, "instance", y));
+        return id.intValue();
+    }
+
+    public int deleteRecipeYeastByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeYeastByRecipe", id);
+    }
+    /* END RECIPE YEAST */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id) {

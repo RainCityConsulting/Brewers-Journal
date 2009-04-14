@@ -60,6 +60,35 @@ com.rcc.brew.ac.init = function(e) {
     );
   });
 
+
+
+  // YEAST
+
+  $('input.yeast_autocomplete').each(function(i) {
+    $(this).autocomplete("@base.url@/ac/yeast.s",
+        {
+          formatItem: function(row, idx, count, query) {
+            var yeast = eval("(" + row[0] + ")");
+            var ret = '<div>' + yeast.name + '</div>';
+
+            if (yeast.mfg) {
+              ret += '<div><i>' + yeast.mfg.name + '</i></div>';
+            }
+
+            return ret;
+          },
+
+          formatResult: function(row, idx, count) {
+            var yeast = eval("(" + row[0] + ")");
+            if (yeast.mfg) {
+              return yeast.name + " " + yeast.mfg.name + " [id: " + yeast.id + "]";
+            }
+            return yeast.name + " [id: " + yeast.id + "]";
+          }
+      }
+    );
+  });
+
 }
 
 $(document).ready(function() { com.rcc.brew.ac.init(); });

@@ -8,8 +8,13 @@
     <resultMap id="recipe" class="com.rcc.brew.bean.Recipe">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="volume.value" column="volume"/>
+        <result property="volume.unit" column="volume_unit_id" select="findVolumeUnitById"/>
+        <result property="boilTime.value" column="boil_time"/>
+        <result property="boilTime.unit" column="boil_time_unit_id" select="findTimeUnitById"/>
         <result property="grains" column="id" select="findRecipeGrainsByRecipe"/>
         <result property="hops" column="id" select="findRecipeHopsByRecipe"/>
+        <result property="yeast" column="id" select="findRecipeYeastByRecipe"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
@@ -21,6 +26,11 @@
         <result property="grain" column="grain_id" select="findGrainById"/>
         <result property="weight.value" column="weight"/>
         <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
+    </resultMap>
+
+    <resultMap id="yeastInstance" class="com.rcc.brew.bean.YeastInstance">
+        <result property="id" column="id"/>
+        <result property="yeast" column="yeast_id" select="findYeastById"/>
     </resultMap>
 
     <resultMap id="hopsInstance" class="com.rcc.brew.bean.HopsInstance">
@@ -37,8 +47,10 @@
     <!-- RECIPE -->
     <insert id="insertRecipe" parameterClass="com.rcc.brew.bean.Recipe">
     INSERT INTO recipes
-    (name, creation_user_id, last_updated_user_id)
-    VALUES (#name#, @user_id, @user_id)
+    (name, volume, volume_unit_id, boil_time, boil_time_unit_id,
+    creation_user_id, last_updated_user_id)
+    VALUES (#name#, #volume.value#, #volume.unit.id#, #boilTime.value#, #boilTime.unit.id#,
+    @user_id, @user_id)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>
@@ -47,19 +59,23 @@
     <update id="updateRecipe" parameterClass="com.rcc.brew.bean.Recipe">
     UPDATE recipes
     SET name = #name#,
+    volume = #volume.value#,
+    volume_unit_id = #volume.unit.id#,
+    boil_time = #boilTime.value#,
+    boil_time_unit_id = #boilTime.unit.id#,
     last_updated_user_id = @user_id
     WHERE id = #id#
     </update>
 
     <select id="findRecipeById" parameterClass="int" resultMap="recipe">
-    SELECT id, name,
+    SELECT id, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM recipes
     WHERE id = #value#
     </select>
 
     <select id="findRecipesByUser" parameterClass="int" resultMap="recipe">
-    SELECT id, name,
+    SELECT id, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM recipes
     WHERE creation_user_id = #value#
@@ -102,6 +118,25 @@
 
     <delete id="deleteRecipeHopsByRecipe" parameterClass="int">
     DELETE FROM recipe_hops WHERE recipe_id = #value#
+    </delete>
+
+    <insert id="insertRecipeYeast" parameterClass="map">
+    INSERT INTO recipe_yeast
+    (recipe_id, yeast_id)
+    VALUES (#recipeId#, #instance.yeast.id#)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <select id="findRecipeYeastByRecipe" parameterClass="int" resultMap="yeastInstance">
+    SELECT id, yeast_id
+    FROM recipe_yeast
+    WHERE recipe_id = #value#
+    </select>
+
+    <delete id="deleteRecipeYeastByRecipe" parameterClass="int">
+    DELETE FROM recipe_yeast WHERE recipe_id = #value#
     </delete>
     <!-- END RECIPE -->
 

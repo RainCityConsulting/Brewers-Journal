@@ -8,8 +8,11 @@ import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.Time;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
+import com.rcc.brew.bean.Volume;
+import com.rcc.brew.bean.VolumeUnit;
 import com.rcc.brew.bean.Weight;
 import com.rcc.brew.bean.WeightUnit;
+import com.rcc.brew.bean.YeastInstance;
 import com.rcc.brew.model.Model;
 import com.rcc.brew.web.bean.propertyeditor.FloatPropertyEditor;
 import com.rcc.brew.web.bean.propertyeditor.GrainIdPropertyEditor;
@@ -18,9 +21,10 @@ import com.rcc.beans.Identifiable;
 import com.rcc.web.FlashUtils;
 import com.rcc.web.controller.AbstractEditController;
 
+import org.springframework.util.AutoPopulatingList;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.validation.BindException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,45 +46,95 @@ public class RecipeEditController extends AbstractEditController {
     protected Identifiable formNewBackingObject() throws Exception {
         Recipe recipe = new Recipe();
 
-        List<GrainInstance> grains = new ArrayList<GrainInstance>();
-        for (int i = 0; i < 8; i++) {
-            GrainInstance gi = new GrainInstance();
-            gi.setWeight(new Weight(new WeightUnit()));
-            grains.add(gi);
-        }
+        recipe.setVolume(new Volume(new VolumeUnit()));
+        recipe.setBoilTime(new Time(new TimeUnit()));
+
+        List<GrainInstance> grains = new AutoPopulatingList(
+                new AutoPopulatingList.ElementFactory() {
+                        public Object createElement(int index) {
+                            GrainInstance gi = new GrainInstance();
+                            gi.setWeight(new Weight(new WeightUnit()));
+                            return gi;
+                        }
+        });
+        for (int i = 0; i < 4; i++) { grains.get(i); }
         recipe.setGrains(grains);
 
-        List<HopsInstance> hops = new ArrayList<HopsInstance>();
-        for (int i = 0; i < 8; i++) {
-            HopsInstance hi = new HopsInstance();
-            hi.setWeight(new Weight(new WeightUnit()));
-            hi.setTime(new Time(new TimeUnit()));
-            hi.setAdditionType(new HopsAdditionType());
-            hops.add(hi);
-        }
+        List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
+                public Object createElement(int index) {
+                    HopsInstance hi = new HopsInstance();
+                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setTime(new Time(new TimeUnit()));
+                    hi.setAdditionType(new HopsAdditionType());
+                    return hi;
+                }
+        });
+        for (int i = 0; i < 6; i++) { hops.get(i); }
         recipe.setHops(hops);
+
+        List<YeastInstance> yeast = new AutoPopulatingList(
+                new AutoPopulatingList.ElementFactory() {
+                        public Object createElement(int index) {
+                            YeastInstance yi = new YeastInstance();
+                            return yi;
+                        }
+        });
+        for (int i = 0; i < 1; i++) { yeast.get(i); }
+        recipe.setYeast(yeast);
 
         return recipe;
     }
 
     protected Identifiable formExistingBackingObject(int id) throws Exception {
-        return this.model.findRecipeById(id);
+        Recipe recipe = this.model.findRecipeById(id);
+
+        List<GrainInstance> grains = new AutoPopulatingList(
+                new AutoPopulatingList.ElementFactory() {
+                        public Object createElement(int index) {
+                            GrainInstance gi = new GrainInstance();
+                            gi.setWeight(new Weight(new WeightUnit()));
+                            return gi;
+                        }
+        });
+        grains.addAll(recipe.getGrains());
+        recipe.setGrains(grains);
+
+        List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
+                public Object createElement(int index) {
+                    HopsInstance hi = new HopsInstance();
+                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setTime(new Time(new TimeUnit()));
+                    hi.setAdditionType(new HopsAdditionType());
+                    return hi;
+                }
+        });
+        hops.addAll(recipe.getHops());
+        recipe.setHops(hops);
+
+        for (HopsInstance hi : recipe.getHops()) {
+            if (!hi.hasTime()) {
+                hi.setTime(new Time(new TimeUnit()));
+            }
+        }
+
+        List<YeastInstance> yeast = new AutoPopulatingList(
+                new AutoPopulatingList.ElementFactory() {
+                        public Object createElement(int index) {
+                            YeastInstance y = new YeastInstance();
+                            return y;
+                        }
+        });
+        yeast.addAll(recipe.getYeast());
+        recipe.setYeast(yeast);
+
+        return recipe;
     }
 
     protected void referenceData(Map map) {
-        map.put("grains", this.model.findAllGrains());
         map.put("weightUnits", this.model.findAllWeightUnits());
+        map.put("volumeUnits", this.model.findAllVolumeUnits());
         map.put("timeUnits", this.model.findAllTimeUnits());
         map.put("hats", this.model.findAllHopsAdditionTypes());
-    }
-
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-        throws Exception
-    {
-        //GrainIdPropertyEditor ed = new GrainIdPropertyEditor();
-        //ed.setModel(this.model);
-        //binder.registerCustomEditor(Grain.class, ed);
-        //binder.registerCustomEditor(Float.class, new FloatPropertyEditor());
     }
 
     protected ModelAndView processCreateFormSubmission(
@@ -106,6 +160,12 @@ public class RecipeEditController extends AbstractEditController {
             }
         }
 
+        for (YeastInstance y : recipe.getYeast()) {
+            if (y.hasYeast()) {
+                this.model.createRecipeYeast(id, y);
+            }
+        }
+
         FlashUtils.messageCode("recipe.create.success", request, recipe.getName());
 
         return new ModelAndView("redirect:/recipe.s?id=" + id);
@@ -120,6 +180,7 @@ public class RecipeEditController extends AbstractEditController {
         this.model.updateRecipe(recipe);
         this.model.deleteRecipeGrainsByRecipe(recipe.getId());
         this.model.deleteRecipeHopsByRecipe(recipe.getId());
+        this.model.deleteRecipeYeastByRecipe(recipe.getId());
 
         for (GrainInstance g : recipe.getGrains()) {
             if (g.hasGrain()) {
@@ -130,6 +191,12 @@ public class RecipeEditController extends AbstractEditController {
         for (HopsInstance h : recipe.getHops()) {
             if (h.hasHops()) {
                 this.model.createRecipeHops(recipe.getId(), h);
+            }
+        }
+
+        for (YeastInstance y : recipe.getYeast()) {
+            if (y.hasYeast()) {
+                this.model.createRecipeYeast(recipe.getId(), y);
             }
         }
 

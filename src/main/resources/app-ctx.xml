@@ -69,6 +69,15 @@
         </property>
     </bean>
 
+    <bean id="yeastQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.YeastQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="grainQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.GrainQueryImpl">
@@ -99,6 +108,15 @@
     <bean id="weightUnitQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.WeightUnitQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="volumeUnitQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.VolumeUnitQueryImpl">
                 <property name="sqlMapClient" ref="sqlMapClient"/>
                 <property name="model" ref="model"/>
             </bean>
@@ -184,6 +202,19 @@
     <bean id="grainIndexReader" class="com.rcc.search.IndexReaderImpl">
         <property name="indexDir" value="${index.dir}/grain"/>
         <property name="documentFactory" ref="grainDocumentFactory"/>
+    </bean>
+
+
+    <bean id="yeastDocumentFactory" class="com.rcc.brew.search.YeastDocumentFactory"/>
+
+    <bean id="yeastIndexWriter" class="com.rcc.search.IndexWriterImpl">
+        <property name="indexDir" value="${index.dir}/yeast"/>
+        <property name="documentFactory" ref="yeastDocumentFactory"/>
+    </bean>
+
+    <bean id="yeastIndexReader" class="com.rcc.search.IndexReaderImpl">
+        <property name="indexDir" value="${index.dir}/yeast"/>
+        <property name="documentFactory" ref="yeastDocumentFactory"/>
     </bean>
     <!-- END SEARCH -->
 

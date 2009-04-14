@@ -36,8 +36,7 @@
 
     <class name="com.rcc.brew.web.bean.Login">
 
-        <property name="mail">
-            <email/>
+        <property name="name">
             <not-null/>
             <not-blank/>
             <length max="128"/>
