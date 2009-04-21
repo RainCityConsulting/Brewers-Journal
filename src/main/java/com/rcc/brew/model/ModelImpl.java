@@ -5,8 +5,11 @@ import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
+import com.rcc.brew.bean.MashStepType;
 import com.rcc.brew.bean.Mfg;
+import com.rcc.brew.bean.Note;
 import com.rcc.brew.bean.Recipe;
+import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
@@ -24,7 +27,6 @@ import java.util.List;
 public class ModelImpl extends ModelBase implements Model {
 
     /* USER */
-
     public int createUser(User u) {
         Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertUser", u);
         return id.intValue();
@@ -47,7 +49,6 @@ public class ModelImpl extends ModelBase implements Model {
     public User findUserByMail(String mail) {
         return (User) this.getSqlMapClientTemplate().queryForObject("findUserByMail", mail);
     }
-
     /* END USER */
 
     /* MFG */
@@ -326,6 +327,30 @@ public class ModelImpl extends ModelBase implements Model {
     }
     /* END RECIPE YEAST */
 
+    /* TEMP */
+    public TempUnit findTempUnitById(int id) {
+        return (TempUnit) this.getSqlMapClientTemplate().queryForObject("findTempUnitById", id);
+    }
+
+    public TempUnit findTempUnitByName(String name) {
+        return (TempUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findTempUnitByName", name);
+    }
+
+    public List<TempUnit> findAllTempUnits() {
+        return (List<TempUnit>) this.getSqlMapClientTemplate().queryForList("findAllTempUnits");
+    }
+
+    public List<TempUnit> findAllTempUnits(int offset, int limit) {
+        return (List<TempUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllTempUnits", offset, limit);
+    }
+
+    public int findTempUnitCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findTempUnitCount");
+    }
+    /* END TEMP */
+
     /* TIME */
     public TimeUnit findTimeUnitById(int id) {
         return (TimeUnit) this.getSqlMapClientTemplate().queryForObject("findTimeUnitById", id);
@@ -349,4 +374,64 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findTimeUnitCount");
     }
     /* END TIME */
+
+    /* NOTES */
+    public int createNote(Note n) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertNote", n);
+        return id.intValue();
+    }
+
+    public void updateNote(Note n) {
+        this.getSqlMapClientTemplate().update("updateNote", n);
+    }
+
+    public Note findNoteById(int id) {
+        Note n = (Note) this.getSqlMapClientTemplate().queryForObject("findNoteById", id);
+        if (n == null) { throw new ObjectNotFoundException("Note ID: " + id); }
+        return n;
+    }
+
+    public List<Note> findNotesByObjectTypeAndObject(int objectTypeId, int objectId) {
+        return (List<Note>) this.getSqlMapClientTemplate().queryForList(
+                "findNotesByObjectTypeIdAndObjectId",
+                this.createParams("objectTypeId", objectTypeId, "objectId", objectId));
+    }
+
+    public int deleteNoteById(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteNoteById", id);
+    }
+
+    public int deleteNotesByObjectTypeAndObject(int objectTypeId, int objectId) {
+        return this.getSqlMapClientTemplate().delete("deleteNotesByObjectTypeAndObject",
+                this.createParams("objectTypeId", objectTypeId, "objectId", objectId));
+    }
+    /* END NOTES */
+
+    /* OBJECT TYPES */
+    public int findObjectTypeIdByName(String name) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().queryForObject(
+                "findObjectTypeIdByName", name);
+        if (id == null) { throw new ObjectNotFoundException("Object type name: " + name); }
+        return id.intValue();
+    }
+    /* END OBJECT TYPES */
+
+    /* MASH STEP TYPE */
+    public MashStepType findMashStepTypeById(int id) {
+        MashStepType m = (MashStepType) this.getSqlMapClientTemplate().queryForObject(
+                "findMashStepTypeById", id);
+        if (m == null) { throw new ObjectNotFoundException("Mash step type ID: " + id); }
+        return m;
+    }
+
+    public List<MashStepType> findAllMashStepTypes() {
+        return (List<MashStepType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllMashStepTypes");
+    }
+
+    public List<MashStepType> findAllMashStepTypes(int offset, int limit) {
+        return (List<MashStepType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllMashStepTypes", offset, limit);
+    }
+    /* END MASH STEP TYPE */
 }

@@ -5,8 +5,12 @@ import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
+import com.rcc.brew.bean.MashStep;
+import com.rcc.brew.bean.MashStepType;
 import com.rcc.brew.bean.Mfg;
+import com.rcc.brew.bean.Note;
 import com.rcc.brew.bean.Recipe;
+import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
@@ -108,6 +112,14 @@ public interface Model {
     public int deleteRecipeYeastByRecipe(int id);
     /* END RECIPE YEAST */
 
+    /* TEMP */
+    public TempUnit findTempUnitById(int id);
+    public TempUnit findTempUnitByName(String name);
+    public List<TempUnit> findAllTempUnits();
+    public List<TempUnit> findAllTempUnits(int offset, int limit);
+    public int findTempUnitCount();
+    /* END TEMP */
+
     /* TIME */
     public TimeUnit findTimeUnitById(int id);
     public TimeUnit findTimeUnitByName(String name);
@@ -115,4 +127,23 @@ public interface Model {
     public List<TimeUnit> findAllTimeUnits(int offset, int limit);
     public int findTimeUnitCount();
     /* END TIME */
+
+    /* NOTES */
+    public int createNote(Note n);
+    public void updateNote(Note n);
+    public Note findNoteById(int id);
+    public List<Note> findNotesByObjectTypeAndObject(int objectTypeId, int objectId);
+    public int deleteNoteById(int id);
+    public int deleteNotesByObjectTypeAndObject(int objectTypeId, int objectId);
+    /* END NOTES */
+
+    /* OBJECT TYPES */
+    public int findObjectTypeIdByName(String name);
+    /* END OBJECT TYPES */
+
+    /* MASH STEP TYPE */
+    public MashStepType findMashStepTypeById(int id);
+    public List<MashStepType> findAllMashStepTypes();
+    public List<MashStepType> findAllMashStepTypes(int offset, int limit);
+    /* END MASH STEP TYPE */
 }

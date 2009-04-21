@@ -75,6 +75,18 @@ function moreYeast() {
 
 <form method="POST">
 
+  <div class="tab-menu">
+    <ul>
+      <li><a content-id="recipe" class="active" href="#">Recipe</a></li>
+      <li><a content-id="grains" href="#">Grains</a></li>
+      <li><a content-id="hops" href="#">Hops</a></li>
+      <li><a content-id="yeast" href="#">Yeast</a></li>
+      <li><a content-id="mash" href="#">Mash</a></li>
+    </ul>
+  </div>
+  <div style="clear: both;"></div>
+
+<div id="recipe" class="tab-content">
   <table class="form view">
 
     <tr>
@@ -122,9 +134,10 @@ function moreYeast() {
     </tr>
 
   </table>
+</div>
 
 
-  <h3>Grains</h3>
+<div id="grains" class="tab-content">
   <table id="grain_table" class="list">
 
     <tr>
@@ -172,8 +185,9 @@ function moreYeast() {
 
   </table>
   <div><a onclick="moreGrains();" class="page-action">More grains</a></div>
+</div>
 
-  <h3>Hops</h3>
+<div id="hops" class="tab-content">
   <table id="hops_table" class="list">
 
     <tr>
@@ -267,9 +281,10 @@ function moreYeast() {
 
   </table>
   <div><a onclick="moreHops();" class="page-action">More hops</a></div>
+</div>
 
 
-  <h3>Yeast</h3>
+<div id="yeast" class="tab-content">
   <table id="yeast_table" class="list">
 
     <tr>
@@ -277,7 +292,7 @@ function moreYeast() {
     </tr>
 
     #set ($i = 0)
-    #foreach ($y in $r.yeasts)
+    #foreach ($y in $r.yeast)
     <tr>
 
       <td>
@@ -294,10 +309,110 @@ function moreYeast() {
 
   </table>
   <div><a onclick="moreYeast();" class="page-action">More yeast</a></div>
+</div>
+
+
+<div id="mash" class="tab-content">
+  <table id="mash_table" class="list">
+
+    <tr>
+      <th>Mash</th>
+      <th colspan="2">Time</th>
+      <th colspan="2">Start Temp</th>
+      <th colspan="2">End Temp</th>
+    </tr>
+
+    #set ($i = 0)
+    #foreach ($m in $r.mash)
+    <tr>
+
+      <td>
+        #springBind("r.mash[$i].type")
+        <select name="$status.expression" tabindex="$tabindex">
+          <option value="0"></option>
+          #foreach ($t in $msts)
+          <option value="$t.id"
+              #if ("$!status.value" == "$t.id")
+              selected="selected"
+              #end >$t.name</option>
+          #end
+        </select>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+      <td>
+        #springFormInput("r.mash[$i].time.value" "size='4' tabindex='$tabindex'")
+        #springShowErrors("<br/>" "form-error")
+
+        #set ($tabindex = $tabindex + 1)
+
+        #springBind("r.mash[$i].time.unit.id")
+        <select name="$status.expression" tabindex="$tabindex">
+          #foreach ($u in $timeUnits)
+          <option value="$u.id"
+              #if ("$u.id" == "$!status.value")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+      <td>
+        #springBind("r.mash[$i].startTemp.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+      <td>
+        #springBind("r.mash[$i].startTemp.unit")
+        <select name="$status.expression" tabindex="$tabindex">
+          #foreach ($u in $tempUnits)
+          <option value="$u.id"
+              #if ("$!status.value" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+      <td>
+        #springBind("r.mash[$i].endTemp.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
+      </td>
+
+      #set ($tabindex = $tabindex + 1)
+
+      <td>
+        #springBind("r.mash[$i].endTemp.unit")
+        <select name="$status.expression" tabindex="$tabindex">
+          #foreach ($u in $tempUnits)
+          <option value="$u.id"
+              #if ("$!status.value" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+      </td>
+
+    </tr>
+    #set ($i = $i + 1)
+    #end
+
+  </table>
+  <div><a onclick="moreMash();" class="page-action">More mash steps</a></div>
+</div>
+
 
 
   <div class="buttons">
     <input type="submit" value="$submitValue" tabindex="$tabindex"/>
+    <a href="#springUrl('/recipe.s')?id=$r.id">Cancel</a>
   </div>
 
 </form>

@@ -5,6 +5,11 @@
 
 <sqlMap namespace="domain">
 
+    <resultMap id="tempUnit" class="com.rcc.brew.bean.TempUnit">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
     <resultMap id="timeUnit" class="com.rcc.brew.bean.TimeUnit">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -22,6 +27,29 @@
         <result property="name" column="name"/>
         <result property="conversion" column="ml_conversion"/>
     </resultMap>
+
+    <!-- TEMP -->
+    <select id="findTempUnitById" resultMap="tempUnit" parameterClass="int">
+    SELECT id, name
+    FROM temp_units
+    WHERE id = #value#
+    </select>
+
+    <select id="findTempUnitByName" resultMap="tempUnit" parameterClass="string">
+    SELECT id, name
+    FROM temp_units
+    WHERE name = #value#
+    </select>
+
+    <select id="findAllTempUnits" resultMap="tempUnit">
+    SELECT id, name
+    FROM temp_units
+    </select>
+
+    <select id="findTempUnitCount" resultClass="int">
+    SELECT COUNT(*) FROM temp_units
+    </select>
+    <!-- END temp -->
 
     <!-- TIME -->
     <select id="findTimeUnitById" resultMap="timeUnit" parameterClass="int">
@@ -100,5 +128,11 @@
     SELECT COUNT(*) FROM volume_units
     </select>
     <!-- END VOLUME -->
+
+    <!-- OBJECT TYPE -->
+    <select id="findObjectTypeIdByName" parameterClass="string" resultClass="int">
+    SELECT id FROM object_types WHERE name = #value#
+    </select>
+    <!-- END OBJECT TYPE -->
 
 </sqlMap>

@@ -90,6 +90,7 @@
                 <prop key="/admin/yeast.s">admin.mainController</prop>
                 <prop key="/admin/hops.s">admin.mainController</prop>
                 <prop key="/admin/hat.s">admin.mainController</prop>
+                <prop key="/admin/color.s">admin.mainController</prop>
                 <prop key="/admin/search.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/yeast.s">admin.searchIndexController</prop>
@@ -163,6 +164,12 @@
 
     <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar">
         <property name="grainQuery" ref="grainQuery"/>
+
+        <property name="tempUnitEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="tempUnitQuery"/>
+            </bean>
+        </property>
 
         <property name="timeUnitEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
@@ -315,6 +322,7 @@
                 <property name="editContent" value="RecipeEdit"/>
 
                 <property name="model" ref="model"/>
+                <property name="service" ref="service"/>
             </bean>
         </property>
     </bean>
@@ -375,6 +383,7 @@
                         <prop key="/admin/yeast.s">yeast</prop>
                         <prop key="/admin/hops.s">hops</prop>
                         <prop key="/admin/hat.s">hopsAdditionType</prop>
+                        <prop key="/admin/color.s">color</prop>
                     </props>
                 </property>
             </bean>
@@ -450,7 +459,7 @@
     <bean id="admin.yeastEditController" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.web.controller.admin.YeastEditController">
-                <property name="commandName" value="g"/>
+                <property name="commandName" value="y"/>
                 <property name="sessionForm" value="true"/>
                 <property name="bindOnNewForm" value="true"/>
 
@@ -462,8 +471,8 @@
                     </list>
                 </property>
 
-                <property name="createContent" value="admin/GrainCreate"/>
-                <property name="editContent" value="admin/GrainEdit"/>
+                <property name="createContent" value="admin/YeastCreate"/>
+                <property name="editContent" value="admin/YeastEdit"/>
                 <property name="model" ref="model"/>
             </bean>
         </property>

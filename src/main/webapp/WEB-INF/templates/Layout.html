@@ -7,23 +7,21 @@
 
   <head>
     <title>BrewKeeper</title>
-    <link rel="stylesheet" type="text/css" href="#springUrl('/reset.css')"></link>
-    <link rel="stylesheet" type="text/css" href="#springUrl('/style.css')"></link>
-    <link rel="stylesheet" type="text/css" href="#springUrl('/jquery-autocomplete.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/reset.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/style.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/jquery-autocomplete.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/ddsmoothmenu.css')"></link>
     <script type="text/javascript" src="#springUrl('/js/jquery-1.2.6.js')"></script>
     <script type="text/javascript" src="#springUrl('/js/jquery-autocomplete.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/ddsmoothmenu.js')"></script>
     <script type="text/javascript" src="#springUrl('/js/sorttable.js')"></script>
     <script type="text/javascript" src="#springUrl('/js/Autocomplete.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/TabMenu.js')"></script>
   </head>
 
   <body>
 
-    <table id="top_layout">
-
       <!-- HEADER -->
-      <tr>
-        <td colspan="2">
-
           <div id="header">
             <div style="float: left; width: 500px;">
               <h1>BrewKeeper</h1>
@@ -39,77 +37,47 @@
             </div>
             <div style="clear: both;"></div>
           </div>
-
-        </td>
-      </tr>
       <!-- END HEADER -->
 
-      <tr>
+        <!-- TOP NAV -->
+        <div id="top_nav" class="ddsmoothmenu">
+          <ul>
 
-        <!-- LEFT NAV -->
-        <td style="width: 172px; vertical-align: top;">
-          <div id="left_nav">
-            <ul>
+            <li><a href="#springUrl('/index.s')">Home</a></li>
 
-              <li><a href="#springUrl('/index.s')">Home</a></li>
+            #if ($user.hasRole('Admin'))
+            <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
+            #end
 
-              #if ($user.hasRole('Admin'))
-              <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
-              #end
+            #if ($user)
+            <li>
+              <a href="#springUrl('/recipe.s')">Recipes</a>
+              <ul>
+                <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
+                <li><a href="#springUrl('/edit/recipe.s')">New</a></li>
+              </ul>
+            </li>
+            #end
 
-              #if ($user)
-              <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
-              <li><a href="#springUrl('/edit/recipe.s')">New Recipe</a></li>
-              #end
-
-            </ul>
-          </div>
-        </td>
-        <!-- END LEFT NAV -->
+          </ul>
+        </div>
+        <div style="clear: left;"></div>
+        <!-- END TOP NAV -->
 
         <!-- CONTENT -->
-        <td id="content_td" width="*" style="vertical-align: top;">
-
-          <table width="100%">
-
-            <tr>
-              <td>
                 <!-- FLASH -->
                 #parse("/includes/Flash.html")
                 <!-- END FLASH -->
-              </td>
-            </tr>
-
-            <tr>
-              <td>
                 <div id="content">
                   #parse("/${content}.html")
                 </div>
-              </td>
-            </tr>
-
-          </table>
-
-        </td>
         <!-- END CONTENT -->
 
-      </tr>
-
       <!-- FOOTER -->
-      <tr>
-
-        <td></td>
-
-        <td>
           <div id="footer">
             <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The BrewKeeper Team</a></p>
           </div>
-        </td>
-
-      </tr>
       <!-- END FOOTER -->
-
-    </table>
 
   </body>
 

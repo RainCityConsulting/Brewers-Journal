@@ -105,6 +105,7 @@
             <fileset dir="src/main/webapp">
                 <exclude name="**/*.jpg"/>
                 <exclude name="**/*.gif"/>
+                <exclude name="**/*.png"/>
             </fileset>
         </copy>
 
@@ -112,6 +113,7 @@
             <fileset dir="src/main/webapp">
                 <include name="**/*.jpg"/>
                 <include name="**/*.gif"/>
+                <include name="**/*.png"/>
             </fileset>
         </copy>
 

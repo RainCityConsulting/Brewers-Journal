@@ -7,104 +7,132 @@
 
   <head>
     <title>BrewKeeper Admin</title>
-    <link rel="stylesheet" type="text/css" href="#springUrl('/reset.css')"></link>
-    <link rel="stylesheet" type="text/css" href="#springUrl('/style.css')"></link>
+
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/reset.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/style.css')"></link>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/ddsmoothmenu.css')"></link>
+
+    <!--[if lte IE 7]>
+    <style type="text/css">
+    html .ddsmoothmenu{height: 1%;} /*Holly Hack for IE7 and below*/
+    </style>
+    <![endif]-->
+
     <script type="text/javascript" src="#springUrl('/js/jquery-1.2.6.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/ddsmoothmenu.js')"></script>
     <script type="text/javascript" src="#springUrl('/js/sorttable.js')"></script>
   </head>
 
   <body>
 
-    <table width="100%">
+    <!-- HEADER -->
+    <div id="header">
+      <div style="float: left; width: 500px;">
+        <h1>BrewKeeper Admin</h1>
+      </div>
 
-      <!-- HEADER -->
-      <tr>
-        <td colspan="2">
+      <div style="float: right; width: 300px;">
+        #if ($user)
+        Logged in as <i>$user.name</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
+        <div><a href="#springUrl('/user/logout.s')">Logout</a></div>
+        #else
+        <a href="#springUrl('/user/login.s')">Login</a> or <a href="#springUrl('/user/register.s')">Register</a>
+        #end
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+    <!-- END HEADER -->
 
-          <div id="header">
-            <div style="float: left; width: 500px;">
-              <h1>BrewKeeper Admin</h1>
-            </div>
+    <!-- TOP NAV -->
+    <div id="top_nav" class="ddsmoothmenu">
+      <ul>
+        <li><a href="#springUrl('/index.s')">Home</a></li>
+        <li>
+          <a href="#springUrl('/admin/index.s')">Admin</a>
+          <ul>
+            <li><a href="#springUrl('/admin/color.s')">Colors</a></li>
+          </ul>
+        </li>
 
-            <div style="float: right; width: 300px;">
-              #if ($user)
-              Logged in as <i>$user.name</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
-              <div><a href="#springUrl('/user/logout.s')">Logout</a></div>
-              #else
-              <a href="#springUrl('/user/login.s')">Login</a> or <a href="#springUrl('/user/register.s')">Register</a>
-              #end
-            </div>
-            <div style="clear: both;"></div>
-          </div>
+        <li>
+          <a href="#springUrl('/admin/search.s')">Search Index</a>
+          <ul>
+            <li><a href="#springUrl('/admin/search/rebuild/grain.s')">Rebuild grain index</a></li>
+            <li><a href="#springUrl('/admin/search/rebuild/hops.s')">Rebuild hops index</a></li>
+            <li><a href="#springUrl('/admin/search/rebuild/yeast.s')">Rebuild yeast index</a></li>
+          </ul>
+        </li>
 
-        </td>
-      </tr>
-      <!-- END HEADER -->
+        <li>
+          <a href="#">Ingredients</a>
+          <ul>
 
-      <tr>
+            <li>
+              <a href="#springUrl('/admin/hops.s')">Hops</a>
+              <ul>
+                <li><a href="#springUrl('/admin/hops.s')">List</a></li>
+                <li><a href="#springUrl('/admin/edit/hops.s')">New</a></li>
 
-        <!-- LEFT NAV -->
-        <td style="width: 172px; vertical-align: top;">
-          <div id="left_nav">
-            <ul>
-              <li><a href="#springUrl('/index.s')">Home</a></li>
-              <li><a href="#springUrl('/admin/search.s')">Search Index</a></li>
-              <li><a href="#springUrl('/admin/edit/mfg.s')">New Mfg</a></li>
-              <li><a href="#springUrl('/admin/edit/grain.s')">New Grain</a></li>
-              <li><a href="#springUrl('/admin/edit/yeast.s')">New Yeast</a></li>
-              <li><a href="#springUrl('/admin/edit/hops.s')">New Hops</a></li>
-              <li><a href="#springUrl('/admin/edit/hat.s')">New Hop Addition Type</a></li>
-              <li><a href="#springUrl('/admin/edit/adjunct.s')">New Adjunct</a></li>
-              <li><a href="#springUrl('/admin/hat.s')">Hops Addition Types</a></li>
-              <li><a href="#springUrl('/admin/hops.s')">Hops</a></li>
-            </ul>
-          </div>
-        </td>
-        <!-- END LEFT NAV -->
+                <li>
+                  <a href="#springUrl('/admin/hat.s')">Addition Types</a>
+                  <ul>
+                    <li><a href="#springUrl('/admin/hat.s')">List</a></li>
+                    <li><a href="#springUrl('/admin/edit/hat.s')">New</a></li>
+                  </ul>
+                </li>
 
-        <!-- CONTENT -->
-        <td id="content_td" width="*" style="vertical-align: top;">
+              </ul>
+            </li>
 
-          <table width="100%">
+            <li>
+              <a href="#springUrl('/admin/grain.s')">Grains</a>
+              <ul>
+                <li><a href="#springUrl('/admin/grain.s')">List</a></li>
+                <li><a href="#springUrl('/admin/edit/grain.s')">New</a></li>
+              </ul>
+            </li>
 
-            <tr>
-              <td>
-                <!-- FLASH -->
-                #parse("/includes/Flash.html")
-                <!-- END FLASH -->
-              </td>
-            </tr>
+            <li>
+              <a href="#springUrl('/admin/yeast.s')">Yeast</a>
+              <ul>
+                <li><a href="#springUrl('/admin/yeast.s')">List</a></li>
+                <li><a href="#springUrl('/admin/edit/yeast.s')">New</a></li>
+              </ul>
+            </li>
 
-            <tr>
-              <td>
-                <div id="content">
-                  #parse("/${content}.html")
-                </div>
-              </td>
-            </tr>
+          </ul>
+        </li>
 
-          </table>
+        <li>
+          <a href="#springUrl('/admin/mfg.s')">Mfg</a>
+          <ul>
+            <li><a href="#springUrl('/admin/mfg.s')">List</a></li>
+            <li><a href="#springUrl('/admin/edit/mfg.s')">New</a></li>
+          </ul>
+        </li>
 
-        </td>
-        <!-- END CONTENT -->
+        <li><a href="#springUrl('/admin/edit/adjunct.s')">New Adjunct</a></li>
 
-      </tr>
+      </ul>
+    </div>
+    <div style="clear: left;"></div>
+    <!-- END TOP NAV -->
 
-      <!-- FOOTER -->
-      <tr>
+    <!-- FLASH -->
+    #parse("/includes/Flash.html")
+    <!-- END FLASH -->
 
-        <td></td>
+    <!-- CONTENT -->
+    <div id="content">
+      #parse("/${content}.html")
+    </div>
+    <!-- END CONTENT -->
 
-        <td>
-          <div id="footer">
-            <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The BrewKeeper Team</a></p>
-          </div>
-        </td>
-
-      </tr>
-      <!-- END FOOTER -->
-
-    </table>
+    <!-- FOOTER -->
+    <div id="footer">
+      <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The BrewKeeper Team</a></p>
+    </div>
+    <!-- END FOOTER -->
 
   </body>
 

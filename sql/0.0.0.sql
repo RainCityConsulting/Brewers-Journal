@@ -91,6 +91,14 @@ DELIMITER ;
 INSERT INTO users_roles (user_id, user_role_id, creation_user_id, last_updated_user_id)
 VALUES (1, @admin_user_role_id, 1, 1);
 
+CREATE TABLE temp_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL
+) ENGINE = InnoDB;
+
+INSERT INTO temp_units (name)
+VALUES ('F');
+
 CREATE TABLE time_units (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL,
@@ -358,6 +366,26 @@ SET NEW.last_updated_date = NOW();
 END ;;
 DELIMITER ;
 
+INSERT INTO mash_step_types
+(name, description, creation_user_id, last_updated_user_id)
+VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1), ('mash_out', 'Mash Out', 1, 1);
+
+CREATE TABLE recipe_mash_steps (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  ordinal INTEGER UNSIGNED NOT NULL,
+  mash_step_type_id INTEGER UNSIGNED NOT NULL,
+  time INTEGER UNSIGNED NULL,
+  time_unit_id INTEGER UNSIGNED NULL,
+  start_temp FLOAT(5, 2) UNSIGNED NULL,
+  start_temp_unit_id INTEGER UNSIGNED NULL,
+  end_temp FLOAT(5, 2) UNSIGNED NULL,
+  end_temp_unit_id INTEGER UNSIGNED NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (time_unit_id) REFERENCES time_units (id),
+  UNIQUE KEY (recipe_id, ordinal)
+) ENGINE = InnoDB;
+
 CREATE TABLE object_types (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(16) NOT NULL,
@@ -379,21 +407,3 @@ CREATE TABLE notes (
   FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
   FOREIGN KEY (object_type_id) REFERENCES object_types (id)
 ) ENGINE = InnoDB;
-
-INSERT INTO mash_step_types
-(name, description, creation_user_id, last_updated_user_id)
-VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1), ('mash_out', 'Mash Out', 1, 1);
-
-/*
-CREATE TABLE recipe_mash_steps (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  recipe_id INTEGER UNSIGNED NOT NULL,
-  ordinal INTEGER UNSIGNED NOT NULL,
-  mash_step_type_id INTEGER UNSIGNED NOT NULL,
-  length_of_time INTEGER UNSIGNED NULL,
-  start_temp FLOAT(5, 2) UNSIGNED NULL,
-  end_temp FLOAT(5, 2) UNSIGNED NULL,
-  FOREIGN KEY (recipe_id) REFERENCES recipies (id)
-  UNIQUE KEY (recipe_id, ordinal)
-) ENGINE = InnoDB;
-*/

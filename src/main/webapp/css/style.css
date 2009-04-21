@@ -44,10 +44,6 @@ td, th {
   vertical-align: top;
 }
 
-table#top_layout {
-  width: 100%;
-}
-
 table.sortable th {
   cursor: pointer;
 }
@@ -164,13 +160,8 @@ div#header a {
 
 div#content {
   background-color: white;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-top: 8px;
-  padding-bottom: 64px;
   margin-top: 16px;
-  margin-left: 16px;
-  border: 1px solid @color4@;
+  padding-bottom: 64px;
 }
 
 div#content img {
@@ -254,7 +245,6 @@ div.page-functions table td {
 
 /* FLASH */
 div.flash {
-  margin-left: 16px;
   margin-top: 16px;
   font-size: 16px;
   background-color: white;
@@ -296,12 +286,10 @@ div.flash div.errors {
 /* END FLASH */
 
 div.breadcrumbs {
-  margin-top: 8px;
-  margin-bottom: 20px;
-  padding: 3px;
-  border-top: 1px solid @color4@;
-  border-bottom: 1px solid @color4@;
-  background-color: white;
+  position: absolute;
+  top: 2px;
+  padding: 2px;
+  font-size: 10px;
 }
 
 div.breadcrumbs ul li {
@@ -357,3 +345,53 @@ input.autocomplete {
   border: 1px solid @color2@;
   border-left: 3px solid @color2@;
 }
+
+div.buttons {
+  margin-top: 16px;
+}
+
+/* TAB MENU */
+div.tab-menu {
+  margin: 12px 0 12px 0;
+}
+
+div.tab-menu ul li {
+  list-style-type: none;
+  display: inline;
+}
+
+div.tab-menu ul li a {
+  display: block;
+  float: left;
+
+  width: 90px;
+  height: 24px;
+
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px 0 0 0;
+
+  background-image: url(@base.url@/images/tab-menu.png);
+  background-repeat: no-repeat;
+}
+
+div.tab-menu ul li a.active {
+  color: @color1@;
+  background-image: url(@base.url@/images/tab-menu-active.png);
+}
+
+div.tab-menu ul li a.active:hover {
+  background-image: url(@base.url@/images/tab-menu-active.png);
+  background-color: inherit;
+}
+
+div.tab-menu ul li a:hover {
+  background-image: url(@base.url@/images/tab-menu-rollover.png);
+  background-color: inherit;
+}
+
+div.tab-content {
+  display: none;
+}
+/* END TAB MENU */

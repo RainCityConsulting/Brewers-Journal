@@ -117,4 +117,12 @@ public class MainController extends MultiActionController {
 
         return mav;
     }
+
+    public ModelAndView color(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("content", "admin/Color");
+        return mav;
+    }
 }
