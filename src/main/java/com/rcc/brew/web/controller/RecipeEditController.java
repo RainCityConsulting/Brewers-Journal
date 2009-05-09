@@ -149,6 +149,20 @@ public class RecipeEditController extends AbstractEditController {
         yeast.addAll(recipe.getYeast());
         recipe.setYeast(yeast);
 
+        List<MashStep> mash = new AutoPopulatingList(
+                new AutoPopulatingList.ElementFactory() {
+                        public Object createElement(int index) {
+                            MashStep ms = new MashStep();
+                            ms.setType(new MashStepType());
+                            ms.setTime(new Time(new TimeUnit()));
+                            ms.setStartTemp(new Temp(new TempUnit()));
+                            ms.setEndTemp(new Temp(new TempUnit()));
+                            return ms;
+                        }
+        });
+        mash.addAll(recipe.getMash());
+        recipe.setMash(mash);
+
         return recipe;
     }
 

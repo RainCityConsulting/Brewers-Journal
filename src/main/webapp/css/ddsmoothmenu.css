@@ -25,7 +25,7 @@ display: block;
 background: #414141; /*background of menu items (default state)*/
 color: white;
 padding: 8px 10px;
-border-right: 1px solid #778;
+border-right: 1px solid @color4@;
 color: #2d2b2b;
 text-decoration: none;
 }
@@ -74,7 +74,7 @@ width: 160px; /*width of sub menus*/
 padding: 5px;
 margin: 0;
 border-top-width: 0;
-border-bottom: 1px solid gray;
+border-bottom: 1px solid @color4@;
 }
 
 

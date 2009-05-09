@@ -1,7 +1,10 @@
 package com.rcc.brew.model;
 
+import com.rcc.brew.bean.Adjunct;
+import com.rcc.brew.bean.AdjunctInstance;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
@@ -47,6 +50,16 @@ public interface Model {
     public int findGrainCount();
     /* END GRAIN */
 
+    /* ADJUNCT */
+    public int createAdjunct(Adjunct g);
+    public void updateAdjunct(Adjunct g);
+    public Adjunct findAdjunctById(int id);
+    public Adjunct findAdjunctByName(String name);
+    public List<Adjunct> findAllAdjuncts();
+    public List<Adjunct> findAllAdjuncts(int offset, int limit);
+    public int findAdjunctCount();
+    /* END ADJUNCT */
+
     /* YEAST */
     public int createYeast(Yeast y);
     public void updateYeast(Yeast y);
@@ -88,8 +101,6 @@ public interface Model {
     public void updateRecipe(Recipe r);
     public Recipe findRecipeById(int id);
     public List<Recipe> findRecipesByUser(int id);
-    public int createRecipeGrain(int recipeId, GrainInstance g);
-    public int deleteRecipeGrainsByRecipe(int id);
     /* END RECIPE */
 
     /* HOPS ADDITION TYPE */
@@ -101,6 +112,21 @@ public interface Model {
     public List<HopsAdditionType> findAllHopsAdditionTypes(int offset, int limit);
     public int findHopsAdditionTypeCount();
     /* END HOPS ADDITION TYPE */
+
+    /* RECIPE MASH STEPS */
+    public int createRecipeMashStep(int recipeId, MashStep m);
+    public int deleteRecipeMashStepsByRecipe(int id);
+    /* END RECIPE MASH STEPS */
+
+    /* RECIPE ADJUNCTS */
+    public int createRecipeAdjunct(int recipeId, AdjunctInstance a);
+    public int deleteRecipeAdjunctByRecipe(int id);
+    /* END RECIPE ADJUNCTS */
+
+    /* RECIPE GRAIN */
+    public int createRecipeGrain(int recipeId, GrainInstance g);
+    public int deleteRecipeGrainsByRecipe(int id);
+    /* END RECIPE GRAIN */
 
     /* RECIPE HOPS */
     public int createRecipeHops(int recipeId, HopsInstance h);
@@ -119,6 +145,14 @@ public interface Model {
     public List<TempUnit> findAllTempUnits(int offset, int limit);
     public int findTempUnitCount();
     /* END TEMP */
+
+    /* GRAVITY */
+    public GravityUnit findGravityUnitById(int id);
+    public GravityUnit findGravityUnitByName(String name);
+    public List<GravityUnit> findAllGravityUnits();
+    public List<GravityUnit> findAllGravityUnits(int offset, int limit);
+    public int findGravityUnitCount();
+    /* END GRAVITY */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id);
@@ -146,4 +180,29 @@ public interface Model {
     public List<MashStepType> findAllMashStepTypes();
     public List<MashStepType> findAllMashStepTypes(int offset, int limit);
     /* END MASH STEP TYPE */
+
+    /* BATCH MASH STEPS */
+    public int createBatchMashStep(int batchId, MashStep m);
+    public int deleteBatchMashStepsByBatch(int id);
+    /* END BATCH MASH STEPS */
+
+    /* BATCH ADJUNCTS */
+    public int createBatchAdjunct(int batchId, AdjunctInstance a);
+    public int deleteBatchAdjunctByBatch(int id);
+    /* END BATCH ADJUNCTS */
+
+    /* BATCH GRAIN */
+    public int createBatchGrain(int batchId, GrainInstance g);
+    public int deleteBatchGrainsByBatch(int id);
+    /* END BATCH GRAIN */
+
+    /* BATCH HOPS */
+    public int createBatchHops(int batchId, HopsInstance h);
+    public int deleteBatchHopsByBatch(int id);
+    /* END BATCH HOPS */
+
+    /* BATCH YEAST */
+    public int createBatchYeast(int batchId, YeastInstance y);
+    public int deleteBatchYeastByBatch(int id);
+    /* END BATCH YEAST */
 }

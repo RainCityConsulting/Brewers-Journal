@@ -83,10 +83,6 @@ table.list th {
   vertical-align: bottom;
 }
 
-table.list tr:hover {
-  background-color: #FFF380;
-}
-
 table.list tr th {
   padding-right: 4px;
   padding-left: 2px;
@@ -138,14 +134,11 @@ table.view td {
 /* END TABLES */
 
 div#header {
-  color: white;
+  color: @color5@;
   background-color: @color3@;
   padding: 16px;
 
-  border-top: 2px solid @color4@;
-  border-bottom: 1px solid @color4@;
-  border-right: 1px solid @color4@;
-  border-left: 2px solid @color4@;
+  border: 1px solid @color4@;
 }
 
 div#header h1 {
@@ -156,6 +149,11 @@ div#header h1 {
 
 div#header a {
   font-weight: bold;
+}
+
+div#top_nav_bar {
+  border-right: 1px solid @color4@;
+  border-left: 1px solid @color4@;
 }
 
 div#content {

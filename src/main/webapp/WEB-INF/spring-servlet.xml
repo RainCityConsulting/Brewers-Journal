@@ -165,6 +165,12 @@
     <bean id="propertyEditorRegistrar" class="com.rcc.brew.web.PropertyEditorRegistrar">
         <property name="grainQuery" ref="grainQuery"/>
 
+        <property name="gravityUnitEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="gravityUnitQuery"/>
+            </bean>
+        </property>
+
         <property name="tempUnitEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="tempUnitQuery"/>
@@ -192,6 +198,12 @@
         <property name="hopsAdditionTypeEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="hopsAdditionTypeQuery"/>
+            </bean>
+        </property>
+
+        <property name="mashStepTypeEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
+                <property name="beanQuery" ref="mashStepTypeQuery"/>
             </bean>
         </property>
 

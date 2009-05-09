@@ -141,6 +141,24 @@
         </property>
     </bean>
 
+    <bean id="gravityUnitQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.GravityUnitQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="mashStepTypeQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.MashStepTypeQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
 
     <!-- SERVICE -->
     <bean id="service" parent="modelTxn">

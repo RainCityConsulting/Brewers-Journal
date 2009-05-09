@@ -5,6 +5,16 @@
 
 <sqlMap namespace="admin">
 
+    <resultMap id="adjunct" class="com.rcc.brew.bean.Adjunct">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="mfg" column="manufacturer_id" select="findMfgById"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
     <resultMap id="grain" class="com.rcc.brew.bean.Grain">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -120,6 +130,44 @@
     WHERE id = #id#
     </update>
     <!-- END HOPS -->
+
+
+    <!-- ADJUNCT -->
+    <select id="findAllAdjuncts" resultMap="adjunct">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM adjuncts
+    ORDER BY name
+    </select>
+
+    <select id="findAdjunctById" parameterClass="int" resultMap="adjunct">
+    SELECT id, name, manufacturer_id,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM adjuncts
+    WHERE id = #value#
+    </select>
+
+    <select id="findAdjunctCount" resultClass="int">
+    SELECT COUNT(*) FROM adjuncts
+    </select>
+
+    <insert id="insertAdjunct" parameterClass="com.rcc.brew.bean.Adjunct">
+    INSERT INTO adjuncts
+    (name, manufacturer_id, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mfg.id#, @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateAdjunct" parameterClass="com.rcc.brew.bean.Adjunct">
+    UPDATE adjuncts
+    SET name = #name#,
+    manufacturer_id = #mfg.id#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END ADJUNCT -->
 
 
     <!-- GRAIN -->

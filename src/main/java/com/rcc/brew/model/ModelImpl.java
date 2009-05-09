@@ -1,10 +1,14 @@
 package com.rcc.brew.model;
 
+import com.rcc.brew.bean.Adjunct;
+import com.rcc.brew.bean.AdjunctInstance;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
+import com.rcc.brew.bean.MashStep;
 import com.rcc.brew.bean.MashStepType;
 import com.rcc.brew.bean.Mfg;
 import com.rcc.brew.bean.Note;
@@ -110,6 +114,41 @@ public class ModelImpl extends ModelBase implements Model {
         
     }
     /* END HOPS */
+
+    /* ADJUNCT */
+    public int createAdjunct(Adjunct a) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertAdjunct", a);
+        return id.intValue();
+    }
+
+    public void updateAdjunct(Adjunct a) {
+        this.getSqlMapClientTemplate().update("updateAdjunct", a);
+    }
+
+    public Adjunct findAdjunctById(int id) {
+        Adjunct a = (Adjunct) this.getSqlMapClientTemplate().queryForObject("findAdjunctById", id);
+        if (a == null) { throw new ObjectNotFoundException("Adjunct ID: " + id); }
+        return a;
+    }
+
+    public Adjunct findAdjunctByName(String name) {
+        return (Adjunct) this.getSqlMapClientTemplate().queryForObject("findAdjunctByName", name);
+    }
+
+    public List<Adjunct> findAllAdjuncts() {
+        return (List<Adjunct>) this.getSqlMapClientTemplate().queryForList("findAllAdjuncts");
+    }
+
+    public List<Adjunct> findAllAdjuncts(int offset, int limit) {
+        return (List<Adjunct>) this.getSqlMapClientTemplate().queryForList(
+                "findAllAdjuncts", offset, limit);
+    }
+
+    public int findAdjunctCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findAdjunctCount");
+        
+    }
+    /* END ADJUNCT */
 
     /* GRAIN */
     public int createGrain(Grain g) {
@@ -248,16 +287,6 @@ public class ModelImpl extends ModelBase implements Model {
     public List<Recipe> findRecipesByUser(int id) {
         return (List<Recipe>) this.getSqlMapClientTemplate().queryForList("findRecipesByUser", id);
     }
-
-    public int createRecipeGrain(int recipeId, GrainInstance g) {
-        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
-                "insertRecipeGrain", this.createParams("recipeId", recipeId, "instance", g));
-        return id.intValue();
-    }
-
-    public int deleteRecipeGrainsByRecipe(int id) {
-        return this.getSqlMapClientTemplate().delete("deleteRecipeGrainsByRecipe", id);
-    }
     /* END RECIPE */
 
     /* HOP ADDITION TYPE */
@@ -296,6 +325,42 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findHopsAdditionTypeCount");
     }
     /* END HOP ADDITION TYPE */
+
+    /* RECIPE MASH STEPS */
+    public int createRecipeMashStep(int recipeId, MashStep m) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertRecipeMashStep",
+                this.createParams("recipeId", recipeId, "instance", m));
+        return id.intValue();
+    }
+
+    public int deleteRecipeMashStepsByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeMashStepsByRecipe", id);
+    }
+    /* END RECIPE MASH STEPS */
+
+    /* RECIPE GRAIN */
+    public int createRecipeGrain(int recipeId, GrainInstance g) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertRecipeGrain", this.createParams("recipeId", recipeId, "instance", g));
+        return id.intValue();
+    }
+
+    public int deleteRecipeGrainsByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeGrainsByRecipe", id);
+    }
+    /* END RECIPE GRAIN */
+
+    /* RECIPE ADJUNCT */
+    public int createRecipeAdjunct(int recipeId, AdjunctInstance a) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertRecipeAdjunct", this.createParams("recipeId", recipeId, "instance", a));
+        return id.intValue();
+    }
+
+    public int deleteRecipeAdjunctByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeAdjunctByRecipe", id);
+    }
+    /* END RECIPE ADJUNCT */
 
     /* RECIPE HOPS */
     public int createRecipeHops(int recipeId, HopsInstance h) {
@@ -350,6 +415,32 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findTempUnitCount");
     }
     /* END TEMP */
+
+    /* GRAVITY */
+    public GravityUnit findGravityUnitById(int id) {
+        return (GravityUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findGravityUnitById", id);
+    }
+
+    public GravityUnit findGravityUnitByName(String name) {
+        return (GravityUnit) this.getSqlMapClientTemplate().queryForObject(
+                "findGravityUnitByName", name);
+    }
+
+    public List<GravityUnit> findAllGravityUnits() {
+        return (List<GravityUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllGravityUnits");
+    }
+
+    public List<GravityUnit> findAllGravityUnits(int offset, int limit) {
+        return (List<GravityUnit>) this.getSqlMapClientTemplate().queryForList(
+                "findAllGravityUnits", offset, limit);
+    }
+
+    public int findGravityUnitCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject("findGravityUnitCount");
+    }
+    /* END GRAVITY */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id) {
@@ -434,4 +525,70 @@ public class ModelImpl extends ModelBase implements Model {
                 "findAllMashStepTypes", offset, limit);
     }
     /* END MASH STEP TYPE */
+
+    /* BATCH MASH STEPS */
+    public int createBatchMashStep(int batchId, MashStep m) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertBatchMashStep",
+                this.createParams("batchId", batchId, "instance", m));
+        return id.intValue();
+    }
+
+    public int deleteBatchMashStepsByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchMashStepsByBatch", id);
+    }
+    /* END BATCH MASH STEPS */
+
+    /* BATCH GRAIN */
+    public int createBatchGrain(int batchId, GrainInstance g) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertBatchGrain", this.createParams("batchId", batchId, "instance", g));
+        return id.intValue();
+    }
+
+    public int deleteBatchGrainsByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchGrainsByBatch", id);
+    }
+    /* END BATCH GRAIN */
+
+    /* BATCH ADJUNCT */
+    public int createBatchAdjunct(int batchId, AdjunctInstance a) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertBatchAdjunct", this.createParams("batchId", batchId, "instance", a));
+        return id.intValue();
+    }
+
+    public int deleteBatchAdjunctByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchAdjunctByBatch", id);
+    }
+    /* END BATCH ADJUNCT */
+
+    /* BATCH HOPS */
+    public int createBatchHops(int batchId, HopsInstance h) {
+        if (h.hasTime()) {
+            if (!h.getTime().hasValue()) {
+                h.setTime(null);
+            }
+        }
+
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertBatchHops", this.createParams("batchId", batchId, "instance", h));
+        return id.intValue();
+    }
+
+    public int deleteBatchHopsByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchHopsByBatch", id);
+    }
+    /* END BATCH HOPS */
+
+    /* BATCH YEAST */
+    public int createBatchYeast(int batchId, YeastInstance y) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert(
+                "insertBatchYeast", this.createParams("batchId", batchId, "instance", y));
+        return id.intValue();
+    }
+
+    public int deleteBatchYeastByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchYeastByBatch", id);
+    }
+    /* END BATCH YEAST */
 }

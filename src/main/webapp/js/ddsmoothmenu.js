@@ -127,7 +127,7 @@ init:function(setting){
 //Initialize Menu instance(s):
 
 ddsmoothmenu.init({
-	mainmenuid: "top_nav", //menu DIV id
-	customtheme: ["@color1@", "@color3@"], //override default menu CSS background values? Uncomment: ["normal_background", "hover_background"]
+	mainmenuid: "top_nav_bar", //menu DIV id
+	//customtheme: ["@color2@", "@color3@"], //override default menu CSS background values? Uncomment: ["normal_background", "hover_background"]
 	contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
 })

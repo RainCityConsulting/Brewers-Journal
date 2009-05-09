@@ -2,6 +2,7 @@
 var grainIdx = $r.grains.size();
 var hopsIdx = $r.hops.size();
 var yeastIdx = $r.yeast.size();
+var mashIdx = $r.mash.size();
 
 function moreGrains() {
   var content = '<tr>';
@@ -71,6 +72,53 @@ function moreYeast() {
 
   com.rcc.brew.ac.init();
 }
+
+function moreMash() {
+  var content = '<tr>';
+
+  content += '<td>';
+  content += '<select name="mash['+mashIdx+'].type">';
+  content += '<option value=""></option>';
+  #foreach ($t in $msts)
+  content += '<option value="$t.id">$t.description</option>';
+  #end
+  content += '</select>';
+  content += '</td>';
+
+  content += '<td>';
+  content += '<input type="text" name="mash['+mashIdx+'].time.value" value="" size="4"/>';
+  content += '<select name="mash['+mashIdx+'].time.unit">';
+  #foreach($u in $timeUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select>';
+  content += '</td>';
+
+  content += '<td>';
+  content += '<input type="text" name="mash['+mashIdx+'].startTemp.value" value="" size="4"/>';
+  content += '<select name="mash['+mashIdx+'].startTemp.unit">';
+  #foreach($u in $tempUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select>';
+  content += '</td>';
+
+  content += '<td>';
+  content += '<input type="text" name="mash['+mashIdx+'].endTemp.value" value="" size="4"/>';
+  content += '<select name="mash['+mashIdx+'].endTemp.unit">';
+  #foreach($u in $tempUnits)
+  content += '<option value="$u.id">$u.name</option>';
+  #end
+  content += '</select>';
+  content += '</td>';
+  content += '</tr>';
+
+  $('#mash_table tr:last').after(content);
+
+  mashIdx++;
+
+  com.rcc.brew.ac.init();
+}
 </script>
 
 <form method="POST">
@@ -103,7 +151,7 @@ function moreYeast() {
         #springFormInput("r.boilTime.value" "size='4' tabindex='2'")
         #springShowErrors("<br/>" "form-error")
 
-        #springBind("r.boilTime.unit.id")
+        #springBind("r.boilTime.unit")
         <select name="$status.expression" tabindex="3">
           #foreach ($u in $timeUnits)
           <option value="$u.id"
@@ -121,7 +169,7 @@ function moreYeast() {
         #springFormInput("r.volume.value" "size='4' tabindex='4'")
         #springShowErrors("<br/>" "form-error")
 
-        #springBind("r.volume.unit.id")
+        #springBind("r.volume.unit")
         <select name="$status.expression" tabindex="5">
           #foreach ($u in $volumeUnits)
           <option value="$u.id"
@@ -232,7 +280,7 @@ function moreYeast() {
       #set ($tabindex = $tabindex + 1)
 
       <td>
-        #springBind("r.hops[$i].additionType.id")
+        #springBind("r.hops[$i].additionType")
         <select name="$status.expression" tabindex="$tabindex">
           #foreach ($t in $hats)
           <option value="$t.id"
@@ -317,9 +365,9 @@ function moreYeast() {
 
     <tr>
       <th>Mash</th>
-      <th colspan="2">Time</th>
-      <th colspan="2">Start Temp</th>
-      <th colspan="2">End Temp</th>
+      <th>Time</th>
+      <th>Start Temp</th>
+      <th>End Temp</th>
     </tr>
 
     #set ($i = 0)
@@ -334,7 +382,7 @@ function moreYeast() {
           <option value="$t.id"
               #if ("$!status.value" == "$t.id")
               selected="selected"
-              #end >$t.name</option>
+              #end >$t.description</option>
           #end
         </select>
       </td>
@@ -347,7 +395,7 @@ function moreYeast() {
 
         #set ($tabindex = $tabindex + 1)
 
-        #springBind("r.mash[$i].time.unit.id")
+        #springBind("r.mash[$i].time.unit")
         <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $timeUnits)
           <option value="$u.id"
@@ -363,11 +411,9 @@ function moreYeast() {
       <td>
         #springBind("r.mash[$i].startTemp.value")
         <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
-      </td>
 
-      #set ($tabindex = $tabindex + 1)
+        #set ($tabindex = $tabindex + 1)
 
-      <td>
         #springBind("r.mash[$i].startTemp.unit")
         <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $tempUnits)
@@ -384,11 +430,9 @@ function moreYeast() {
       <td>
         #springBind("r.mash[$i].endTemp.value")
         <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
-      </td>
 
-      #set ($tabindex = $tabindex + 1)
+        #set ($tabindex = $tabindex + 1)
 
-      <td>
         #springBind("r.mash[$i].endTemp.unit")
         <select name="$status.expression" tabindex="$tabindex">
           #foreach ($u in $tempUnits)

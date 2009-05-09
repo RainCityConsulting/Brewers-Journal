@@ -2,6 +2,7 @@ package com.rcc.brew.service;
 
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.HopsInstance;
+import com.rcc.brew.bean.MashStep;
 import com.rcc.brew.bean.Note;
 import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.YeastInstance;
@@ -27,6 +28,13 @@ public class ServiceImpl implements Service {
             this.model.createRecipeYeast(id, y);
         }
 
+        int i = 0;
+        for (MashStep m : r.getMash()) {
+            m.setOrdinal(i);
+            this.model.createRecipeMashStep(id, m);
+            i++;
+        }
+
         if (r.hasNotes()) {
             int recipeObjectTypeId = this.model.findObjectTypeIdByName("recipe");
             for (Note n : r.getNotes()) {
@@ -44,6 +52,7 @@ public class ServiceImpl implements Service {
         this.model.deleteRecipeGrainsByRecipe(r.getId());
         this.model.deleteRecipeHopsByRecipe(r.getId());
         this.model.deleteRecipeYeastByRecipe(r.getId());
+        this.model.deleteRecipeMashStepsByRecipe(r.getId());
 
         int recipeObjectTypeId = this.model.findObjectTypeIdByName("recipe");
         this.model.deleteNotesByObjectTypeAndObject(recipeObjectTypeId, r.getId());
@@ -58,6 +67,13 @@ public class ServiceImpl implements Service {
 
         for (YeastInstance y : r.getYeast()) {
             this.model.createRecipeYeast(r.getId(), y);
+        }
+
+        int i = 0;
+        for (MashStep m : r.getMash()) {
+            m.setOrdinal(i);
+            this.model.createRecipeMashStep(r.getId(), m);
+            i++;
         }
 
         if (r.hasNotes()) {

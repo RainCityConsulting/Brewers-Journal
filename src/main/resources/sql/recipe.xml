@@ -32,7 +32,13 @@
         <result property="endTemp.value" column="end_temp"/>
         <result property="endTemp.unit" column="end_temp_unit_id" select="findTempUnitById"/>
         <result property="ordinal" column="ordinal"/>
-        <result property="recipeId" column="recipe_id"/>
+    </resultMap>
+
+    <resultMap id="adjunctInstance" class="com.rcc.brew.bean.AdjunctInstance">
+        <result property="id" column="id"/>
+        <result property="adjunct" column="adjunct_id" select="findAdjunctById"/>
+        <result property="weight.value" column="weight"/>
+        <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
     </resultMap>
 
     <resultMap id="grainInstance" class="com.rcc.brew.bean.GrainInstance">
@@ -106,6 +112,25 @@
     ORDER BY creation_date DESC
     </select>
 
+    <insert id="insertRecipeAdjunct" parameterClass="map">
+    INSERT INTO recipe_adjuncts
+    (recipe_id, adjunct_id, weight, weight_unit_id)
+    VALUES (#recipeId#, #instance.adjunct.id#, #instance.weight.value#, #instance.weight.unit.id#)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <select id="findRecipeAdjunctsByRecipe" parameterClass="int" resultMap="adjunctInstance">
+    SELECT id, adjunct_id, weight, weight_unit_id
+    FROM recipe_adjuncts
+    WHERE recipe_id = #value#
+    </select>
+
+    <delete id="deleteRecipeAdjunctsByRecipe" parameterClass="int">
+    DELETE FROM recipe_adjuncts WHERE recipe_id = #value#
+    </delete>
+
     <insert id="insertRecipeGrain" parameterClass="map">
     INSERT INTO recipe_grains
     (recipe_id, grain_id, weight, weight_unit_id)
@@ -163,12 +188,16 @@
     DELETE FROM recipe_yeast WHERE recipe_id = #value#
     </delete>
 
-    <insert id="insertMashStep" parameterClass="com.rcc.brew.bean.MashStep">
+    <insert id="insertRecipeMashStep" parameterClass="map">
     INSERT INTO recipe_mash_steps
-    (mash_step_type_id, time, time_unit_id, start_temp, start_temp_unit_id,
-    end_temp, end_temp_unit_id, ordinal, recipe_id)
-    VALUES (#type.id#, #time.value#, #time.unit.id#, #startTemp.value#, #startTemp.unit.id#,
-    #endTemp.value#, #endTemp.unit.id#, #ordinal#, #recipeId#)
+    (mash_step_type_id, time, time_unit_id,
+    start_temp, start_temp_unit_id,
+    end_temp, end_temp_unit_id,
+    ordinal, recipe_id)
+    VALUES (#instance.type.id#, #instance.time.value#, #instance.time.unit.id#,
+    #instance.startTemp.value#, #instance.startTemp.unit.id#,
+    #instance.endTemp.value#, #instance.endTemp.unit.id#,
+    #instance.ordinal#, #recipeId#)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>
@@ -182,7 +211,7 @@
     ORDER BY ordinal
     </select>
 
-    <delete id="deleteMashStepsByRecipe" parameterClass="int">
+    <delete id="deleteRecipeMashStepsByRecipe" parameterClass="int">
     DELETE FROM recipe_mash_steps WHERE recipe_id = #value#
     </delete>
     <!-- END RECIPE -->

@@ -1,5 +1,7 @@
 package com.rcc.brew.web;
 
+import com.rcc.brew.bean.Temp;
+import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.Time;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.Volume;
@@ -19,6 +21,11 @@ public class Format {
     }
 
     public String formatTime(Time t) {
+        if (t == null) { return ""; }
+        return String.format("%.1f %s", t.getValue(), t.getUnit().getName());
+    }
+
+    public String formatTemp(Temp t) {
         if (t == null) { return ""; }
         return String.format("%.1f %s", t.getValue(), t.getUnit().getName());
     }

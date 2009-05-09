@@ -91,6 +91,14 @@ DELIMITER ;
 INSERT INTO users_roles (user_id, user_role_id, creation_user_id, last_updated_user_id)
 VALUES (1, @admin_user_role_id, 1, 1);
 
+CREATE TABLE gravity_units (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL
+) ENGINE = InnoDB;
+
+INSERT INTO gravity_units (name)
+VALUES ('SG'), ('Brix'), ('Plato');
+
 CREATE TABLE temp_units (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(64) NOT NULL
@@ -323,6 +331,19 @@ CREATE TABLE recipe_hops (
   FOREIGN KEY (hops_addition_type_id) REFERENCES hops_addition_types (id)
 ) ENGINE = InnoDB;
 
+CREATE TABLE recipe_adjuncts (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  recipe_id INTEGER UNSIGNED NOT NULL,
+  adjunct_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NULL,
+  weight_unit_id INTEGER UNSIGNED NULL,
+  volume DECIMAL(9,2) UNSIGNED NULL,
+  volume_unit_id INTEGER UNSIGNED NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (grain_id) REFERENCES grains (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+) ENGINE = InnoDB;
+
 CREATE TABLE recipe_grains (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   recipe_id INTEGER UNSIGNED NOT NULL,
@@ -368,7 +389,7 @@ DELIMITER ;
 
 INSERT INTO mash_step_types
 (name, description, creation_user_id, last_updated_user_id)
-VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1), ('mash_out', 'Mash Out', 1, 1);
+VALUES ('strike', 'Strike', 1, 1), ('rest', 'Rest', 1, 1), ('step', 'Step Up/Down', 1, 1);
 
 CREATE TABLE recipe_mash_steps (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -382,6 +403,7 @@ CREATE TABLE recipe_mash_steps (
   end_temp FLOAT(5, 2) UNSIGNED NULL,
   end_temp_unit_id INTEGER UNSIGNED NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+  FOREIGN KEY (mash_step_type_id) REFERENCES mash_step_types (id),
   FOREIGN KEY (time_unit_id) REFERENCES time_units (id),
   UNIQUE KEY (recipe_id, ordinal)
 ) ENGINE = InnoDB;
@@ -406,4 +428,141 @@ CREATE TABLE notes (
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
   FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
   FOREIGN KEY (object_type_id) REFERENCES object_types (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batches (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  brew_date DATE NULL,
+  name VARCHAR(64) NOT NULL,
+  volume DECIMAL(9, 2) UNSIGNED NOT NULL,
+  volume_unit_id INTEGER UNSIGNED NOT NULL,
+  boil_time DECIMAL(9, 2) UNSIGNED NOT NULL,
+  boil_time_unit_id INTEGER UNSIGNED NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (recipe_id) REFERENCES recipes (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batch_hops (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  hops_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NOT NULL,
+  weight_unit_id INTEGER UNSIGNED NOT NULL,
+  hops_addition_type_id INTEGER UNSIGNED NOT NULL,
+  time INTEGER UNSIGNED NULL,
+  time_unit_id INTEGER UNSIGNED NULL,
+  alpha DECIMAL(5,2) UNSIGNED NULL,
+  FOREIGN KEY (batch_id) REFERENCES batches (id),
+  FOREIGN KEY (hops_id) REFERENCES hops (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id),
+  FOREIGN KEY (time_unit_id) REFERENCES time_units (id),
+  FOREIGN KEY (hops_addition_type_id) REFERENCES hops_addition_types (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batch_adjuncts (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  adjunct_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NULL,
+  weight_unit_id INTEGER UNSIGNED NULL,
+  volume DECIMAL(9,2) UNSIGNED NULL,
+  volume_unit_id INTEGER UNSIGNED NULL,
+  FOREIGN KEY (batch_id) REFERENCES batches (id),
+  FOREIGN KEY (grain_id) REFERENCES grains (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batch_grains (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  grain_id INTEGER UNSIGNED NOT NULL,
+  weight DECIMAL(9,2) UNSIGNED NOT NULL,
+  weight_unit_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (batch_id) REFERENCES batches (id),
+  FOREIGN KEY (grain_id) REFERENCES grains (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batch_yeast (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  yeast_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (batch_id) REFERENCES batches (id),
+  FOREIGN KEY (yeast_id) REFERENCES yeast (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE batch_mash_steps (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  ordinal INTEGER UNSIGNED NOT NULL,
+  mash_step_type_id INTEGER UNSIGNED NOT NULL,
+  time INTEGER UNSIGNED NULL,
+  time_unit_id INTEGER UNSIGNED NULL,
+  start_temp FLOAT(5, 2) UNSIGNED NULL,
+  start_temp_unit_id INTEGER UNSIGNED NULL,
+  end_temp FLOAT(5, 2) UNSIGNED NULL,
+  end_temp_unit_id INTEGER UNSIGNED NULL,
+  FOREIGN KEY (batch_id) REFERENCES batches (id),
+  FOREIGN KEY (mash_step_type_id) REFERENCES mash_step_types (id),
+  FOREIGN KEY (time_unit_id) REFERENCES time_units (id),
+  UNIQUE KEY (batch_id, ordinal)
+) ENGINE = InnoDB;
+
+CREATE TABLE gravity_reading_types (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(32) NOT NULL,
+  description TEXT NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  UNIQUE KEY (name)
+) ENGINE = InnoDB;
+
+CREATE TABLE gravity_readings (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  type_id INTEGER UNSIGNED NOT NULL,
+  `date` DATE NULL,
+  gravity FLOAT(5, 2) UNSIGNED NULL,
+  gravity_unit_id INTEGER UNSIGNED NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (type_id) REFERENCES gravity_reading_types (id),
+  FOREIGN KEY (gravity_unit_id) REFERENCES gravity_units (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE tastings (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  `date` DATE NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+) ENGINE = InnoDB;
+
+CREATE TABLE bottelings (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  batch_id INTEGER UNSIGNED NOT NULL,
+  `date` DATE NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
 ) ENGINE = InnoDB;

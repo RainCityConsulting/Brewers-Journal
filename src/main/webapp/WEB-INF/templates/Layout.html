@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
   <head>
-    <title>BrewKeeper</title>
+    <title>Brewer's Journal</title>
     <link rel="stylesheet" type="text/css" href="#springUrl('/css/reset.css')"></link>
     <link rel="stylesheet" type="text/css" href="#springUrl('/css/style.css')"></link>
     <link rel="stylesheet" type="text/css" href="#springUrl('/css/jquery-autocomplete.css')"></link>
@@ -21,48 +21,51 @@
 
   <body>
 
-      <!-- HEADER -->
-          <div id="header">
-            <div style="float: left; width: 500px;">
-              <h1>BrewKeeper</h1>
-            </div>
+    <!-- HEADER -->
+    <div id="header">
+      <div style="float: left; width: 500px;">
+        <h1>Brewer's Journal</h1>
+      </div>
 
-            <div style="float: right; width: 300px;">
-              #if ($user)
-              Logged in as <i>$user.name</i> [<a href="#springUrl('/user/profile.s')">profile</a>]
-              <div><a href="#springUrl('/user/logout.s')">Logout</a></div>
-              #else
-              <a href="#springUrl('/user/login.s')">Login</a> or <a href="#springUrl('/user/register.s')">Register</a>
-              #end
-            </div>
-            <div style="clear: both;"></div>
-          </div>
-      <!-- END HEADER -->
+      <div style="float: right; width: 300px;">
+        #if ($user)
+        Logged in as <i>$user.name</i>
+        #end
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+    <!-- END HEADER -->
 
-        <!-- TOP NAV -->
-        <div id="top_nav" class="ddsmoothmenu">
+    <!-- TOP NAV -->
+    <div id="top_nav_bar" class="ddsmoothmenu">
+      <ul>
+
+        <li><a href="#springUrl('/index.s')">Home</a></li>
+
+        #if ($user.hasRole('Admin'))
+        <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
+        #end
+
+        #if ($user)
+        <li>
+          <a href="#springUrl('/recipe.s')">Recipes</a>
           <ul>
-
-            <li><a href="#springUrl('/index.s')">Home</a></li>
-
-            #if ($user.hasRole('Admin'))
-            <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
-            #end
-
-            #if ($user)
-            <li>
-              <a href="#springUrl('/recipe.s')">Recipes</a>
-              <ul>
-                <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
-                <li><a href="#springUrl('/edit/recipe.s')">New</a></li>
-              </ul>
-            </li>
-            #end
-
+            <li><a href="#springUrl('/recipe.s')">My Recipes</a></li>
+            <li><a href="#springUrl('/edit/recipe.s')">New</a></li>
           </ul>
-        </div>
-        <div style="clear: left;"></div>
-        <!-- END TOP NAV -->
+        </li>
+
+        <li><a href="#springUrl('/user/profile.s')">Profile</a></li>
+        <li><a href="#springUrl('/user/logout.s')">Logout</a></li>
+        #else
+        <li><a href="#springUrl('/user/login.s')">Login</a></li>
+        <li><a href="#springUrl('/user/register.s')">Register</a></li>
+        #end
+
+      </ul>
+      <br style="clear: left;"/>
+    </div>
+    <!-- END TOP NAV -->
 
         <!-- CONTENT -->
                 <!-- FLASH -->
@@ -73,11 +76,11 @@
                 </div>
         <!-- END CONTENT -->
 
-      <!-- FOOTER -->
-          <div id="footer">
-            <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:ian@raincityconsulting.com">The BrewKeeper Team</a></p>
-          </div>
-      <!-- END FOOTER -->
+    <!-- FOOTER -->
+    <div id="footer">
+      <p style="text-align: right; margin: 2px;">For all inquiries, please contact <a href="mailto:contact@brewersjournal.com">The Brewer's Journal Team</a></p>
+    </div>
+    <!-- END FOOTER -->
 
   </body>
 

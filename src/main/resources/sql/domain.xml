@@ -5,6 +5,11 @@
 
 <sqlMap namespace="domain">
 
+    <resultMap id="gravityUnit" class="com.rcc.brew.bean.GravityUnit">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
     <resultMap id="tempUnit" class="com.rcc.brew.bean.TempUnit">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -27,6 +32,29 @@
         <result property="name" column="name"/>
         <result property="conversion" column="ml_conversion"/>
     </resultMap>
+
+    <!-- GRAVITY -->
+    <select id="findGravityUnitById" resultMap="gravityUnit" parameterClass="int">
+    SELECT id, name
+    FROM gravity_units
+    WHERE id = #value#
+    </select>
+
+    <select id="findGravityUnitByName" resultMap="gravityUnit" parameterClass="string">
+    SELECT id, name
+    FROM gravity_units
+    WHERE name = #value#
+    </select>
+
+    <select id="findAllGravityUnits" resultMap="gravityUnit">
+    SELECT id, name
+    FROM gravity_units
+    </select>
+
+    <select id="findGravityUnitCount" resultClass="int">
+    SELECT COUNT(*) FROM gravity_units
+    </select>
+    <!-- END gravity -->
 
     <!-- TEMP -->
     <select id="findTempUnitById" resultMap="tempUnit" parameterClass="int">

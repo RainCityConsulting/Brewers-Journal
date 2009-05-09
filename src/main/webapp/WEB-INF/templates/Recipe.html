@@ -46,6 +46,28 @@
 
 </table>
 
+<h3>Mash</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Type</th>
+    <th>Time</th>
+    <th>Start Temp</th>
+    <th>End Temp</th>
+  </tr>
+
+  #foreach ($m in $recipe.mash)
+  <tr>
+    <td>$m.type.description</td>
+    <td sorttable_customkey="$!m.time.secondTime()">#time($m.time)</td>
+    <td>#temp($m.startTemp)</td>
+    <td>#temp($m.endTemp)</td>
+  </tr>
+  #end
+
+</table>
+
 <h3>Hops</h3>
 
 <table class="list sortable">
