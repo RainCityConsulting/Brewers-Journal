@@ -12,6 +12,7 @@
         <result property="volume.unit" column="volume_unit_id" select="findVolumeUnitById"/>
         <result property="boilTime.value" column="boil_time"/>
         <result property="boilTime.unit" column="boil_time_unit_id" select="findTimeUnitById"/>
+        <result property="adjuncts" column="id" select="findRecipeAdjunctsByRecipe"/>
         <result property="grains" column="id" select="findRecipeGrainsByRecipe"/>
         <result property="hops" column="id" select="findRecipeHopsByRecipe"/>
         <result property="yeast" column="id" select="findRecipeYeastByRecipe"/>

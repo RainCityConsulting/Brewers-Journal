@@ -1,5 +1,6 @@
 package com.rcc.brew.web.controller.admin;
 
+import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
@@ -44,6 +45,25 @@ public class MainController extends MultiActionController {
             Mfg mfg = this.model.findMfgById(id);
             mav.addObject("content", "admin/Mfg");
             mav.addObject("mfg", mfg);
+        }
+
+        return mav;
+    }
+
+    public ModelAndView adjunct(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        ModelAndView mav = new ModelAndView();
+
+        int id = com.rcc.web.controller.ControllerUtils.getIntParam(request, "id", 0);
+        if (id == 0) {
+            List<Adjunct> adjuncts = this.model.findAllAdjuncts();
+            mav.addObject("content", "admin/AdjunctList");
+            mav.addObject("adjuncts", adjuncts);
+        } else {
+            Adjunct adjunct = this.model.findAdjunctById(id);
+            mav.addObject("content", "admin/Adjunct");
+            mav.addObject("adjunct", adjunct);
         }
 
         return mav;

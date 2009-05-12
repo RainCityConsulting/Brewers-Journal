@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.AdjunctInstance;
+import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.GravityUnit;
@@ -268,6 +269,35 @@ public class ModelImpl extends ModelBase implements Model {
     }
     /* END VOLUME */
 
+    /* BATCH */
+    public int createBatch(Batch b) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertBatch", b);
+        return id.intValue();
+    }
+
+    public void updateBatch(Batch b) {
+        this.getSqlMapClientTemplate().update("updateBatch", b);
+    }
+
+    public Batch findBatchById(int id) {
+        Batch b = (Batch) this.getSqlMapClientTemplate().queryForObject("findBatchById", id);
+        if (b == null) { throw new ObjectNotFoundException("Batch ID: " + id); }
+
+        // Set time to null if necessary
+        for (MashStep m : b.getMash()) {
+            if (m.getTime().getValue() == null) {
+                m.setTime(null);
+            }
+        }
+
+        return b;
+    }
+
+    public List<Batch> findBatchesByUser(int id) {
+        return (List<Batch>) this.getSqlMapClientTemplate().queryForList("findBatchesByUser", id);
+    }
+    /* END BATCH */
+
     /* RECIPE */
     public int createRecipe(Recipe r) {
         Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertRecipe", r);
@@ -281,6 +311,14 @@ public class ModelImpl extends ModelBase implements Model {
     public Recipe findRecipeById(int id) {
         Recipe r = (Recipe) this.getSqlMapClientTemplate().queryForObject("findRecipeById", id);
         if (r == null) { throw new ObjectNotFoundException("Recipe ID: " + id); }
+
+        // Set time to null if necessary
+        for (MashStep m : r.getMash()) {
+            if (m.getTime().getValue() == null) {
+                m.setTime(null);
+            }
+        }
+
         return r;
     }
 
@@ -357,8 +395,8 @@ public class ModelImpl extends ModelBase implements Model {
         return id.intValue();
     }
 
-    public int deleteRecipeAdjunctByRecipe(int id) {
-        return this.getSqlMapClientTemplate().delete("deleteRecipeAdjunctByRecipe", id);
+    public int deleteRecipeAdjunctsByRecipe(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteRecipeAdjunctsByRecipe", id);
     }
     /* END RECIPE ADJUNCT */
 
@@ -557,8 +595,8 @@ public class ModelImpl extends ModelBase implements Model {
         return id.intValue();
     }
 
-    public int deleteBatchAdjunctByBatch(int id) {
-        return this.getSqlMapClientTemplate().delete("deleteBatchAdjunctByBatch", id);
+    public int deleteBatchAdjunctsByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteBatchAdjunctsByBatch", id);
     }
     /* END BATCH ADJUNCT */
 

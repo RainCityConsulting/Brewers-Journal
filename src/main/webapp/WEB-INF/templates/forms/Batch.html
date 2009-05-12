@@ -4,11 +4,11 @@ $(document).ready(function() {
   $('#tabs').tabs();
 });
 
-var adjunctIdx = $r.adjuncts.size();
-var grainIdx = $r.grains.size();
-var hopsIdx = $r.hops.size();
-var yeastIdx = $r.yeast.size();
-var mashIdx = $r.mash.size();
+var adjunctIdx = $b.adjuncts.size();
+var grainIdx = $b.grains.size();
+var hopsIdx = $b.hops.size();
+var yeastIdx = $b.yeast.size();
+var mashIdx = $b.mash.size();
 
 function moreAdjuncts() {
   var content = '<tr>';
@@ -165,7 +165,7 @@ function moreMash() {
   <div id="tabs">
 
     <ul>
-      <li><a href="#recipe">Recipe</a></li>
+      <li><a href="#batch">Batch</a></li>
       <li><a href="#grains">Grains</a></li>
       <li><a href="#hops">Hops</a></li>
       <li><a href="#yeast">Yeast</a></li>
@@ -174,13 +174,13 @@ function moreMash() {
     </ul>
 
 
-    <div id="recipe">
+    <div id="batch">
       <table class="form view">
     
         <tr>
           <th>Name</th>
           <td>
-            #springFormInput("r.name" "size='48' tabindex='1'")
+            #springFormInput("b.name" "size='48' tabindex='1'")
             #springShowErrors("<br/>" "form-error")
           </td>
         </tr>
@@ -188,10 +188,10 @@ function moreMash() {
         <tr>
           <th>Boil Length</th>
           <td>
-            #springFormInput("r.boilTime.value" "size='4' tabindex='2'")
+            #springFormInput("b.boilTime.value" "size='4' tabindex='2'")
             #springShowErrors("<br/>" "form-error")
     
-            #springBind("r.boilTime.unit")
+            #springBind("b.boilTime.unit")
             <select name="$status.expression" tabindex="3">
               #foreach ($u in $timeUnits)
               <option value="$u.id"
@@ -206,10 +206,10 @@ function moreMash() {
         <tr>
           <th>Volume</th>
           <td>
-            #springFormInput("r.volume.value" "size='4' tabindex='4'")
+            #springFormInput("b.volume.value" "size='4' tabindex='4'")
             #springShowErrors("<br/>" "form-error")
     
-            #springBind("r.volume.unit")
+            #springBind("b.volume.unit")
             <select name="$status.expression" tabindex="5">
               #foreach ($u in $volumeUnits)
               <option value="$u.id"
@@ -237,11 +237,11 @@ function moreMash() {
     
         #set ($tabindex = 6)
         #set ($i = 0)
-        #foreach ($g in $r.grains)
+        #foreach ($g in $b.grains)
         <tr>
     
           <td>
-            #springBind("r.grains[$i].grain")
+            #springBind("b.grains[$i].grain")
             <input class="grain_autocomplete autocomplete" type="text" size="20"
                 name="$status.expression" value="$status.value" tabindex="$tabindex"/>
           </td>
@@ -249,14 +249,14 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.grains[$i].weight.value")
+            #springBind("b.grains[$i].weight.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
           </td>
     
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.grains[$i].weight.unit")
+            #springBind("b.grains[$i].weight.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $weightUnits)
               <option value="$u.id"
@@ -289,11 +289,11 @@ function moreMash() {
         </tr>
     
         #set ($i = 0)
-        #foreach ($h in $r.hops)
+        #foreach ($h in $b.hops)
         <tr>
     
           <td>
-            #springBind("r.hops[$i].hops")
+            #springBind("b.hops[$i].hops")
             <input class="hops_autocomplete autocomplete" type="text" size="20"
                 name="$status.expression" value="$status.value" tabindex="$tabindex"/>
           </td>
@@ -301,14 +301,14 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].weight.value")
+            #springBind("b.hops[$i].weight.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
           </td>
     
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].weight.unit")
+            #springBind("b.hops[$i].weight.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $weightUnits)
               <option value="$u.id"
@@ -322,7 +322,7 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].additionType")
+            #springBind("b.hops[$i].additionType")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($t in $hats)
               <option value="$t.id"
@@ -336,7 +336,7 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].time.value")
+            #springBind("b.hops[$i].time.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
             #springShowErrors("<br/>" "form-error")
           </td>
@@ -344,7 +344,7 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].time.unit")
+            #springBind("b.hops[$i].time.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $timeUnits)
               <option value="$u.id"
@@ -358,7 +358,7 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.hops[$i].alpha")
+            #springBind("b.hops[$i].alpha")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
             #springShowErrors("<br/>" "form-error")
           </td>
@@ -382,11 +382,11 @@ function moreMash() {
         </tr>
     
         #set ($i = 0)
-        #foreach ($y in $r.yeast)
+        #foreach ($y in $b.yeast)
         <tr>
     
           <td>
-            #springBind("r.yeast[$i].yeast")
+            #springBind("b.yeast[$i].yeast")
             <input class="yeast_autocomplete autocomplete" type="text" size="20"
                 name="$status.expression" value="$status.value" tabindex="$tabindex"/>
           </td>
@@ -413,11 +413,11 @@ function moreMash() {
         </tr>
     
         #set ($i = 0)
-        #foreach ($m in $r.mash)
+        #foreach ($m in $b.mash)
         <tr>
     
           <td>
-            #springBind("r.mash[$i].type")
+            #springBind("b.mash[$i].type")
             <select name="$status.expression" tabindex="$tabindex">
               <option value="0"></option>
               #foreach ($t in $msts)
@@ -432,12 +432,12 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springFormInput("r.mash[$i].time.value" "size='4' tabindex='$tabindex'")
+            #springFormInput("b.mash[$i].time.value" "size='4' tabindex='$tabindex'")
             #springShowErrors("<br/>" "form-error")
     
             #set ($tabindex = $tabindex + 1)
     
-            #springBind("r.mash[$i].time.unit")
+            #springBind("b.mash[$i].time.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $timeUnits)
               <option value="$u.id"
@@ -451,12 +451,12 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.mash[$i].startTemp.value")
+            #springBind("b.mash[$i].startTemp.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
     
             #set ($tabindex = $tabindex + 1)
     
-            #springBind("r.mash[$i].startTemp.unit")
+            #springBind("b.mash[$i].startTemp.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $tempUnits)
               <option value="$u.id"
@@ -470,12 +470,12 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.mash[$i].endTemp.value")
+            #springBind("b.mash[$i].endTemp.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
     
             #set ($tabindex = $tabindex + 1)
     
-            #springBind("r.mash[$i].endTemp.unit")
+            #springBind("b.mash[$i].endTemp.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $tempUnits)
               <option value="$u.id"
@@ -506,11 +506,11 @@ function moreMash() {
         </tr>
     
         #set ($i = 0)
-        #foreach ($a in $r.adjuncts)
+        #foreach ($a in $b.adjuncts)
         <tr>
     
           <td>
-            #springBind("r.adjuncts[$i].adjunct")
+            #springBind("b.adjuncts[$i].adjunct")
             <input class="adjunct_autocomplete autocomplete" type="text" size="20"
                 name="$status.expression" value="$status.value" tabindex="$tabindex"/>
           </td>
@@ -518,14 +518,14 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.adjuncts[$i].weight.value")
+            #springBind("b.adjuncts[$i].weight.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
           </td>
     
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.adjuncts[$i].weight.unit")
+            #springBind("b.adjuncts[$i].weight.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $weightUnits)
               <option value="$u.id"
@@ -539,14 +539,14 @@ function moreMash() {
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.adjuncts[$i].volume.value")
+            #springBind("b.adjuncts[$i].volume.value")
             <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="$tabindex"/>
           </td>
     
           #set ($tabindex = $tabindex + 1)
     
           <td>
-            #springBind("r.adjuncts[$i].volume.unit")
+            #springBind("b.adjuncts[$i].volume.unit")
             <select name="$status.expression" tabindex="$tabindex">
               #foreach ($u in $volumeUnits)
               <option value="$u.id"
@@ -574,7 +574,9 @@ function moreMash() {
 
   <div class="buttons">
     <input type="submit" value="$submitValue" tabindex="$tabindex"/>
-    <a href="#springUrl('/recipe.s')?id=$r.id">Cancel</a>
+    #if ($b.id > 0)
+    <a href="#springUrl('/batch.s')?id=$b.id">Cancel</a>
+    #end
   </div>
 
 </form>

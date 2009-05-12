@@ -40,6 +40,7 @@
         <property name="mappings">
             <props>
                 <prop key="/index.s">mainController</prop>
+                <prop key="/batch.s">mainController</prop>
                 <prop key="/recipe.s">mainController</prop>
                 <prop key="/user/register.s">registrationController</prop>
 
@@ -50,8 +51,10 @@
 
                 <prop key="/user/login.s">loginController</prop>
 
+                <prop key="/edit/batch.s">batchEditController</prop>
                 <prop key="/edit/recipe.s">recipeEditController</prop>
 
+                <prop key="/ac/adjunct.s">adjunctAutoCompleteController</prop>
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
                 <prop key="/ac/hops.s">hopsAutoCompleteController</prop>
                 <prop key="/ac/yeast.s">yeastAutoCompleteController</prop>
@@ -86,17 +89,20 @@
             <props>
                 <prop key="/admin/index.s">admin.mainController</prop>
                 <prop key="/admin/mfg.s">admin.mainController</prop>
+                <prop key="/admin/adjunct.s">admin.mainController</prop>
                 <prop key="/admin/grain.s">admin.mainController</prop>
                 <prop key="/admin/yeast.s">admin.mainController</prop>
                 <prop key="/admin/hops.s">admin.mainController</prop>
                 <prop key="/admin/hat.s">admin.mainController</prop>
                 <prop key="/admin/color.s">admin.mainController</prop>
                 <prop key="/admin/search.s">admin.searchIndexController</prop>
+                <prop key="/admin/search/rebuild/adjunct.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/grain.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/yeast.s">admin.searchIndexController</prop>
                 <prop key="/admin/search/rebuild/hops.s">admin.searchIndexController</prop>
 
                 <prop key="/admin/edit/mfg.s">admin.mfgEditController</prop>
+                <prop key="/admin/edit/adjunct.s">admin.adjunctEditController</prop>
                 <prop key="/admin/edit/grain.s">admin.grainEditController</prop>
                 <prop key="/admin/edit/yeast.s">admin.yeastEditController</prop>
                 <prop key="/admin/edit/hat.s">admin.hopsAdditionTypeEditController</prop>
@@ -207,6 +213,15 @@
             </bean>
         </property>
 
+        <property name="adjunctEditor">
+            <bean class="com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor">
+                <property name="nameResolver">
+                    <bean class="com.rcc.brew.web.bean.propertyeditor.AdjunctNameResolver"/>
+                </property>
+                <property name="query" ref="adjunctQuery"/>
+            </bean>
+        </property>
+
         <property name="hopsEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor">
                 <property name="nameResolver">
@@ -235,6 +250,7 @@
                 <property name="mappings">
                     <props>
                         <prop key="/index.s">view</prop>
+                        <prop key="/batch.s">batch</prop>
                         <prop key="/recipe.s">recipe</prop>
                     </props>
                 </property>
@@ -315,6 +331,30 @@
         </property>
     </bean>
 
+    <bean id="batchEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.BatchEditController">
+                <property name="commandName" value="b"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="BatchCreate"/>
+                <property name="editContent" value="BatchEdit"/>
+
+                <property name="model" ref="model"/>
+                <property name="service" ref="service"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="recipeEditController" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.web.controller.RecipeEditController">
@@ -337,6 +377,20 @@
                 <property name="service" ref="service"/>
             </bean>
         </property>
+    </bean>
+
+    <bean id="adjunctAutoCompleteController" class="com.rcc.web.controller.AutoCompleteController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <props>
+                        <prop key="/ac/adjunct.s">search</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+
+        <property name="indexReader" ref="adjunctIndexReader"/>
     </bean>
 
     <bean id="grainAutoCompleteController" class="com.rcc.web.controller.AutoCompleteController">
@@ -391,6 +445,7 @@
                     <props>
                         <prop key="/admin/index.s">view</prop>
                         <prop key="/admin/mfg.s">mfg</prop>
+                        <prop key="/admin/adjunct.s">adjunct</prop>
                         <prop key="/admin/grain.s">grain</prop>
                         <prop key="/admin/yeast.s">yeast</prop>
                         <prop key="/admin/hops.s">hops</prop>
@@ -411,6 +466,7 @@
                 <property name="mappings">
                     <props>
                         <prop key="/admin/search.s">view</prop>
+                        <prop key="/admin/search/rebuild/adjunct.s">rebuildAdjunctIndex</prop>
                         <prop key="/admin/search/rebuild/grain.s">rebuildGrainIndex</prop>
                         <prop key="/admin/search/rebuild/yeast.s">rebuildYeastIndex</prop>
                         <prop key="/admin/search/rebuild/hops.s">rebuildHopsIndex</prop>
@@ -420,6 +476,7 @@
         </property>
 
         <property name="model" ref="model"/>
+        <property name="adjunctIndexWriter" ref="adjunctIndexWriter"/>
         <property name="grainIndexWriter" ref="grainIndexWriter"/>
         <property name="hopsIndexWriter" ref="hopsIndexWriter"/>
         <property name="yeastIndexWriter" ref="yeastIndexWriter"/>
@@ -441,6 +498,28 @@
                 </property>
                 <property name="createContent" value="admin/MfgCreate"/>
                 <property name="editContent" value="admin/MfgEdit"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="admin.adjunctEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.admin.AdjunctEditController">
+                <property name="commandName" value="a"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="admin/AdjunctCreate"/>
+                <property name="editContent" value="admin/AdjunctEdit"/>
                 <property name="model" ref="model"/>
             </bean>
         </property>

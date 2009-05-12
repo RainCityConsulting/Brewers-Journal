@@ -1,0 +1,29 @@
+<h2>Adjuncts</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/admin/index.s')">Admin</a></li>
+    <li>All Adjuncts</li>
+  </ul>
+</div>
+
+<table class="list sortable">
+  <tr>
+    <th>Name</th>
+    <th>Mfg</th>
+  </tr>
+
+  #foreach ($g in $adjuncts)
+  <tr>
+    <td sorttable_customkey="$g.name"><a href="#springUrl('/admin/adjunct.s')?id=$g.id">$g.name</a></td>
+    <td sorttable_customkey="$!g.mfg.name">
+      #if ($g.hasMfg())
+      <a href="#springUrl('/admin/mfg.s')?id=$g.mfg.id">$g.mfg.name</a>
+      #end
+    </td>
+
+  </tr>
+  #end
+
+</table>

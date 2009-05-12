@@ -340,8 +340,9 @@ CREATE TABLE recipe_adjuncts (
   volume DECIMAL(9,2) UNSIGNED NULL,
   volume_unit_id INTEGER UNSIGNED NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes (id),
-  FOREIGN KEY (grain_id) REFERENCES grains (id),
-  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+  FOREIGN KEY (adjunct_id) REFERENCES adjuncts (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id),
+  FOREIGN KEY (volume_unit_id) REFERENCES volume_units (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE recipe_grains (
@@ -444,7 +445,8 @@ CREATE TABLE batches (
   last_updated_user_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
   FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
-  FOREIGN KEY (recipe_id) REFERENCES recipes (id)
+  FOREIGN KEY (volume_unit_id) REFERENCES volume_units (id),
+  FOREIGN KEY (boil_time_unit_id) REFERENCES time_units (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE batch_hops (
@@ -473,8 +475,9 @@ CREATE TABLE batch_adjuncts (
   volume DECIMAL(9,2) UNSIGNED NULL,
   volume_unit_id INTEGER UNSIGNED NULL,
   FOREIGN KEY (batch_id) REFERENCES batches (id),
-  FOREIGN KEY (grain_id) REFERENCES grains (id),
-  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id)
+  FOREIGN KEY (adjunct_id) REFERENCES adjuncts (id),
+  FOREIGN KEY (weight_unit_id) REFERENCES weight_units (id),
+  FOREIGN KEY (volume_unit_id) REFERENCES volume_units (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE batch_grains (
@@ -552,7 +555,7 @@ CREATE TABLE tastings (
   last_updated_date DATETIME NOT NULL DEFAULT 0,
   last_updated_user_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
-  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE bottelings (
@@ -564,5 +567,5 @@ CREATE TABLE bottelings (
   last_updated_date DATETIME NOT NULL DEFAULT 0,
   last_updated_user_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
-  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id)
 ) ENGINE = InnoDB;

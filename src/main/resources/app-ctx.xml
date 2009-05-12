@@ -87,6 +87,15 @@
         </property>
     </bean>
 
+    <bean id="adjunctQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.AdjunctQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="hopsAdditionTypeQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.HopsAdditionTypeQueryImpl">
@@ -217,6 +226,19 @@
 
 
     <!-- SEARCH -->
+    <bean id="adjunctDocumentFactory" class="com.rcc.brew.search.AdjunctDocumentFactory"/>
+
+    <bean id="adjunctIndexWriter" class="com.rcc.search.IndexWriterImpl">
+        <property name="indexDir" value="${index.dir}/adjunct"/>
+        <property name="documentFactory" ref="adjunctDocumentFactory"/>
+    </bean>
+
+    <bean id="adjunctIndexReader" class="com.rcc.search.IndexReaderImpl">
+        <property name="indexDir" value="${index.dir}/adjunct"/>
+        <property name="documentFactory" ref="adjunctDocumentFactory"/>
+    </bean>
+
+
     <bean id="hopsDocumentFactory" class="com.rcc.brew.search.HopsDocumentFactory"/>
 
     <bean id="hopsIndexWriter" class="com.rcc.search.IndexWriterImpl">

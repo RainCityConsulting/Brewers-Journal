@@ -5,6 +5,34 @@ if (!com.rcc.brew.ac) com.rcc.brew.ac = {};
 
 com.rcc.brew.ac.init = function(e) {
 
+  // ADJUNCT
+
+  $('input.adjunct_autocomplete').each(function(i) {
+    $(this).autocomplete("@base.url@/ac/adjunct.s",
+        {
+          formatItem: function(row, idx, count, query) {
+            var adjunct = eval("(" + row[0] + ")");
+            var ret = '<div>' + adjunct.name + '</div>';
+
+            if (adjunct.mfg) {
+              ret += '<div><i>' + adjunct.mfg.name + '</i></div>';
+            }
+
+            return ret;
+          },
+
+          formatResult: function(row, idx, count) {
+            var adjunct = eval("(" + row[0] + ")");
+            if (adjunct.mfg) {
+              return adjunct.name + " " + adjunct.mfg.name + " [id: " + adjunct.id + "]";
+            }
+            return adjunct.name + " [id: " + adjunct.id + "]";
+          }
+      }
+    );
+  });
+
+
   // GRAIN
 
   $('input.grain_autocomplete').each(function(i) {

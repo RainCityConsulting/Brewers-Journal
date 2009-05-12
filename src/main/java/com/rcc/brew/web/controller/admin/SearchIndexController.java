@@ -1,5 +1,6 @@
 package com.rcc.brew.web.controller.admin;
 
+import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.Mfg;
@@ -18,10 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class SearchIndexController extends MultiActionController {
+    private IndexWriter<Adjunct> adjunctIndexWriter;
     private IndexWriter<Grain> grainIndexWriter;
     private IndexWriter<Hops> hopsIndexWriter;
     private IndexWriter<Yeast> yeastIndexWriter;
     private Model model;
+
+    public void setAdjunctIndexWriter(IndexWriter<Adjunct> adjunctIndexWriter) {
+        this.adjunctIndexWriter = adjunctIndexWriter;
+    }
 
     public void setGrainIndexWriter(IndexWriter<Grain> grainIndexWriter) {
         this.grainIndexWriter = grainIndexWriter;
@@ -84,6 +90,21 @@ public class SearchIndexController extends MultiActionController {
         }
 
         FlashUtils.messageCode("index.rebuild.success", request, "Hops");
+
+        return new ModelAndView("redirect:/admin/search.s");
+    }
+
+    public ModelAndView rebuildAdjunctIndex(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        List<Adjunct> adjuncts = this.model.findAllAdjuncts();
+        boolean overwrite = true;
+        for (Adjunct a : adjuncts) {
+            this.adjunctIndexWriter.add(a, overwrite);
+            overwrite = false;
+        }
+
+        FlashUtils.messageCode("index.rebuild.success", request, "Adjunct");
 
         return new ModelAndView("redirect:/admin/search.s");
     }

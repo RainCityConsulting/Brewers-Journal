@@ -2,13 +2,13 @@ package com.rcc.brew.web.controller;
 
 import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.AdjunctInstance;
+import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
 import com.rcc.brew.bean.MashStep;
 import com.rcc.brew.bean.MashStepType;
-import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.Temp;
 import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.Time;
@@ -42,8 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class RecipeEditController extends AbstractEditController {
-    private static final Log log = LogFactory.getLog(RecipeEditController.class);
+public class BatchEditController extends AbstractEditController {
+    private static final Log log = LogFactory.getLog(BatchEditController.class);
 
     private Model model;
     private Service service;
@@ -52,10 +52,10 @@ public class RecipeEditController extends AbstractEditController {
     public void setService(Service service) { this.service = service; }
 
     protected Identifiable formNewBackingObject() throws Exception {
-        Recipe recipe = new Recipe();
+        Batch batch = new Batch();
 
-        recipe.setVolume(new Volume(new VolumeUnit()));
-        recipe.setBoilTime(new Time(new TimeUnit()));
+        batch.setVolume(new Volume(new VolumeUnit()));
+        batch.setBoilTime(new Time(new TimeUnit()));
 
         List<AdjunctInstance> adjuncts = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -67,7 +67,7 @@ public class RecipeEditController extends AbstractEditController {
                         }
         });
         for (int i = 0; i < 4; i++) { adjuncts.get(i); }
-        recipe.setAdjuncts(adjuncts);
+        batch.setAdjuncts(adjuncts);
 
         List<GrainInstance> grains = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -78,7 +78,7 @@ public class RecipeEditController extends AbstractEditController {
                         }
         });
         for (int i = 0; i < 4; i++) { grains.get(i); }
-        recipe.setGrains(grains);
+        batch.setGrains(grains);
 
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
@@ -90,7 +90,7 @@ public class RecipeEditController extends AbstractEditController {
                 }
         });
         for (int i = 0; i < 6; i++) { hops.get(i); }
-        recipe.setHops(hops);
+        batch.setHops(hops);
 
         List<YeastInstance> yeast = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -100,7 +100,7 @@ public class RecipeEditController extends AbstractEditController {
                         }
         });
         for (int i = 0; i < 1; i++) { yeast.get(i); }
-        recipe.setYeast(yeast);
+        batch.setYeast(yeast);
 
         List<MashStep> mash = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -114,13 +114,13 @@ public class RecipeEditController extends AbstractEditController {
                         }
         });
         for (int i = 0; i < 3; i++) { mash.get(i); }
-        recipe.setMash(mash);
+        batch.setMash(mash);
 
-        return recipe;
+        return batch;
     }
 
     protected Identifiable formExistingBackingObject(int id) throws Exception {
-        Recipe recipe = this.model.findRecipeById(id);
+        Batch batch = this.model.findBatchById(id);
 
         List<AdjunctInstance> adjuncts = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -131,7 +131,7 @@ public class RecipeEditController extends AbstractEditController {
                             return ai;
                         }
         });
-        adjuncts.addAll(recipe.getAdjuncts());
+        adjuncts.addAll(batch.getAdjuncts());
         for (AdjunctInstance a : adjuncts) {
             if (!a.hasWeight()) {
                 a.setWeight(new Weight(new WeightUnit()));
@@ -140,7 +140,7 @@ public class RecipeEditController extends AbstractEditController {
                 a.setVolume(new Volume(new VolumeUnit()));
             }
         }
-        recipe.setAdjuncts(adjuncts);
+        batch.setAdjuncts(adjuncts);
 
         List<GrainInstance> grains = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -150,8 +150,8 @@ public class RecipeEditController extends AbstractEditController {
                             return gi;
                         }
         });
-        grains.addAll(recipe.getGrains());
-        recipe.setGrains(grains);
+        grains.addAll(batch.getGrains());
+        batch.setGrains(grains);
 
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
@@ -162,10 +162,10 @@ public class RecipeEditController extends AbstractEditController {
                     return hi;
                 }
         });
-        hops.addAll(recipe.getHops());
-        recipe.setHops(hops);
+        hops.addAll(batch.getHops());
+        batch.setHops(hops);
 
-        for (HopsInstance hi : recipe.getHops()) {
+        for (HopsInstance hi : batch.getHops()) {
             if (!hi.hasTime()) {
                 hi.setTime(new Time(new TimeUnit()));
             }
@@ -178,8 +178,8 @@ public class RecipeEditController extends AbstractEditController {
                             return y;
                         }
         });
-        yeast.addAll(recipe.getYeast());
-        recipe.setYeast(yeast);
+        yeast.addAll(batch.getYeast());
+        batch.setYeast(yeast);
 
         List<MashStep> mash = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -192,15 +192,15 @@ public class RecipeEditController extends AbstractEditController {
                             return ms;
                         }
         });
-        mash.addAll(recipe.getMash());
+        mash.addAll(batch.getMash());
         for (MashStep m : mash) {
             if (!m.hasTime()) {
                 m.setTime(new Time(new TimeUnit()));
             }
         }
-        recipe.setMash(mash);
+        batch.setMash(mash);
 
-        return recipe;
+        return batch;
     }
 
     protected void referenceData(Map map) {
@@ -213,29 +213,29 @@ public class RecipeEditController extends AbstractEditController {
     }
 
     protected void onBind(HttpServletRequest request, Object command) throws Exception {
-        Recipe recipe = (Recipe) command;
+        Batch batch = (Batch) command;
 
-        for (Iterator<MashStep> i = recipe.getMash().iterator(); i.hasNext();) {
+        for (Iterator<MashStep> i = batch.getMash().iterator(); i.hasNext();) {
             MashStep m = i.next();
             if (!m.hasType()) { i.remove(); }
         }
 
-        for (Iterator<AdjunctInstance> i = recipe.getAdjuncts().iterator(); i.hasNext();) {
+        for (Iterator<AdjunctInstance> i = batch.getAdjuncts().iterator(); i.hasNext();) {
             AdjunctInstance a = i.next();
             if (!a.hasAdjunct()) { i.remove(); }
         }
 
-        for (Iterator<GrainInstance> i = recipe.getGrains().iterator(); i.hasNext();) {
+        for (Iterator<GrainInstance> i = batch.getGrains().iterator(); i.hasNext();) {
             GrainInstance g = i.next();
             if (!g.hasGrain()) { i.remove(); }
         }
 
-        for (Iterator<HopsInstance> i = recipe.getHops().iterator(); i.hasNext();) {
+        for (Iterator<HopsInstance> i = batch.getHops().iterator(); i.hasNext();) {
             HopsInstance h = i.next();
             if (!h.hasHops()) { i.remove(); }
         }
 
-        for (Iterator<YeastInstance> i = recipe.getYeast().iterator(); i.hasNext();) {
+        for (Iterator<YeastInstance> i = batch.getYeast().iterator(); i.hasNext();) {
             YeastInstance y = i.next();
             if (!y.hasYeast()) { i.remove(); }
         }
@@ -246,10 +246,10 @@ public class RecipeEditController extends AbstractEditController {
             Identifiable command, BindException errors)
         throws Exception
     {
-        Recipe recipe = (Recipe) command;
-        int id = this.service.createRecipe(recipe);
-        FlashUtils.messageCode("recipe.create.success", request, recipe.getName());
-        return new ModelAndView("redirect:/recipe.s?id=" + id);
+        Batch batch = (Batch) command;
+        int id = this.service.createBatch(batch);
+        FlashUtils.messageCode("batch.create.success", request, batch.getName());
+        return new ModelAndView("redirect:/batch.s?id=" + id);
     }
 
     protected ModelAndView processUpdateFormSubmission(
@@ -257,9 +257,9 @@ public class RecipeEditController extends AbstractEditController {
             Identifiable command, BindException errors)
         throws Exception
     {
-        Recipe recipe = (Recipe) command;
-        this.service.updateRecipe(recipe);
-        FlashUtils.messageCode("recipe.update.success", request, recipe.getName());
-        return new ModelAndView("redirect:/recipe.s?id=" + recipe.getId());
+        Batch batch = (Batch) command;
+        this.service.updateBatch(batch);
+        FlashUtils.messageCode("batch.update.success", request, batch.getName());
+        return new ModelAndView("redirect:/batch.s?id=" + batch.getId());
     }
 }

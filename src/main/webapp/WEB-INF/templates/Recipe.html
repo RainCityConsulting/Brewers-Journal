@@ -68,6 +68,30 @@
 
 </table>
 
+
+
+<h3>Adjuncts</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Adjunct</th>
+    <th class="sorttable_nosort">Weight</th>
+    <th class="sorttable_nosort">Volume</th>
+  </tr>
+
+  #foreach ($a in $recipe.adjuncts)
+  <tr>
+    <td>$a.adjunct.name</td>
+    <td>#weight($a.weight)</td>
+    <td>#weight($a.volume)</td>
+  </tr>
+  #end
+
+</table>
+
+
+
 <h3>Hops</h3>
 
 <table class="list sortable">

@@ -1,5 +1,6 @@
 package com.rcc.brew.web.controller;
 
+import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Recipe;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.model.Model;
@@ -24,6 +25,29 @@ public class MainController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
 
         mav.addObject("content", "Index");
+
+        return mav;
+    }
+
+    public ModelAndView batch(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        User user = ContextUtils.getRequestContext(false).getUser();
+
+        ModelAndView mav = new ModelAndView();
+
+        int id = com.rcc.web.controller.ControllerUtils.getIntParam(request, "id", 0);
+
+        if (id == 0) {
+            List<Batch> batches = this.model.findBatchesByUser(user.getId());
+            mav.addObject("content", "BatchList");
+            mav.addObject("batches", batches);
+        } else {
+            Batch batch = this.model.findBatchById(id);
+
+            mav.addObject("content", "Batch");
+            mav.addObject("batch", batch);
+        }
 
         return mav;
     }

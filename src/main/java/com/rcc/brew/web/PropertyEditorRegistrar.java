@@ -1,5 +1,6 @@
 package com.rcc.brew.web;
 
+import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
@@ -27,11 +28,16 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
     private IdentifiableIdPropertyEditor volumeUnitEditor;
     private IdentifiableIdPropertyEditor hopsAdditionTypeEditor;
     private IdentifiableIdPropertyEditor mashStepTypeEditor;
+    private AutoCompletePropertyEditor<Adjunct> adjunctEditor;
     private AutoCompletePropertyEditor<Hops> hopsEditor;
     private AutoCompletePropertyEditor<Yeast> yeastEditor;
 
     public void setYeastEditor(AutoCompletePropertyEditor<Yeast> yeastEditor) {
         this.yeastEditor = yeastEditor;
+    }
+
+    public void setAdjunctEditor(AutoCompletePropertyEditor<Adjunct> adjunctEditor) {
+        this.adjunctEditor = adjunctEditor;
     }
 
     public void setHopsEditor(AutoCompletePropertyEditor<Hops> hopsEditor) {
@@ -74,6 +80,7 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
         grainEditor.setQuery(this.grainQuery);
 
         registry.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        registry.registerCustomEditor(Adjunct.class, adjunctEditor);
         registry.registerCustomEditor(Grain.class, grainEditor);
         registry.registerCustomEditor(Hops.class, this.hopsEditor);
         registry.registerCustomEditor(HopsAdditionType.class, this.hopsAdditionTypeEditor);

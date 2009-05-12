@@ -2,6 +2,7 @@ package com.rcc.brew.model;
 
 import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.AdjunctInstance;
+import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.GravityUnit;
@@ -96,6 +97,13 @@ public interface Model {
     public int findVolumeUnitCount();
     /* END VOLUME */
 
+    /* BATCH */
+    public int createBatch(Batch b);
+    public void updateBatch(Batch b);
+    public Batch findBatchById(int id);
+    public List<Batch> findBatchesByUser(int id);
+    /* END BATCH */
+
     /* RECIPE */
     public int createRecipe(Recipe r);
     public void updateRecipe(Recipe r);
@@ -120,7 +128,7 @@ public interface Model {
 
     /* RECIPE ADJUNCTS */
     public int createRecipeAdjunct(int recipeId, AdjunctInstance a);
-    public int deleteRecipeAdjunctByRecipe(int id);
+    public int deleteRecipeAdjunctsByRecipe(int id);
     /* END RECIPE ADJUNCTS */
 
     /* RECIPE GRAIN */
@@ -188,7 +196,7 @@ public interface Model {
 
     /* BATCH ADJUNCTS */
     public int createBatchAdjunct(int batchId, AdjunctInstance a);
-    public int deleteBatchAdjunctByBatch(int id);
+    public int deleteBatchAdjunctsByBatch(int id);
     /* END BATCH ADJUNCTS */
 
     /* BATCH GRAIN */

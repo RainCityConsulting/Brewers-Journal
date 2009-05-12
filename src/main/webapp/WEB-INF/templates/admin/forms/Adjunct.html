@@ -1,0 +1,36 @@
+<form method="POST">
+
+  <table class="form view">
+
+    <tr>
+      <th>Name</th>
+      <td>
+        #springFormInput("a.name" "size='48' tabindex='1'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr>
+      <th>Manufacturer</th>
+      <td>
+        #springBind("a.mfg")
+        <select name="$status.expression" tabindex="2">
+          <option value="0"></option>
+          #foreach ($m in $mfgs)
+          <option value="$m.id">$m.name</option>
+          #end
+        </select>
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr class="button">
+      <th></th>
+      <td>
+        <input type="submit" value="$submitValue" tabindex="3"/>
+      </td>
+    </tr>
+
+  </table>
+
+</form>
