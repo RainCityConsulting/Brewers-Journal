@@ -94,7 +94,7 @@
     </selectKey>
     </insert>
 
-    <select id="findBatchAdjunctsByBatch" parameterClass="int" resultMap="adjunctInstance">
+    <select id="findBatchAdjunctsByBatch" parameterClass="int" resultMap="recipe.adjunctInstance">
     SELECT id, adjunct_id, weight, weight_unit_id
     FROM batch_adjuncts
     WHERE batch_id = #value#
@@ -113,7 +113,7 @@
     </selectKey>
     </insert>
 
-    <select id="findBatchGrainsByBatch" parameterClass="int" resultMap="grainInstance">
+    <select id="findBatchGrainsByBatch" parameterClass="int" resultMap="recipe.grainInstance">
     SELECT id, grain_id, weight, weight_unit_id
     FROM batch_grains
     WHERE batch_id = #value#
@@ -132,7 +132,7 @@
     </selectKey>
     </insert>
 
-    <select id="findBatchHopsByBatch" parameterClass="int" resultMap="hopsInstance">
+    <select id="findBatchHopsByBatch" parameterClass="int" resultMap="recipe.hopsInstance">
     SELECT id, hops_id, weight, weight_unit_id, hops_addition_type_id, alpha, time, time_unit_id
     FROM batch_hops
     WHERE batch_id = #value#
@@ -151,7 +151,7 @@
     </selectKey>
     </insert>
 
-    <select id="findBatchYeastByBatch" parameterClass="int" resultMap="yeastInstance">
+    <select id="findBatchYeastByBatch" parameterClass="int" resultMap="recipe.yeastInstance">
     SELECT id, yeast_id
     FROM batch_yeast
     WHERE batch_id = #value#
@@ -176,7 +176,7 @@
     </selectKey>
     </insert>
 
-    <select id="findMashStepsByBatch" parameterClass="int" resultMap="mashStep">
+    <select id="findMashStepsByBatch" parameterClass="int" resultMap="recipe.mashStep">
     SELECT id, mash_step_type_id, time, time_unit_id, start_temp, start_temp_unit_id,
     end_temp, end_temp_unit_id, ordinal, batch_id
     FROM batch_mash_steps
