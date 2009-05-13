@@ -23,6 +23,29 @@
         <result property="audit.lastUpdatedDate" column="last_updated_date"/>
     </resultMap>
 
+    <resultMap id="gravityReading" class="com.rcc.brew.bean.GravityReading">
+        <result property="id" column="id"/>
+        <result property="batchId" column="batch_id"/>
+        <result property="date" column="date"/>
+        <result property="type" column="type_id" select="findGravityReadingTypeById"/>
+        <result property="gravity.value" column="gravity"/>
+        <result property="gravity.unit" column="gravity_unit_id" select="findGravityUnitById"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
+    <resultMap id="gravityReadingType" class="com.rcc.brew.bean.GravityReadingType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="audit.creationUserId" column="creation_user_id"/>
+        <result property="audit.creationDate" column="creation_date"/>
+        <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
+        <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
     <!-- BATCH -->
     <insert id="insertBatch" parameterClass="com.rcc.brew.bean.Batch">
     INSERT INTO batches
@@ -165,5 +188,31 @@
     DELETE FROM batch_mash_steps WHERE batch_id = #value#
     </delete>
     <!-- END BATCH -->
+
+    <!-- GRAVITY -->
+    <select id="findGravityReadingsByBatch" parameterClass="int" resultMap="gravityReading">
+    SELECT id, batch_id, type_id, date, gravity, gravity_unit_id,
+    creation_date, creation_user_id, last_updated_date, last_updated_user_id
+    FROM gravity_readings
+    WHERE gravity_readings
+    ORDER BY date
+    </select>
+    <!-- END GRAVITY -->
+
+    <!-- GRAVITY READING TYPE -->
+    <select id="findGravityReadingTypeById" parameterClass="int" resultMap="gravityReadingType">
+    SELECT id, name, description,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM gravity_reading_types
+    WHERE id = #value#
+    </select>
+
+    <select id="findAllGravityReadingTypes" resultMap="gravityReadingType">
+    SELECT id, name, description,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM gravity_reading_types
+    ORDER BY id
+    </select>
+    <!-- END GRAVITY READING TYPE -->
 
 </sqlMap>

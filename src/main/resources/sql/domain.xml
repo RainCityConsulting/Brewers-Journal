@@ -54,7 +54,7 @@
     <select id="findGravityUnitCount" resultClass="int">
     SELECT COUNT(*) FROM gravity_units
     </select>
-    <!-- END gravity -->
+    <!-- END GRAVITY -->
 
     <!-- TEMP -->
     <select id="findTempUnitById" resultMap="tempUnit" parameterClass="int">
@@ -77,7 +77,7 @@
     <select id="findTempUnitCount" resultClass="int">
     SELECT COUNT(*) FROM temp_units
     </select>
-    <!-- END temp -->
+    <!-- END TEMP -->
 
     <!-- TIME -->
     <select id="findTimeUnitById" resultMap="timeUnit" parameterClass="int">

@@ -529,6 +529,21 @@ CREATE TABLE gravity_reading_types (
   UNIQUE KEY (name)
 ) ENGINE = InnoDB;
 
+DELIMITER ;;
+CREATE TRIGGER gravity_reading_types_bi_trig BEFORE INSERT ON gravity_reading_types FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER gravity_reading_types_bu_trig BEFORE UPDATE ON gravity_reading_types FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
+
+INSERT INTO gravity_reading_types (name, description, creation_user_id, last_updated_user_id)
+VALUES ('Sparge', 'Sparge', 1, 1),
+('Fermenting Wort', 'Fermenting Wort', 1, 1);
+
 CREATE TABLE gravity_readings (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   batch_id INTEGER UNSIGNED NOT NULL,
