@@ -245,6 +245,10 @@
     FROM gravity_reading_types
     ORDER BY id
     </select>
+
+    <select id="findGravityReadingTypeCount" resultMap="gravityReadingType">
+    SELECT COUNT(*) FROM gravity_reading_types
+    </select>
     <!-- END GRAVITY READING TYPE -->
 
 </sqlMap>

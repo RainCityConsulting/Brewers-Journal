@@ -6,6 +6,7 @@ import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
 import com.rcc.brew.bean.GravityReading;
+import com.rcc.brew.bean.GravityReadingType;
 import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
@@ -480,6 +481,28 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findGravityUnitCount");
     }
     /* END GRAVITY */
+
+    /* GRAVITY READING TYPE */
+    public GravityReadingType findGravityReadingTypeById(int id) {
+        return (GravityReadingType) this.getSqlMapClientTemplate().queryForObject(
+                "findGravityReadingTypeById", id);
+    }
+
+    public List<GravityReadingType> findAllGravityReadingTypes() {
+        return (List<GravityReadingType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllGravityReadingTypes");
+    }
+
+    public List<GravityReadingType> findAllGravityReadingTypes(int offset, int limit) {
+        return (List<GravityReadingType>) this.getSqlMapClientTemplate().queryForList(
+                "findAllGravityReadingTypes", offset, limit);
+    }
+
+    public int findGravityReadingTypeCount() {
+        return (Integer) this.getSqlMapClientTemplate().queryForObject(
+                "findGravityReadingTypeCount");
+    }
+    /* END GRAVITY READING TYPE */
 
     /* GRAVITY READING */
     public GravityReading findGravityReadingById(int id) {

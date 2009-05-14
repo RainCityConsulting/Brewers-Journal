@@ -41,6 +41,7 @@ public class GravityReadingEditController extends AbstractEditController {
 
     protected void referenceData(Map map) {
         map.put("gravityUnits", this.model.findAllGravityUnits());
+        map.put("gravityReadingTypes", this.model.findAllGravityReadingTypes());
     }
 
     protected ModelAndView processCreateFormSubmission(

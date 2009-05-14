@@ -11,6 +11,23 @@
     </tr>
 
     <tr>
+      <th>Type</th>
+      <td>
+    
+        #springBind("r.type")
+        <select name="$status.expression" tabindex="2">
+          #foreach ($t in $gravityReadingTypes)
+          <option value="$t.id"
+              #if ("$!status.value" == "$t.id")
+              selected="selected"
+              #end >$t.description</option>
+          #end
+        </select>
+
+      </td>
+    </tr>
+
+    <tr>
       <th>Gravity</th>
       <td>
     
