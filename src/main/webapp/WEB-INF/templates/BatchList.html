@@ -1,0 +1,28 @@
+<h2>My Batches</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li>My Batches</li>
+  </ul>
+</div>
+
+<div class="page-functions">
+  <ul>
+    <li><a href="#springUrl('/edit/batch.s')">New Batch</a></li>
+  </ul>
+</div>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Name</th>
+  </tr>
+
+  #foreach ($b in $batches)
+  <tr>
+    <td><a href="#springUrl('/batch.s')?id=$b.id">$b.name</a></td>
+  </tr>
+  #end
+
+</table>

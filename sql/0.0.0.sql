@@ -449,6 +449,18 @@ CREATE TABLE batches (
   FOREIGN KEY (boil_time_unit_id) REFERENCES time_units (id)
 ) ENGINE = InnoDB;
 
+DELIMITER ;;
+CREATE TRIGGER batches_bi_trig BEFORE INSERT ON batches FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER batches_bu_trig BEFORE UPDATE ON batches FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
+
+
 CREATE TABLE batch_hops (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   batch_id INTEGER UNSIGNED NOT NULL,

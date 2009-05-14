@@ -17,9 +17,16 @@ import com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor;
 import com.rcc.brew.model.GrainQuery;
 
 import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PropertyEditorRegistrar implements org.springframework.beans.PropertyEditorRegistrar {
+    private static final DateFormat defaultDateFormat = new SimpleDateFormat("MMM d, yyyy");
+
     private GrainQuery grainQuery;
     private IdentifiableIdPropertyEditor gravityUnitEditor;
     private IdentifiableIdPropertyEditor tempUnitEditor;
@@ -91,5 +98,8 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
         registry.registerCustomEditor(GravityUnit.class, this.gravityUnitEditor);
         registry.registerCustomEditor(TimeUnit.class, this.timeUnitEditor);
         registry.registerCustomEditor(Yeast.class, this.yeastEditor);
+
+        registry.registerCustomEditor(Date.class,
+                new CustomDateEditor(this.defaultDateFormat, true));
     }
 }

@@ -52,6 +52,7 @@
                 <prop key="/user/login.s">loginController</prop>
 
                 <prop key="/edit/batch.s">batchEditController</prop>
+                <prop key="/edit/batch/gravity/reading.s">gravityReadingEditController</prop>
                 <prop key="/edit/recipe.s">recipeEditController</prop>
 
                 <prop key="/ac/adjunct.s">adjunctAutoCompleteController</prop>
@@ -326,6 +327,29 @@
                         </bean>
                     </list>
                 </property>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="gravityReadingEditController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.GravityReadingEditController">
+                <property name="commandName" value="r"/>
+                <property name="sessionForm" value="true"/>
+                <property name="bindOnNewForm" value="true"/>
+
+                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+                <property name="validators">
+                    <list>
+                        <ref bean="validator"/>
+                    </list>
+                </property>
+
+                <property name="createContent" value="GravityReadingCreate"/>
+                <property name="editContent" value="GravityReadingEdit"/>
+
                 <property name="model" ref="model"/>
             </bean>
         </property>

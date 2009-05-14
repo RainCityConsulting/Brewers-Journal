@@ -36,3 +36,11 @@ $format.formatVolume($v)
 #macro(temp $t)
 $format.formatTemp($t)
 #end
+
+#macro(gravity $g)
+$format.formatGravity($g)
+#end
+
+#macro(date $d)
+$format.date($d)
+#end

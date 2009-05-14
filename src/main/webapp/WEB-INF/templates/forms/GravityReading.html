@@ -1,0 +1,43 @@
+<form method="POST">
+
+  <table class="form view">
+
+    <tr>
+      <th>Date</th>
+      <td>
+        #springFormInput("r.date" "tabindex='1' class='datepicker'")
+        #springShowErrors("<br/>" "form-error")
+      </td>
+    </tr>
+
+    <tr>
+      <th>Gravity</th>
+      <td>
+    
+        #springBind("r.gravity.value")
+        <input type="text" name="$status.expression" value="$!status.value" size="4" tabindex="2"/>
+        #springShowErrors("<br/>" "form-error")
+
+        #springBind("r.gravity.unit")
+        <select name="$status.expression" tabindex="3">
+          #foreach ($u in $gravityUnits)
+          <option value="$u.id"
+              #if ("$!status.value" == "$u.id")
+              selected="selected"
+              #end >$u.name</option>
+          #end
+        </select>
+
+      </td>
+    </tr>
+
+    <tr class="button">
+      <th></th>
+      <td>
+        <input type="submit" value="$submitValue" tabindex="4"/>
+      </td>
+    </tr>
+
+  </table>
+
+</form>

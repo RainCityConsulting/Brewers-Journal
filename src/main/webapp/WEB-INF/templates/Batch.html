@@ -1,0 +1,158 @@
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/batch.s')">My Batches</a></li>
+    <li>$batch.name</li>
+  </ul>
+</div>
+
+<h2>$batch.name</h2>
+
+<div class="page-functions">
+  <ul>
+    <li><a href="#springUrl('/edit/batch.s')?id=$batch.id">Edit</a></li>
+    <li><a href="#springUrl('/edit/batch/gravity/reading.s')?batchId=$batch.id">Add Gravity Reading</a></li>
+  </ul>
+</div>
+
+<table class="view">
+
+  <tr>
+    <th>Boil Length</th>
+    <td>#time($batch.boilTime)</td>
+  </tr>
+
+  <tr>
+    <th>Final Volume</th>
+    <td>#volume($batch.volume)</td>
+  </tr>
+
+</table>
+
+<h3>Grains</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Grain</th>
+    <th>Weight</th>
+  </tr>
+
+  #foreach ($g in $batch.grains)
+  <tr>
+    <td>$g.grain.name</td>
+    <td sorttable_customkey="$g.weight.gramWeight()">#weight($g.weight)</td>
+  </tr>
+  #end
+
+</table>
+
+<h3>Mash</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Type</th>
+    <th>Time</th>
+    <th>Start Temp</th>
+    <th>End Temp</th>
+  </tr>
+
+  #foreach ($m in $batch.mash)
+  <tr>
+    <td>$m.type.description</td>
+    <td sorttable_customkey="$!m.time.secondTime()">#time($m.time)</td>
+    <td>#temp($m.startTemp)</td>
+    <td>#temp($m.endTemp)</td>
+  </tr>
+  #end
+
+</table>
+
+
+
+<h3>Adjuncts</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Adjunct</th>
+    <th class="sorttable_nosort">Weight</th>
+    <th class="sorttable_nosort">Volume</th>
+  </tr>
+
+  #foreach ($a in $batch.adjuncts)
+  <tr>
+    <td>$a.adjunct.name</td>
+    <td>#weight($a.weight)</td>
+    <td>#weight($a.volume)</td>
+  </tr>
+  #end
+
+</table>
+
+
+
+<h3>Hops</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Hops</th>
+    <th>Weight</th>
+    <th>Type</th>
+    <th>Time</th>
+    <th>Alpha%</th>
+  </tr>
+
+  #foreach ($h in $batch.hops)
+  <tr>
+    <td>$h.hops.name</td>
+    <td sorttable_customkey="$h.weight.gramWeight()">#weight($h.weight)</td>
+    <td>$h.additionType.name</td>
+    <td sorttable_customkey="$!h.time.secondTime()">#time($h.time)</td>
+    <td>$!h.alpha</td>
+  </tr>
+  #end
+
+</table>
+
+
+
+<h3>Yeast</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Yeast</th>
+  </tr>
+
+  #foreach ($y in $batch.yeast)
+  <tr>
+    <td>$y.yeast.name</td>
+  </tr>
+  #end
+
+</table>
+
+
+
+<h3>Gravity Readings</h3>
+
+<table class="list sortable">
+
+  <tr>
+    <th>Type</th>
+    <th>Date</th>
+    <th>Value</th>
+  </tr>
+
+  #foreach ($r in $batch.gravityReadings)
+  <tr>
+    <td>$r.type.name</td>
+    <td>#date($r.date)</td>
+    <td>#gravity($r.gravity)</td>
+  </tr>
+  #end
+
+</table>

@@ -5,6 +5,7 @@ import com.rcc.brew.bean.AdjunctInstance;
 import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.GravityReading;
 import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
@@ -479,6 +480,22 @@ public class ModelImpl extends ModelBase implements Model {
         return (Integer) this.getSqlMapClientTemplate().queryForObject("findGravityUnitCount");
     }
     /* END GRAVITY */
+
+    /* GRAVITY READING */
+    public GravityReading findGravityReadingById(int id) {
+        return (GravityReading) this.getSqlMapClientTemplate().queryForObject(
+                "findGravityReadingById", id);
+    }
+
+    public int createGravityReading(GravityReading g) {
+        Integer id = (Integer) this.getSqlMapClientTemplate().insert("insertGravityReading", g);
+        return id.intValue();
+    }
+
+    public void updateGravityReading(GravityReading g) {
+        this.getSqlMapClientTemplate().update("updateGravityReading", g);
+    }
+    /* END GRAVITY READING */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id) {

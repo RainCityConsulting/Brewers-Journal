@@ -17,6 +17,7 @@
         <result property="hops" column="id" select="findBatchHopsByBatch"/>
         <result property="yeast" column="id" select="findBatchYeastByBatch"/>
         <result property="mash" column="id" select="findMashStepsByBatch"/>
+        <result property="gravityReadings" column="id" select="findGravityReadingsByBatch"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
@@ -78,7 +79,7 @@
     </select>
 
     <select id="findBatchesByUser" parameterClass="int" resultMap="batch">
-    SELECT id, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
+    SELECT id, brew_date, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM batches
     WHERE creation_user_id = #value#
@@ -189,15 +190,46 @@
     </delete>
     <!-- END BATCH -->
 
-    <!-- GRAVITY -->
+
+    <!-- GRAVITY READING -->
+    <select id="findGravityReadingById" parameterClass="int" resultMap="gravityReading">
+    SELECT id, batch_id, type_id, date, gravity, gravity_unit_id,
+    creation_date, creation_user_id, last_updated_date, last_updated_user_id
+    FROM gravity_readings
+    WHERE id = #value#
+    ORDER BY date
+    </select>
+
     <select id="findGravityReadingsByBatch" parameterClass="int" resultMap="gravityReading">
     SELECT id, batch_id, type_id, date, gravity, gravity_unit_id,
     creation_date, creation_user_id, last_updated_date, last_updated_user_id
     FROM gravity_readings
-    WHERE gravity_readings
+    WHERE batch_id = #value#
     ORDER BY date
     </select>
-    <!-- END GRAVITY -->
+
+    <insert id="insertGravityReading" parameterClass="com.rcc.brew.bean.GravityReading">
+    INSERT INTO gravity_readings
+    (batch_id, type_id, date, gravity, gravity_unit_id,
+    creation_user_id, last_updated_user_id)
+    VALUES (#batchId#, #type.id#, #date#, #gravity.value#, #gravity.unit.id#,
+    @user_id, @user_id)
+    <selectKey resultClass="int" type="post">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+    </insert>
+
+    <update id="updateGravityReading" parameterClass="com.rcc.brew.bean.GravityReading">
+    UPDATE gravity_readings
+    SET batch_id = #batchId#,
+    type_id = #type.id#,
+    date = #date#,
+    gravity = #gravity.value#
+    gravity_unit_id = #gravity.unit.id#,
+    last_updated_user_id = @user_id
+    WHERE id = #id#
+    </update>
+    <!-- END GRAVITY READING -->
 
     <!-- GRAVITY READING TYPE -->
     <select id="findGravityReadingTypeById" parameterClass="int" resultMap="gravityReadingType">

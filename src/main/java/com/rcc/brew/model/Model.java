@@ -5,6 +5,7 @@ import com.rcc.brew.bean.AdjunctInstance;
 import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.GravityReading;
 import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
@@ -161,6 +162,12 @@ public interface Model {
     public List<GravityUnit> findAllGravityUnits(int offset, int limit);
     public int findGravityUnitCount();
     /* END GRAVITY */
+
+    /* GRAVITY READING */
+    public GravityReading findGravityReadingById(int id);
+    public int createGravityReading(GravityReading g);
+    public void updateGravityReading(GravityReading g);
+    /* END GRAVITY READING */
 
     /* TIME */
     public TimeUnit findTimeUnitById(int id);
