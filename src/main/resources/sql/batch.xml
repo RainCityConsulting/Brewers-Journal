@@ -17,6 +17,7 @@
         <result property="hops" column="id" select="findBatchHopsByBatch"/>
         <result property="yeast" column="id" select="findBatchYeastByBatch"/>
         <result property="mash" column="id" select="findMashStepsByBatch"/>
+        <result property="adjuncts" column="id" select="findBatchAdjunctsByBatch"/>
         <result property="gravityReadings" column="id" select="findGravityReadingsByBatch"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
@@ -45,6 +46,14 @@
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
         <result property="audit.lastUpdatedDate" column="last_updated_date"/>
+    </resultMap>
+
+    <resultMap id="batchGrainInstance" class="com.rcc.brew.bean.GrainInstance">
+        <result property="id" column="id"/>
+        <result property="grain" column="grain_id" select="findGrainById"/>
+        <result property="weight.value" column="weight"/>
+        <result property="weight.unit" column="weight_unit_id" select="findWeightUnitById"/>
+        <result property="notes" column="id" select="findBatchGrainNotesByBatchGrainId"/>
     </resultMap>
 
     <!-- BATCH -->
@@ -114,7 +123,7 @@
     </selectKey>
     </insert>
 
-    <select id="findBatchGrainsByBatch" parameterClass="int" resultMap="recipe.grainInstance">
+    <select id="findBatchGrainsByBatch" parameterClass="int" resultMap="batchGrainInstance">
     SELECT id, grain_id, weight, weight_unit_id
     FROM batch_grains
     WHERE batch_id = #value#
@@ -123,6 +132,15 @@
     <delete id="deleteBatchGrainsByBatch" parameterClass="int">
     DELETE FROM batch_grains WHERE batch_id = #value#
     </delete>
+
+    <select id="findBatchGrainNotesByBatchGrainId" parameterClass="int" resultMap="note.note">
+    SELECT id, object_type, object_id, text,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM notes
+    WHERE object_id = #value#
+    AND object_type = 'batch_grain_instance'
+    ORDER BY creation_date
+    </select>
 
     <insert id="insertBatchHops" parameterClass="map">
     INSERT INTO batch_hops
@@ -224,11 +242,19 @@
     SET batch_id = #batchId#,
     type_id = #type.id#,
     date = #date#,
-    gravity = #gravity.value#
+    gravity = #gravity.value#,
     gravity_unit_id = #gravity.unit.id#,
     last_updated_user_id = @user_id
     WHERE id = #id#
     </update>
+
+    <delete id="deleteGravityReadingById" parameterClass="int">
+        DELETE FROM gravity_readings WHERE id = #value#
+    </delete>
+
+    <delete id="deleteGravityReadingsByBatch" parameterClass="int">
+        DELETE FROM gravity_readings WHERE batch_id = #value#
+    </delete>
     <!-- END GRAVITY READING -->
 
     <!-- GRAVITY READING TYPE -->

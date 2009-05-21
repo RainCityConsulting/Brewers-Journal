@@ -415,12 +415,11 @@ CREATE TABLE object_types (
   UNIQUE KEY (name)
 ) ENGINE = InnoDB;
 
-INSERT INTO object_types (name) VALUES ('recipe'), ('grain'), ('yeast'),  ('hops'), ('grain_instance'),  ('yeast_instance'), ('hops_instance');
+INSERT INTO object_types (name) VALUES ('recipe'), ('batch'), ('grain'), ('yeast'),  ('hops'), ('adjunct'), ('recipe_grain_instance'),  ('recipe_yeast_instance'), ('recipe_hops_instance'), ('recipe_mash_step'), ('gravity_reading') ('batch_grain_instance'),  ('batch_yeast_instance'), ('batch_hops_instance'), ('batch_mash_step'),;
 
-CREATE TABLE notes (
+CREATE TABLE batch_grain_notes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  object_type_id INTEGER UNSIGNED NOT NULL,
-  object_id INTEGER UNSIGNED NOT NULL,
+  batch_grain_id INTEGER UNSIGNED NOT NULL,
   text TEXT NOT NULL,
   creation_date DATETIME NOT NULL DEFAULT 0,
   creation_user_id INTEGER UNSIGNED NOT NULL,
@@ -428,8 +427,43 @@ CREATE TABLE notes (
   last_updated_user_id INTEGER UNSIGNED NOT NULL,
   FOREIGN KEY (creation_user_id) REFERENCES users (id),
   FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
-  FOREIGN KEY (object_type_id) REFERENCES object_types (id)
+  FOREIGN KEY (batch_grain_id) REFERENCES batch_grains (id)
 ) ENGINE = InnoDB;
+
+DELIMITER ;;
+CREATE TRIGGER batch_grainnotes_bi_trig BEFORE INSERT ON batch_grain_notes FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER batch_grain_notes_bu_trig BEFORE UPDATE ON batch_grain_notes FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
+
+CREATE TABLE notes (
+  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  object_type ENUM('recipe', 'batch', 'grain', 'yeast',  'hops', 'adjunct', 'recipe_grain_instance',  'recipe_yeast_instance', 'recipe_hops_instance', 'recipe_mash_step', 'gravity_reading', 'batch_grain_instance',  'batch_yeast_instance', 'batch_hops_instance', 'batch_mash_step') NOT NULL,
+  object_id INTEGER UNSIGNED NOT NULL,
+  text TEXT NOT NULL,
+  creation_date DATETIME NOT NULL DEFAULT 0,
+  creation_user_id INTEGER UNSIGNED NOT NULL,
+  last_updated_date DATETIME NOT NULL DEFAULT 0,
+  last_updated_user_id INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (creation_user_id) REFERENCES users (id),
+  FOREIGN KEY (last_updated_user_id) REFERENCES users (id)
+) ENGINE = InnoDB;
+
+DELIMITER ;;
+CREATE TRIGGER notes_bi_trig BEFORE INSERT ON notes FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER notes_bu_trig BEFORE UPDATE ON notes FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
 
 CREATE TABLE batches (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -554,14 +588,16 @@ DELIMITER ;
 
 INSERT INTO gravity_reading_types (name, description, creation_user_id, last_updated_user_id)
 VALUES ('Sparge', 'Sparge', 1, 1),
-('Fermenting Wort', 'Fermenting Wort', 1, 1);
+('Fermenting Wort', 'Fermenting Wort', 1, 1),
+('Original Gravity', 'Original Gravity', 1, 1),
+('Final Gravity', 'Final Gravity', 1, 1);
 
 CREATE TABLE gravity_readings (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   batch_id INTEGER UNSIGNED NOT NULL,
   type_id INTEGER UNSIGNED NOT NULL,
   `date` DATE NULL,
-  gravity FLOAT(5, 2) UNSIGNED NULL,
+  gravity FLOAT(6, 3) UNSIGNED NULL,
   gravity_unit_id INTEGER UNSIGNED NULL,
   creation_date DATETIME NOT NULL DEFAULT 0,
   creation_user_id INTEGER UNSIGNED NOT NULL,
@@ -572,6 +608,17 @@ CREATE TABLE gravity_readings (
   FOREIGN KEY (type_id) REFERENCES gravity_reading_types (id),
   FOREIGN KEY (gravity_unit_id) REFERENCES gravity_units (id)
 ) ENGINE = InnoDB;
+
+DELIMITER ;;
+CREATE TRIGGER gravity_readings_bi_trig BEFORE INSERT ON gravity_readings FOR EACH ROW BEGIN
+SET NEW.creation_date = NOW();
+SET NEW.last_updated_date = NOW();
+END ;;
+
+CREATE TRIGGER gravity_readings_bu_trig BEFORE UPDATE ON gravity_readings FOR EACH ROW BEGIN
+SET NEW.last_updated_date = NOW();
+END ;;
+DELIMITER ;
 
 CREATE TABLE tastings (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

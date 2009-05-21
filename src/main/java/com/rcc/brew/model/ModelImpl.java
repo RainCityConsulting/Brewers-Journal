@@ -518,6 +518,14 @@ public class ModelImpl extends ModelBase implements Model {
     public void updateGravityReading(GravityReading g) {
         this.getSqlMapClientTemplate().update("updateGravityReading", g);
     }
+
+    public int deleteGravityReadingById(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteGravityReadingById", id);
+    }
+
+    public int deleteGravityReadingsByBatch(int id) {
+        return this.getSqlMapClientTemplate().delete("deleteGravityReadingsByBatch", id);
+    }
     /* END GRAVITY READING */
 
     /* TIME */
@@ -560,19 +568,19 @@ public class ModelImpl extends ModelBase implements Model {
         return n;
     }
 
-    public List<Note> findNotesByObjectTypeAndObject(int objectTypeId, int objectId) {
+    public List<Note> findNotesByObjectTypeAndObject(String objectType, int objectId) {
         return (List<Note>) this.getSqlMapClientTemplate().queryForList(
-                "findNotesByObjectTypeIdAndObjectId",
-                this.createParams("objectTypeId", objectTypeId, "objectId", objectId));
+                "findNotesByObjectTypeAndObjectId",
+                this.createParams("objectType", objectType, "objectId", objectId));
     }
 
     public int deleteNoteById(int id) {
         return this.getSqlMapClientTemplate().delete("deleteNoteById", id);
     }
 
-    public int deleteNotesByObjectTypeAndObject(int objectTypeId, int objectId) {
+    public int deleteNotesByObjectTypeAndObject(String objectType, int objectId) {
         return this.getSqlMapClientTemplate().delete("deleteNotesByObjectTypeAndObject",
-                this.createParams("objectTypeId", objectTypeId, "objectId", objectId));
+                this.createParams("objectType", objectType, "objectId", objectId));
     }
     /* END NOTES */
 

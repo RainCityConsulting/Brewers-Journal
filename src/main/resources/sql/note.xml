@@ -8,7 +8,7 @@
     <resultMap id="note" class="com.rcc.brew.bean.Note">
         <result property="id" column="id"/>
         <result property="text" column="text"/>
-        <result property="objectTypeId" column="object_type_id"/>
+        <result property="objectType" column="object_type"/>
         <result property="objectId" column="object_id"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
@@ -18,8 +18,8 @@
 
     <insert id="insertNote" parameterClass="com.rcc.brew.bean.Note">
     INSERT INTO notes
-    (text, object_type_id, object_id, creation_user_id, last_updated_user_id)
-    VALUES (#text#, #objectTypeId#, #objectId#, @user_id, @user_id)
+    (text, object_type, object_id, creation_user_id, last_updated_user_id)
+    VALUES (#text#, #objectType#, #objectId#, @user_id, @user_id)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>
@@ -28,24 +28,24 @@
     <update id="updateNote" parameterClass="com.rcc.brew.bean.Note">
     UPDATE notes
     SET text = #text#,
-    object_type_id = #objectTypeId#,
+    object_type = #objectType#,
     object_id = #objectId#,
     last_updated_user_id = @user_id
     WHERE id = #id#
     </update>
 
     <select id="findNoteById" parameterClass="int" resultMap="note">
-    SELECT id, text, object_type_id, object_id,
+    SELECT id, text, object_type, object_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM notes
     WHERE id = #value#
     </select>
 
     <select id="findNotesByObjectTypeAndObjectId" parameterClass="int" resultMap="note">
-    SELECT id, text, object_type_id, object_id,
+    SELECT id, text, object_type, object_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM notes
-    WHERE object_type_id = #objectTypeId#
+    WHERE object_type = #objectType#
     AND object_id = #objectId#
     </select>
 
@@ -54,7 +54,7 @@
     </delete>
 
     <delete id="deleteNotesByObjectTypeAndObject" parameterClass="map">
-    DELETE FROM notes WHERE object_type_id = #objectTypeId# AND object_id = #objectId#
+    DELETE FROM notes WHERE object_type = #objectType# AND object_id = #objectId#
     </delete>
 
 </sqlMap>

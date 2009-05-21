@@ -175,6 +175,8 @@ public interface Model {
     public GravityReading findGravityReadingById(int id);
     public int createGravityReading(GravityReading g);
     public void updateGravityReading(GravityReading g);
+    public int deleteGravityReadingById(int id);
+    public int deleteGravityReadingsByBatch(int id);
     /* END GRAVITY READING */
 
     /* TIME */
@@ -189,9 +191,9 @@ public interface Model {
     public int createNote(Note n);
     public void updateNote(Note n);
     public Note findNoteById(int id);
-    public List<Note> findNotesByObjectTypeAndObject(int objectTypeId, int objectId);
+    public List<Note> findNotesByObjectTypeAndObject(String objectType, int objectId);
     public int deleteNoteById(int id);
-    public int deleteNotesByObjectTypeAndObject(int objectTypeId, int objectId);
+    public int deleteNotesByObjectTypeAndObject(String objectType, int objectId);
     /* END NOTES */
 
     /* OBJECT TYPES */

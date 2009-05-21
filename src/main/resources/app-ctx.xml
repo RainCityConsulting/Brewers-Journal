@@ -150,6 +150,15 @@
         </property>
     </bean>
 
+    <bean id="gravityReadingTypeQuery" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.model.GravityReadingTypeQueryImpl">
+                <property name="sqlMapClient" ref="sqlMapClient"/>
+                <property name="model" ref="model"/>
+            </bean>
+        </property>
+    </bean>
+
     <bean id="gravityUnitQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.GravityUnitQueryImpl">

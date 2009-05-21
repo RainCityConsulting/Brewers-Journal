@@ -131,14 +131,18 @@ public class BatchEditController extends AbstractEditController {
                             return ai;
                         }
         });
-        adjuncts.addAll(batch.getAdjuncts());
-        for (AdjunctInstance a : adjuncts) {
-            if (!a.hasWeight()) {
-                a.setWeight(new Weight(new WeightUnit()));
+        if (batch.hasAdjuncts() && !batch.getAdjuncts().isEmpty()) {
+            adjuncts.addAll(batch.getAdjuncts());
+            for (AdjunctInstance a : adjuncts) {
+                if (!a.hasWeight()) {
+                    a.setWeight(new Weight(new WeightUnit()));
+                }
+                if (!a.hasVolume()) {
+                    a.setVolume(new Volume(new VolumeUnit()));
+                }
             }
-            if (!a.hasVolume()) {
-                a.setVolume(new Volume(new VolumeUnit()));
-            }
+        } else {
+            adjuncts.get(0);
         }
         batch.setAdjuncts(adjuncts);
 
@@ -150,7 +154,11 @@ public class BatchEditController extends AbstractEditController {
                             return gi;
                         }
         });
-        grains.addAll(batch.getGrains());
+        if (batch.hasGrains() && !batch.getGrains().isEmpty()) {
+            grains.addAll(batch.getGrains());
+        } else {
+            grains.get(0);
+        }
         batch.setGrains(grains);
 
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
@@ -162,14 +170,17 @@ public class BatchEditController extends AbstractEditController {
                     return hi;
                 }
         });
-        hops.addAll(batch.getHops());
-        batch.setHops(hops);
-
-        for (HopsInstance hi : batch.getHops()) {
-            if (!hi.hasTime()) {
-                hi.setTime(new Time(new TimeUnit()));
+        if (batch.hasHops() && !batch.getHops().isEmpty()) {
+            hops.addAll(batch.getHops());
+            for (HopsInstance hi : batch.getHops()) {
+                if (!hi.hasTime()) {
+                    hi.setTime(new Time(new TimeUnit()));
+                }
             }
+        } else {
+            hops.get(0);
         }
+        batch.setHops(hops);
 
         List<YeastInstance> yeast = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
@@ -178,7 +189,11 @@ public class BatchEditController extends AbstractEditController {
                             return y;
                         }
         });
-        yeast.addAll(batch.getYeast());
+        if (batch.hasYeast() && !batch.getYeast().isEmpty()) {
+            yeast.addAll(batch.getYeast());
+        } else {
+            yeast.get(0);
+        }
         batch.setYeast(yeast);
 
         List<MashStep> mash = new AutoPopulatingList(
@@ -192,11 +207,15 @@ public class BatchEditController extends AbstractEditController {
                             return ms;
                         }
         });
-        mash.addAll(batch.getMash());
-        for (MashStep m : mash) {
-            if (!m.hasTime()) {
-                m.setTime(new Time(new TimeUnit()));
+        if (batch.hasMash() && !batch.getMash().isEmpty()) {
+            mash.addAll(batch.getMash());
+            for (MashStep m : mash) {
+                if (!m.hasTime()) {
+                    m.setTime(new Time(new TimeUnit()));
+                }
             }
+        } else {
+            mash.get(0);
         }
         batch.setMash(mash);
 

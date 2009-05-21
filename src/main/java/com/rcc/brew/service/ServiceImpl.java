@@ -42,9 +42,8 @@ public class ServiceImpl implements Service {
         }
 
         if (b.hasNotes()) {
-            int batchObjectTypeId = this.model.findObjectTypeIdByName("batch");
             for (Note n : b.getNotes()) {
-                n.setObjectTypeId(batchObjectTypeId);
+                n.setObjectType("batch");
                 n.setObjectId(id);
                 this.model.createNote(n);
             }
@@ -61,8 +60,7 @@ public class ServiceImpl implements Service {
         this.model.deleteBatchAdjunctsByBatch(b.getId());
         this.model.deleteBatchMashStepsByBatch(b.getId());
 
-        int batchObjectTypeId = this.model.findObjectTypeIdByName("batch");
-        this.model.deleteNotesByObjectTypeAndObject(batchObjectTypeId, b.getId());
+        this.model.deleteNotesByObjectTypeAndObject("batch", b.getId());
 
         for (GrainInstance g : b.getGrains()) {
             this.model.createBatchGrain(b.getId(), g);
@@ -89,7 +87,7 @@ public class ServiceImpl implements Service {
 
         if (b.hasNotes()) {
             for (Note n : b.getNotes()) {
-                n.setObjectTypeId(batchObjectTypeId);
+                n.setObjectType("batch");
                 n.setObjectId(b.getId());
                 this.model.createNote(n);
             }
@@ -123,9 +121,8 @@ public class ServiceImpl implements Service {
         }
 
         if (r.hasNotes()) {
-            int recipeObjectTypeId = this.model.findObjectTypeIdByName("recipe");
             for (Note n : r.getNotes()) {
-                n.setObjectTypeId(recipeObjectTypeId);
+                n.setObjectType("recipe");
                 n.setObjectId(id);
                 this.model.createNote(n);
             }
@@ -142,8 +139,7 @@ public class ServiceImpl implements Service {
         this.model.deleteRecipeAdjunctsByRecipe(r.getId());
         this.model.deleteRecipeMashStepsByRecipe(r.getId());
 
-        int recipeObjectTypeId = this.model.findObjectTypeIdByName("recipe");
-        this.model.deleteNotesByObjectTypeAndObject(recipeObjectTypeId, r.getId());
+        this.model.deleteNotesByObjectTypeAndObject("recipe", r.getId());
 
         for (GrainInstance g : r.getGrains()) {
             this.model.createRecipeGrain(r.getId(), g);
@@ -170,7 +166,7 @@ public class ServiceImpl implements Service {
 
         if (r.hasNotes()) {
             for (Note n : r.getNotes()) {
-                n.setObjectTypeId(recipeObjectTypeId);
+                n.setObjectType("recipe");
                 n.setObjectId(r.getId());
                 this.model.createNote(n);
             }

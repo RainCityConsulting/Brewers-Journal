@@ -2,6 +2,7 @@ package com.rcc.brew.web;
 
 import com.rcc.brew.bean.Adjunct;
 import com.rcc.brew.bean.Grain;
+import com.rcc.brew.bean.GravityReadingType;
 import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.Hops;
 import com.rcc.brew.bean.HopsAdditionType;
@@ -29,6 +30,7 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
 
     private GrainQuery grainQuery;
     private IdentifiableIdPropertyEditor gravityUnitEditor;
+    private IdentifiableIdPropertyEditor gravityReadingTypeEditor;
     private IdentifiableIdPropertyEditor tempUnitEditor;
     private IdentifiableIdPropertyEditor timeUnitEditor;
     private IdentifiableIdPropertyEditor weightUnitEditor;
@@ -55,6 +57,10 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
 
     public void setHopsAdditionTypeEditor(IdentifiableIdPropertyEditor hopsAdditionTypeEditor) {
         this.hopsAdditionTypeEditor = hopsAdditionTypeEditor;
+    }
+
+    public void setGravityReadingTypeEditor(IdentifiableIdPropertyEditor gravityReadingTypeEditor) {
+        this.gravityReadingTypeEditor = gravityReadingTypeEditor;
     }
 
     public void setGravityUnitEditor(IdentifiableIdPropertyEditor gravityUnitEditor) {
@@ -96,6 +102,7 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
         registry.registerCustomEditor(WeightUnit.class, this.weightUnitEditor);
         registry.registerCustomEditor(TempUnit.class, this.tempUnitEditor);
         registry.registerCustomEditor(GravityUnit.class, this.gravityUnitEditor);
+        registry.registerCustomEditor(GravityReadingType.class, this.gravityReadingTypeEditor);
         registry.registerCustomEditor(TimeUnit.class, this.timeUnitEditor);
         registry.registerCustomEditor(Yeast.class, this.yeastEditor);
 

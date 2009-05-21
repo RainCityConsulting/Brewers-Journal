@@ -31,24 +31,46 @@
 
 <h3>Grains</h3>
 
+#if ($batch.hasGrains() && !$batch.grains.isEmpty())
 <table class="list sortable">
 
   <tr>
     <th>Grain</th>
     <th>Weight</th>
+    <th class="sortable_nosort"></th>
+    <th class="sortable_nosort"></th>
   </tr>
 
   #foreach ($g in $batch.grains)
   <tr>
     <td>$g.grain.name</td>
     <td sorttable_customkey="$g.weight.gramWeight()">#weight($g.weight)</td>
+    <td>
+      #if ($g.hasNotes() && !$g.notes.isEmpty())
+      <div class="notes">
+      #foreach ($n in $g.notes)
+        <div class="note">$n.text</div>
+        <div>
+          <a class="icon-bar ui-icon ui-icon-pencil" href="#springUrl('/edit/note.s')?id=$n.id" title="Edit note"></a>
+          <a class="icon-bar ui-icon ui-icon-trash" href="#springUrl('/delete/note.s')?id=$n.id" title="Delete note"></a>
+        </div>
+        <div style="clear: both;"></div>
+      #end
+      </div>
+      #end
+    </td>
+    <td><a href="#springUrl('/edit/batch/grain/note.s')?objectId=$g.id" class="ui-icon ui-icon-note" title="Add note"></a></td>
   </tr>
   #end
 
 </table>
+#else
+<p>No grains have been listed. You may <a href="#springUrl('/edit/batch.s')?id=$batch.id">edit this batch</a> to add grains.</p>
+#end
 
 <h3>Mash</h3>
 
+#if ($batch.hasMash() && !$batch.mash.isEmpty())
 <table class="list sortable">
 
   <tr>
@@ -68,11 +90,15 @@
   #end
 
 </table>
+#else
+<p>No mash steps have been listed. You may <a href="#springUrl('/edit/batch.s')?id=$batch.id">edit this batch</a> to add mash steps.</p>
+#end
 
 
 
 <h3>Adjuncts</h3>
 
+#if ($batch.hasAdjuncts() && !$batch.adjuncts.isEmpty())
 <table class="list sortable">
 
   <tr>
@@ -90,11 +116,15 @@
   #end
 
 </table>
+#else
+<p>No adjuncts have been listed. You may <a href="#springUrl('/edit/batch.s')?id=$batch.id">edit this batch</a> to add adjuncts.</p>
+#end
 
 
 
 <h3>Hops</h3>
 
+#if ($batch.hasHops() && !$batch.hops.isEmpty())
 <table class="list sortable">
 
   <tr>
@@ -116,11 +146,15 @@
   #end
 
 </table>
+#else
+<p>No hops have been listed. You may <a href="#springUrl('/edit/batch.s')?id=$batch.id">edit this batch</a> to add hops.</p>
+#end
 
 
 
 <h3>Yeast</h3>
 
+#if ($batch.hasYeast() && !$batch.yeast.isEmpty())
 <table class="list sortable">
 
   <tr>
@@ -134,17 +168,22 @@
   #end
 
 </table>
+#else
+<p>No yeast has been listed. You may <a href="#springUrl('/edit/batch.s')?id=$batch.id">edit this batch</a> to add yeast.</p>
+#end
 
 
 
 <h3>Gravity Readings</h3>
 
+#if ($batch.hasGravityReadings() && !$batch.gravityReadings.isEmpty())
 <table class="list sortable">
 
   <tr>
     <th>Type</th>
     <th>Date</th>
     <th>Value</th>
+    <th class="sorttable_nosort"></th>
   </tr>
 
   #foreach ($r in $batch.gravityReadings)
@@ -152,7 +191,14 @@
     <td>$r.type.name</td>
     <td>#date($r.date)</td>
     <td>#gravity($r.gravity)</td>
+    <td>
+      <a class="icon-bar ui-icon ui-icon-pencil" href="#springUrl('/edit/batch/gravity/reading.s')?id=$r.id" title="Edit"></a>
+      <a class="icon-bar ui-icon ui-icon-trash" href="#springUrl('/delete/batch/gravity/reading.s')?id=$r.id" title="Delete"></a>
+    </td>
   </tr>
   #end
 
 </table>
+#else
+<p>No gravity readings have been listed. You may <a href="#springUrl('/edit/batch/gravity/reading.s')?batchId=$batch.id">add a gravity reading</a>.</p>
+#end

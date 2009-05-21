@@ -7,6 +7,7 @@
       <td>
         #springFormInput("r.date" "tabindex='1' class='datepicker'")
         #springShowErrors("<br/>" "form-error")
+        <div class="help">Mon d, yyyy</div>
       </td>
     </tr>
 
@@ -52,6 +53,7 @@
       <th></th>
       <td>
         <input type="submit" value="$submitValue" tabindex="4"/>
+        <a href="#springUrl('/batch.s')?id=$r.batchId">Cancel</a>
       </td>
     </tr>
 

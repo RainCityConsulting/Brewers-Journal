@@ -1,0 +1,13 @@
+<h2>Edit Gravity Reading</h2>
+
+<div class="breadcrumbs">
+  <ul>
+    <li><a href="#springUrl('/index.s')">Home</a></li>
+    <li><a href="#springUrl('/batch.s')">My Batches</a></li>
+    <li><a href="#springUrl('/batch.s')?id=$batch.id">$batch.name</a></li>
+    <li>Edit Gravity Reading</li>
+  </ul>
+</div>
+
+#set ($submitValue = 'Update Gravity Reading')
+#parse("/forms/GravityReading.html")

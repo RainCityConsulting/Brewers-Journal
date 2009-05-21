@@ -1,4 +1,5 @@
-var com = {};
+var com;
+if (!com) com = {};
 if (!com.rcc) com.rcc = {};
 if (!com.rcc.brew) com.rcc.brew = {};
 if (!com.rcc.brew.ac) com.rcc.brew.ac = {};

@@ -393,3 +393,19 @@ div.tab-content {
   display: none;
 }
 /* END TAB MENU */
+
+.icon-bar {
+  float: left;
+}
+
+div.notes-closed {
+  height: 1em;
+  overflow: hidden;
+}
+
+div.notes-open {
+}
+
+div.note {
+  white-space: pre;
+}
