@@ -56,7 +56,8 @@
                 <prop key="/delete/batch/gravity/reading.s">batchController</prop>
                 <prop key="/edit/recipe.s">recipeEditController</prop>
                 <prop key="/edit/note.s">noteEditController</prop>
-                <prop key="/edit/batch/grain/note.s">noteEditController</prop>
+                <prop key="/edit/batch/grain/note.s">batchGrainNoteEditController</prop>
+                <prop key="/edit/batch/note.s">batchNoteEditController</prop>
 
                 <prop key="/ac/adjunct.s">adjunctAutoCompleteController</prop>
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
@@ -403,28 +404,176 @@
         </property>
     </bean>
 
+    <!-- NOTE CONTROLLERS -->
+
+    <bean id="noteEditControllerParent" class="com.rcc.brew.web.controller.NoteEditController">
+        <property name="commandName" value="n"/>
+        <property name="sessionForm" value="true"/>
+        <property name="bindOnNewForm" value="true"/>
+
+        <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
+
+        <property name="validators">
+            <list>
+                <ref bean="validator"/>
+            </list>
+        </property>
+
+        <property name="createContent" value="NoteCreate"/>
+        <property name="editContent" value="NoteEdit"/>
+
+        <property name="model" ref="model"/>
+    </bean>
+
     <bean id="noteEditController" parent="modelTxn">
+        <property name="target" ref="noteEditControllerParent"/>
+    </bean>
+
+    <bean id="recipeNoteEditController" parent="noteEditController">
         <property name="target">
-            <bean class="com.rcc.brew.web.controller.NoteEditController">
-                <property name="commandName" value="n"/>
-                <property name="sessionForm" value="true"/>
-                <property name="bindOnNewForm" value="true"/>
-
-                <property name="propertyEditorRegistrar" ref="propertyEditorRegistrar"/>
-
-                <property name="validators">
-                    <list>
-                        <ref bean="validator"/>
-                    </list>
-                </property>
-
-                <property name="createContent" value="NoteCreate"/>
-                <property name="editContent" value="NoteEdit"/>
-
-                <property name="model" ref="model"/>
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe"/>
             </bean>
         </property>
     </bean>
+
+    <bean id="grainNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="grain"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="yeastNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="yeast"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="hopsNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="hops"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="adjunctNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="adjunct"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeGrainNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe_grain"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeHopsNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe_hops"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeYeastNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe_yeast"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeAdjunctNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe_adjunct"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="recipeMashStepNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="recipe_mash_step"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="gravityReadingNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="gravity_reading"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchHopsNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch_hops"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchYeastNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch_yeast"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchAdjunctNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch_adjunct"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchGrainNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch_grain"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="batchMashStepNoteEditController" parent="noteEditController">
+        <property name="target">
+            <bean parent="noteEditControllerParent">
+                <property name="objectType" value="batch_mash_step"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- END NOTE CONTROLLERS -->
 
     <bean id="recipeEditController" parent="modelTxn">
         <property name="target">

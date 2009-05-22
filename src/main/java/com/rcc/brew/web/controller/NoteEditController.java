@@ -21,11 +21,17 @@ public class NoteEditController extends AbstractEditController {
     private static final Log log = LogFactory.getLog(NoteEditController.class);
 
     private Model model;
+    private String objectType;
 
     public void setModel(Model model) { this.model = model; }
 
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
     protected Identifiable formNewBackingObject() throws Exception {
         Note note = new Note();
+        note.setObjectType(this.objectType);
         return note;
     }
 

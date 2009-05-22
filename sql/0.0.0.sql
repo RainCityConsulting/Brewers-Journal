@@ -415,7 +415,7 @@ CREATE TABLE object_types (
   UNIQUE KEY (name)
 ) ENGINE = InnoDB;
 
-INSERT INTO object_types (name) VALUES ('recipe'), ('batch'), ('grain'), ('yeast'),  ('hops'), ('adjunct'), ('recipe_grain_instance'),  ('recipe_yeast_instance'), ('recipe_hops_instance'), ('recipe_mash_step'), ('gravity_reading') ('batch_grain_instance'),  ('batch_yeast_instance'), ('batch_hops_instance'), ('batch_mash_step'),;
+INSERT INTO object_types (name) VALUES ('recipe'), ('batch'), ('grain'), ('yeast'),  ('hops'), ('adjunct'), ('recipe_grain'), ('recipe_yeast'), ('recipe_hops'), ('recipe_mash_step'), ('gravity_reading') ('batch_grain'), ('batch_yeast'), ('batch_hops'), ('batch_mash_step'),;
 
 CREATE TABLE batch_grain_notes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -443,7 +443,7 @@ DELIMITER ;
 
 CREATE TABLE notes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  object_type ENUM('recipe', 'batch', 'grain', 'yeast',  'hops', 'adjunct', 'recipe_grain_instance',  'recipe_yeast_instance', 'recipe_hops_instance', 'recipe_mash_step', 'gravity_reading', 'batch_grain_instance',  'batch_yeast_instance', 'batch_hops_instance', 'batch_mash_step') NOT NULL,
+  object_type ENUM('recipe', 'batch', 'grain', 'yeast',  'hops', 'adjunct', 'recipe_grain',  'recipe_yeast', 'recipe_hops', 'recipe_mash_step', 'gravity_reading', 'batch_grain',  'batch_yeast', 'batch_hops', 'batch_mash_step') NOT NULL,
   object_id INTEGER UNSIGNED NOT NULL,
   text TEXT NOT NULL,
   creation_date DATETIME NOT NULL DEFAULT 0,
