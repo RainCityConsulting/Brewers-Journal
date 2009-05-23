@@ -8,19 +8,31 @@
   </ul>
 </div>
 
+<div class="icon-bar">
+  <a class="ui-icon ui-icon-circle-plus" href="#springUrl('/admin/edit/adjunct.s')"></a>
+</div>
+<div style="clear: left;"></div>
+
 <table class="list sortable">
   <tr>
     <th>Name</th>
     <th>Mfg</th>
+    <th class="sorttable_nosort"></th>
   </tr>
 
-  #foreach ($g in $adjuncts)
+  #foreach ($a in $adjuncts)
   <tr>
-    <td sorttable_customkey="$g.name"><a href="#springUrl('/admin/adjunct.s')?id=$g.id">$g.name</a></td>
-    <td sorttable_customkey="$!g.mfg.name">
-      #if ($g.hasMfg())
-      <a href="#springUrl('/admin/mfg.s')?id=$g.mfg.id">$g.mfg.name</a>
+    <td sorttable_customkey="$a.name"><a href="#springUrl('/admin/adjunct.s')?id=$a.id">$a.name</a></td>
+    <td sorttable_customkey="$!a.mfg.name">
+      #if ($a.hasMfg())
+      <a href="#springUrl('/admin/mfg.s')?id=$a.mfg.id">$a.mfg.name</a>
       #end
+    </td>
+
+    <td>
+      <div class="icon-bar">
+        <a class="ui-icon ui-icon-pencil" title="Edit" href="#springUrl('/admin/edit/adjunct.s')?id=$a.id"></a>
+      </div>
     </td>
 
   </tr>

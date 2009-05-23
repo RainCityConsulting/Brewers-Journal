@@ -15,6 +15,7 @@
 
     <bean id="contextHandlerInterceptor" class="com.rcc.brew.web.ContextHandlerInterceptor"/>
     <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
+    <bean id="historyHandlerInterceptor" class="com.rcc.web.HistoryHandlerInterceptor"/>
 
     <bean id="requestLoggingHandlerInterceptor"
             class="com.rcc.web.RequestLoggingHandlerInterceptor"/>
@@ -29,6 +30,7 @@
                 <ref local="handlerInterceptor"/>
                 <ref local="contextHandlerInterceptor"/>
                 <ref local="flashHandlerInterceptor"/>
+                <ref local="historyHandlerInterceptor"/>
 
                 <bean class="com.rcc.web.LayoutHandlerInterceptor">
                     <property name="defaultViewName" value="Layout"/>
@@ -55,9 +57,27 @@
                 <prop key="/edit/batch/gravity/reading.s">gravityReadingEditController</prop>
                 <prop key="/delete/batch/gravity/reading.s">batchController</prop>
                 <prop key="/edit/recipe.s">recipeEditController</prop>
+
                 <prop key="/edit/note.s">noteEditController</prop>
-                <prop key="/edit/batch/grain/note.s">batchGrainNoteEditController</prop>
+
+                <prop key="/edit/grain/note.s">grainNoteEditController</prop>
+                <prop key="/edit/yeast/note.s">yeastNoteEditController</prop>
+                <prop key="/edit/hops/note.s">hopsNoteEditController</prop>
+                <prop key="/edit/adjunct/note.s">adjunctNoteEditController</prop>
+
+                <prop key="/edit/recipe/note.s">recipeNoteEditController</prop>
+                <prop key="/edit/recipe/grain/note.s">recipeGrainNoteEditController</prop>
+                <prop key="/edit/recipe/yeast/note.s">recipeYeastNoteEditController</prop>
+                <prop key="/edit/recipe/hops/note.s">recipeHopsNoteEditController</prop>
+                <prop key="/edit/recipe/mash/step/note.s">recipeMashStepNoteEditController</prop>
+                <prop key="/edit/recipe/adjunct/note.s">recipeAdjunctNoteEditController</prop>
+
                 <prop key="/edit/batch/note.s">batchNoteEditController</prop>
+                <prop key="/edit/batch/grain/note.s">batchGrainNoteEditController</prop>
+                <prop key="/edit/batch/yeast/note.s">batchYeastNoteEditController</prop>
+                <prop key="/edit/batch/hops/note.s">batchHopsNoteEditController</prop>
+                <prop key="/edit/batch/mash/step/note.s">batchMashStepNoteEditController</prop>
+                <prop key="/edit/batch/adjunct/note.s">batchAdjunctNoteEditController</prop>
 
                 <prop key="/ac/adjunct.s">adjunctAutoCompleteController</prop>
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
@@ -427,14 +447,6 @@
 
     <bean id="noteEditController" parent="modelTxn">
         <property name="target" ref="noteEditControllerParent"/>
-    </bean>
-
-    <bean id="recipeNoteEditController" parent="noteEditController">
-        <property name="target">
-            <bean parent="noteEditControllerParent">
-                <property name="objectType" value="recipe"/>
-            </bean>
-        </property>
     </bean>
 
     <bean id="grainNoteEditController" parent="noteEditController">

@@ -8,10 +8,16 @@
   </ul>
 </div>
 
+<div class="icon-bar">
+  <a class="ui-icon ui-icon-circle-plus" href="#springUrl('/admin/edit/yeast.s')"></a>
+</div>
+<div style="clear: left;"></div>
+
 <table class="list sortable">
   <tr>
     <th>Name</th>
     <th>Mfg</th>
+    <th class="sorttable_nosort"></th>
   </tr>
 
   #foreach ($y in $yeast)
@@ -21,6 +27,12 @@
       #if ($y.hasMfg())
       <a href="#springUrl('/admin/mfg.s')?id=$y.mfg.id">$y.mfg.name</a>
       #end
+    </td>
+
+    <td>
+      <div class="icon-bar">
+        <a class="ui-icon ui-icon-pencil" title="Edit" href="#springUrl('/admin/edit/yeast.s')?id=$y.id"></a>
+      </div>
     </td>
 
   </tr>

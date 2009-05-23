@@ -5,17 +5,22 @@ import com.rcc.brew.bean.Note;
 
 import com.rcc.beans.Identifiable;
 import com.rcc.web.FlashUtils;
+import com.rcc.web.HistoryUtils;
 import com.rcc.web.controller.AbstractEditController;
+import com.rcc.web.controller.ControllerUtils;
 
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Map;
 
 public class NoteEditController extends AbstractEditController {
     private static final Log log = LogFactory.getLog(NoteEditController.class);
@@ -39,6 +44,15 @@ public class NoteEditController extends AbstractEditController {
         return this.model.findNoteById(id);
     }
 
+    protected void internalReferenceData(Map map, HttpServletRequest request, Object command,
+            Errors errors)
+        throws Exception
+    {
+        int h = ControllerUtils.getIntParam(request, "d", 0);
+        String cancelPath = HistoryUtils.redirectPath(request, h);
+        map.put("cancelPath", cancelPath);
+    }
+
     protected ModelAndView processCreateFormSubmission(
             HttpServletRequest request, HttpServletResponse response,
             Identifiable command, BindException errors)
@@ -50,7 +64,8 @@ public class NoteEditController extends AbstractEditController {
 
         FlashUtils.messageCode("note.create.success", request);
 
-        return new ModelAndView("redirect:/index.s");
+        int h = ControllerUtils.getIntParam(request, "d", 0);
+        return new ModelAndView("redirect:" + HistoryUtils.redirectPath(request, h));
     }
 
     protected ModelAndView processUpdateFormSubmission(
@@ -64,6 +79,7 @@ public class NoteEditController extends AbstractEditController {
 
         FlashUtils.messageCode("note.update.success", request);
 
-        return new ModelAndView("redirect:/index.s");
+        int h = ControllerUtils.getIntParam(request, "d", 0);
+        return new ModelAndView("redirect:" + HistoryUtils.redirectPath(request, h));
     }
 }

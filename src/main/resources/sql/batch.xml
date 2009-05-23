@@ -138,7 +138,7 @@
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM notes
     WHERE object_id = #value#
-    AND object_type = 'batch_grain_instance'
+    AND object_type = 'batch_grain'
     ORDER BY creation_date
     </select>
 

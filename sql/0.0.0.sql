@@ -409,38 +409,6 @@ CREATE TABLE recipe_mash_steps (
   UNIQUE KEY (recipe_id, ordinal)
 ) ENGINE = InnoDB;
 
-CREATE TABLE object_types (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(16) NOT NULL,
-  UNIQUE KEY (name)
-) ENGINE = InnoDB;
-
-INSERT INTO object_types (name) VALUES ('recipe'), ('batch'), ('grain'), ('yeast'),  ('hops'), ('adjunct'), ('recipe_grain'), ('recipe_yeast'), ('recipe_hops'), ('recipe_mash_step'), ('gravity_reading') ('batch_grain'), ('batch_yeast'), ('batch_hops'), ('batch_mash_step'),;
-
-CREATE TABLE batch_grain_notes (
-  id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  batch_grain_id INTEGER UNSIGNED NOT NULL,
-  text TEXT NOT NULL,
-  creation_date DATETIME NOT NULL DEFAULT 0,
-  creation_user_id INTEGER UNSIGNED NOT NULL,
-  last_updated_date DATETIME NOT NULL DEFAULT 0,
-  last_updated_user_id INTEGER UNSIGNED NOT NULL,
-  FOREIGN KEY (creation_user_id) REFERENCES users (id),
-  FOREIGN KEY (last_updated_user_id) REFERENCES users (id),
-  FOREIGN KEY (batch_grain_id) REFERENCES batch_grains (id)
-) ENGINE = InnoDB;
-
-DELIMITER ;;
-CREATE TRIGGER batch_grainnotes_bi_trig BEFORE INSERT ON batch_grain_notes FOR EACH ROW BEGIN
-SET NEW.creation_date = NOW();
-SET NEW.last_updated_date = NOW();
-END ;;
-
-CREATE TRIGGER batch_grain_notes_bu_trig BEFORE UPDATE ON batch_grain_notes FOR EACH ROW BEGIN
-SET NEW.last_updated_date = NOW();
-END ;;
-DELIMITER ;
-
 CREATE TABLE notes (
   id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   object_type ENUM('recipe', 'batch', 'grain', 'yeast',  'hops', 'adjunct', 'recipe_grain',  'recipe_yeast', 'recipe_hops', 'recipe_mash_step', 'gravity_reading', 'batch_grain',  'batch_yeast', 'batch_hops', 'batch_mash_step') NOT NULL,
