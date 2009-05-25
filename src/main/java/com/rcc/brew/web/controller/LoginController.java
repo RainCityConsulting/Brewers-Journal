@@ -44,6 +44,6 @@ public class LoginController extends AbstractFormController {
 
         request.getSession().setAttribute("user", user);
 
-        return new ModelAndView("redirect:/index.s");
+        return Utils.redirect(request, "/index.s");
     }
 }

@@ -16,6 +16,7 @@
     <bean id="contextHandlerInterceptor" class="com.rcc.brew.web.ContextHandlerInterceptor"/>
     <bean id="flashHandlerInterceptor" class="com.rcc.web.FlashHandlerInterceptor"/>
     <bean id="historyHandlerInterceptor" class="com.rcc.web.HistoryHandlerInterceptor"/>
+    <bean id="loginHandlerInterceptor" class="com.rcc.brew.web.LoginHandlerInterceptor"/>
 
     <bean id="requestLoggingHandlerInterceptor"
             class="com.rcc.web.RequestLoggingHandlerInterceptor"/>
@@ -23,14 +24,17 @@
     <!-- URL MAPPINGS -->
 
     <!-- VIEW MAPPINGS -->
+
+    <!-- LOGIN REQUIRED -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
             <list>
                 <ref local="requestLoggingHandlerInterceptor"/>
+                <ref local="historyHandlerInterceptor"/>
+                <ref local="loginHandlerInterceptor"/>
                 <ref local="handlerInterceptor"/>
                 <ref local="contextHandlerInterceptor"/>
                 <ref local="flashHandlerInterceptor"/>
-                <ref local="historyHandlerInterceptor"/>
 
                 <bean class="com.rcc.web.LayoutHandlerInterceptor">
                     <property name="defaultViewName" value="Layout"/>
@@ -41,17 +45,7 @@
 
         <property name="mappings">
             <props>
-                <prop key="/index.s">mainController</prop>
                 <prop key="/batch.s">batchController</prop>
-                <prop key="/recipe.s">mainController</prop>
-                <prop key="/user/register.s">registrationController</prop>
-
-                <prop key="/user/auth/mail.s">userController</prop>
-                <prop key="/user/auth.s">userController</prop>
-                <prop key="/user/logout.s">userController</prop>
-                <prop key="/user/profile.s">userController</prop>
-
-                <prop key="/user/login.s">loginController</prop>
 
                 <prop key="/edit/batch.s">batchEditController</prop>
                 <prop key="/edit/batch/gravity/reading.s">gravityReadingEditController</prop>
@@ -59,6 +53,7 @@
                 <prop key="/edit/recipe.s">recipeEditController</prop>
 
                 <prop key="/edit/note.s">noteEditController</prop>
+                <prop key="/delete/note.s">mainController</prop>
 
                 <prop key="/edit/grain/note.s">grainNoteEditController</prop>
                 <prop key="/edit/yeast/note.s">yeastNoteEditController</prop>
@@ -78,6 +73,39 @@
                 <prop key="/edit/batch/hops/note.s">batchHopsNoteEditController</prop>
                 <prop key="/edit/batch/mash/step/note.s">batchMashStepNoteEditController</prop>
                 <prop key="/edit/batch/adjunct/note.s">batchAdjunctNoteEditController</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- END LOGIN REQUIRED -->
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref local="requestLoggingHandlerInterceptor"/>
+                <ref local="handlerInterceptor"/>
+                <ref local="contextHandlerInterceptor"/>
+                <ref local="flashHandlerInterceptor"/>
+                <ref local="historyHandlerInterceptor"/>
+
+                <bean class="com.rcc.web.LayoutHandlerInterceptor">
+                    <property name="defaultViewName" value="Layout"/>
+                </bean>
+
+            </list>
+        </property>
+
+        <property name="mappings">
+            <props>
+                <prop key="/index.s">mainController</prop>
+                <prop key="/recipe.s">mainController</prop>
+                <prop key="/user/register.s">registrationController</prop>
+
+                <prop key="/user/auth/mail.s">userController</prop>
+                <prop key="/user/auth.s">userController</prop>
+                <prop key="/user/logout.s">userController</prop>
+                <prop key="/user/profile.s">userController</prop>
+
+                <prop key="/user/login.s">loginController</prop>
 
                 <prop key="/ac/adjunct.s">adjunctAutoCompleteController</prop>
                 <prop key="/ac/grain.s">grainAutoCompleteController</prop>
@@ -283,6 +311,7 @@
                         <prop key="/index.s">view</prop>
                         <prop key="/batch.s">batch</prop>
                         <prop key="/recipe.s">recipe</prop>
+                        <prop key="/delete/note.s">deleteNote</prop>
                     </props>
                 </property>
             </bean>

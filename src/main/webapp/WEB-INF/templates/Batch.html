@@ -30,6 +30,26 @@
 
 </table>
 
+
+
+<h3>Notes</h3>
+#if ($batch.hasNotes() && !$batch.notes.isEmpty())
+  <div class="notes">
+  #foreach ($n in $batch.notes)
+    <div class="note">$n.text</div>
+    <div class="icon-bar">
+      <a class="ui-icon ui-icon-pencil" href="#springUrl('/edit/note.s')?id=$n.id&d=$h" title="Edit note"></a>
+      <a class="ui-icon ui-icon-trash" href="#springUrl('/delete/note.s')?id=$n.id&d=$h" title="Delete note"></a>
+    </div>
+    <div style="clear: both;"></div>
+  #end
+  </div>
+#else
+<p><a href="#springUrl('/edit/batch/note.s')?objectId=$batch.id&d=$h">Add the first note</a></p>
+#end
+
+
+
 <h3>Grains</h3>
 
 #if ($batch.hasGrains() && !$batch.grains.isEmpty())
@@ -51,9 +71,9 @@
       <div class="notes">
       #foreach ($n in $g.notes)
         <div class="note">$n.text</div>
-        <div>
-          <a class="icon-bar ui-icon ui-icon-pencil" href="#springUrl('/edit/note.s')?id=$n.id" title="Edit note"></a>
-          <a class="icon-bar ui-icon ui-icon-trash" href="#springUrl('/delete/note.s')?id=$n.id" title="Delete note"></a>
+        <div class="icon-bar">
+          <a class="ui-icon ui-icon-pencil" href="#springUrl('/edit/note.s')?id=$n.id" title="Edit note"></a>
+          <a class="ui-icon ui-icon-trash" href="#springUrl('/delete/note.s')?id=$n.id" title="Delete note"></a>
         </div>
         <div style="clear: both;"></div>
       #end
@@ -193,8 +213,10 @@
     <td>#date($r.date)</td>
     <td>#gravity($r.gravity)</td>
     <td>
-      <a class="icon-bar ui-icon ui-icon-pencil" href="#springUrl('/edit/batch/gravity/reading.s')?id=$r.id" title="Edit"></a>
-      <a class="icon-bar ui-icon ui-icon-trash" href="#springUrl('/delete/batch/gravity/reading.s')?id=$r.id" title="Delete"></a>
+      <div class="icon-bar">
+        <a class="ui-icon ui-icon-pencil" href="#springUrl('/edit/batch/gravity/reading.s')?id=$r.id" title="Edit"></a>
+        <a class="ui-icon ui-icon-trash" href="#springUrl('/delete/batch/gravity/reading.s')?id=$r.id" title="Delete"></a>
+      </div>
     </td>
   </tr>
   #end

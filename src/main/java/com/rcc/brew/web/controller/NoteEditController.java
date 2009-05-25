@@ -64,8 +64,7 @@ public class NoteEditController extends AbstractEditController {
 
         FlashUtils.messageCode("note.create.success", request);
 
-        int h = ControllerUtils.getIntParam(request, "d", 0);
-        return new ModelAndView("redirect:" + HistoryUtils.redirectPath(request, h));
+        return Utils.redirect(request, "/index.s");
     }
 
     protected ModelAndView processUpdateFormSubmission(
@@ -79,7 +78,6 @@ public class NoteEditController extends AbstractEditController {
 
         FlashUtils.messageCode("note.update.success", request);
 
-        int h = ControllerUtils.getIntParam(request, "d", 0);
-        return new ModelAndView("redirect:" + HistoryUtils.redirectPath(request, h));
+        return Utils.redirect(request, "/index.s");
     }
 }

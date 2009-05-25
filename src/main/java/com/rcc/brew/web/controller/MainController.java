@@ -5,6 +5,9 @@ import com.rcc.brew.bean.User;
 import com.rcc.brew.model.Model;
 import com.rcc.brew.util.ContextUtils;
 
+import com.rcc.web.FlashUtils;
+import com.rcc.web.HistoryUtils;
+
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -49,5 +52,15 @@ public class MainController extends MultiActionController {
         }
 
         return mav;
+    }
+
+    public ModelAndView deleteNote(HttpServletRequest request, HttpServletResponse response)
+        throws Exception
+    {
+        int id = com.rcc.web.controller.ControllerUtils.getIntParam(request, "id", 0);
+        this.model.deleteNoteById(id);
+        FlashUtils.messageCode("note.delete.success", request);
+        int h = com.rcc.web.controller.ControllerUtils.getIntParam(request, "d", 0);
+        return new ModelAndView("redirect:" + HistoryUtils.redirectPath(request, h));
     }
 }

@@ -19,6 +19,7 @@
         <result property="mash" column="id" select="findMashStepsByBatch"/>
         <result property="adjuncts" column="id" select="findBatchAdjunctsByBatch"/>
         <result property="gravityReadings" column="id" select="findGravityReadingsByBatch"/>
+        <result property="notes" column="id" select="findBatchNotesByBatch"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
@@ -132,6 +133,15 @@
     <delete id="deleteBatchGrainsByBatch" parameterClass="int">
     DELETE FROM batch_grains WHERE batch_id = #value#
     </delete>
+
+    <select id="findBatchNotesByBatch" parameterClass="int" resultMap="note.note">
+    SELECT id, object_type, object_id, text,
+    creation_user_id, creation_date, last_updated_user_id, last_updated_date
+    FROM notes
+    WHERE object_id = #value#
+    AND object_type = 'batch'
+    ORDER BY creation_date
+    </select>
 
     <select id="findBatchGrainNotesByBatchGrainId" parameterClass="int" resultMap="note.note">
     SELECT id, object_type, object_id, text,

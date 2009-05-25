@@ -49,7 +49,7 @@
     AND object_id = #objectId#
     </select>
 
-    <delete id="deleteNotesById" parameterClass="int">
+    <delete id="deleteNoteById" parameterClass="int">
     DELETE FROM notes WHERE id = #value#
     </delete>
 
