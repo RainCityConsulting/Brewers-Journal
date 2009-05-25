@@ -1,4 +1,4 @@
-Welcome to BrewKeeper, $user.name
+Welcome to Brewer's Journal, $user.name
 
 Please authenticate your account by clicking the following link:
 
@@ -6,4 +6,4 @@ Please authenticate your account by clicking the following link:
 
 Thank you,
 
-The BrewKeeper Team
+The Brewer's Journal Team

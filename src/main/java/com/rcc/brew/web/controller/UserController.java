@@ -39,12 +39,12 @@ public class UserController extends MultiActionController {
         to.add(user.getMail());
 
         List bcc = new ArrayList<String>();
-        bcc.add("ian@raincityconsulting.com");
+        bcc.add("accounts@brewersjournal.com");
 
         Map<String, Object> context = new HashMap<String, Object>();
         context.put("user", user);
 
-        this.mailer.send("accounts@raincityconsulting.com", to, null, bcc,
+        this.mailer.send("accounts@brewersjournal.com", to, null, bcc,
                 "AuthEmailSubject.txt", null, "AuthEmailText.txt", context);
 
         FlashUtils.messageCode("register.instructions", request, user.getMail());
