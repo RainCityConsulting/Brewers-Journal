@@ -52,6 +52,8 @@
                 <prop key="/delete/batch/gravity/reading.s">batchController</prop>
                 <prop key="/edit/recipe.s">recipeEditController</prop>
 
+                <prop key="/recipe/to/batch.s">recipeController</prop>
+
                 <prop key="/edit/note.s">noteEditController</prop>
                 <prop key="/delete/note.s">mainController</prop>
 
@@ -333,6 +335,25 @@
         </property>
 
         <property name="model" ref="model"/>
+    </bean>
+
+    <bean id="recipeController" parent="modelTxn">
+        <property name="target">
+            <bean class="com.rcc.brew.web.controller.RecipeController">
+                <property name="methodNameResolver">
+                    <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                        <property name="mappings">
+                            <props>
+                                <prop key="/recipe/to/batch.s">recipeToBatch</prop>
+                            </props>
+                        </property>
+                    </bean>
+                </property>
+
+                <property name="model" ref="model"/>
+                <property name="service" ref="service"/>
+            </bean>
+        </property>
     </bean>
 
     <bean id="registrationController" parent="modelTxn">
