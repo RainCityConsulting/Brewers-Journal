@@ -20,7 +20,6 @@ import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
-import com.rcc.brew.bean.WeightUnit;
 import com.rcc.brew.bean.Yeast;
 import com.rcc.brew.bean.YeastInstance;
 
@@ -222,30 +221,6 @@ public class ModelImpl extends ModelBase implements Model {
         
     }
     /* END YEAST */
-
-    /* WEIGHT */
-    public WeightUnit findWeightUnitById(int id) {
-        return (WeightUnit) this.getSqlMapClientTemplate().queryForObject("findWeightUnitById", id);
-    }
-
-    public WeightUnit findWeightUnitByName(String name) {
-        return (WeightUnit) this.getSqlMapClientTemplate().queryForObject(
-                "findWeightUnitByName", name);
-    }
-
-    public List<WeightUnit> findAllWeightUnits() {
-        return (List<WeightUnit>) this.getSqlMapClientTemplate().queryForList("findAllWeightUnits");
-    }
-
-    public List<WeightUnit> findAllWeightUnits(int offset, int limit) {
-        return (List<WeightUnit>) this.getSqlMapClientTemplate().queryForList(
-                "findAllWeightUnits", offset, limit);
-    }
-
-    public int findWeightUnitCount() {
-        return (Integer) this.getSqlMapClientTemplate().queryForObject("findWeightUnitCount");
-    }
-    /* END WEIGHT */
 
     /* VOLUME */
     public VolumeUnit findVolumeUnitById(int id) {

@@ -61,7 +61,7 @@ public class RecipeEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             AdjunctInstance ai = new AdjunctInstance();
-                            ai.setWeight(new Weight(new WeightUnit()));
+                            ai.setWeight(new Weight());
                             ai.setVolume(new Volume(new VolumeUnit()));
                             return ai;
                         }
@@ -73,7 +73,7 @@ public class RecipeEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             GrainInstance gi = new GrainInstance();
-                            gi.setWeight(new Weight(new WeightUnit()));
+                            gi.setWeight(new Weight());
                             return gi;
                         }
         });
@@ -83,7 +83,7 @@ public class RecipeEditController extends AbstractEditController {
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
                     HopsInstance hi = new HopsInstance();
-                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setWeight(new Weight());
                     hi.setTime(new Time(new TimeUnit()));
                     hi.setAdditionType(new HopsAdditionType());
                     return hi;
@@ -126,7 +126,7 @@ public class RecipeEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             AdjunctInstance ai = new AdjunctInstance();
-                            ai.setWeight(new Weight(new WeightUnit()));
+                            ai.setWeight(new Weight());
                             ai.setVolume(new Volume(new VolumeUnit()));
                             return ai;
                         }
@@ -134,7 +134,7 @@ public class RecipeEditController extends AbstractEditController {
         adjuncts.addAll(recipe.getAdjuncts());
         for (AdjunctInstance a : adjuncts) {
             if (!a.hasWeight()) {
-                a.setWeight(new Weight(new WeightUnit()));
+                a.setWeight(new Weight());
             }
             if (!a.hasVolume()) {
                 a.setVolume(new Volume(new VolumeUnit()));
@@ -146,7 +146,7 @@ public class RecipeEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             GrainInstance gi = new GrainInstance();
-                            gi.setWeight(new Weight(new WeightUnit()));
+                            gi.setWeight(new Weight());
                             return gi;
                         }
         });
@@ -156,7 +156,7 @@ public class RecipeEditController extends AbstractEditController {
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
                     HopsInstance hi = new HopsInstance();
-                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setWeight(new Weight());
                     hi.setTime(new Time(new TimeUnit()));
                     hi.setAdditionType(new HopsAdditionType());
                     return hi;
@@ -204,7 +204,7 @@ public class RecipeEditController extends AbstractEditController {
     }
 
     protected void referenceData(Map map) {
-        map.put("weightUnits", this.model.findAllWeightUnits());
+        map.put("weightUnits", WeightUnit.values());
         map.put("volumeUnits", this.model.findAllVolumeUnits());
         map.put("timeUnits", this.model.findAllTimeUnits());
         map.put("tempUnits", this.model.findAllTempUnits());

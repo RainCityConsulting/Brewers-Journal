@@ -21,12 +21,6 @@
         <result property="conversion" column="second_conversion"/>
     </resultMap>
 
-    <resultMap id="weightUnit" class="com.rcc.brew.bean.WeightUnit">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="conversion" column="gram_conversion"/>
-    </resultMap>
-
     <resultMap id="volumeUnit" class="com.rcc.brew.bean.VolumeUnit">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -102,36 +96,6 @@
     SELECT COUNT(*) FROM time_units
     </select>
     <!-- END TIME -->
-
-    <!-- WEIGHT -->
-    <select id="findWeightUnitById" resultMap="weightUnit" parameterClass="int">
-    SELECT id, name, gram_conversion
-    FROM weight_units
-    WHERE id = #value#
-    </select>
-
-    <select id="findWeightUnitByName" resultMap="weightUnit" parameterClass="string">
-    SELECT id, name, gram_conversion
-    FROM weight_units
-    WHERE name = #value#
-    </select>
-
-    <select id="findAllWeightUnits" resultMap="weightUnit">
-    SELECT id, name, gram_conversion
-    FROM weight_units
-    ORDER BY gram_conversion
-    </select>
-
-    <select id="findGramWeightUnit" resultMap="weightUnit">
-    SELECT id, name, gram_conversion
-    FROM weight_units
-    WHERE name = 'g'
-    </select>
-
-    <select id="findWeightUnitCount" resultClass="int">
-    SELECT COUNT(*) FROM weight_units
-    </select>
-    <!-- END WEIGHT -->
 
     <!-- VOLUME -->
     <select id="findVolumeUnitById" resultMap="volumeUnit" parameterClass="int">

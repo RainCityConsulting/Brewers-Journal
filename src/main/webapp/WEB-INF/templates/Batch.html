@@ -55,6 +55,14 @@
 
 
 
+<h3>Mash Efficiency</h3>
+#if ($batch.hasVolumeAfterSparge() && $batch.hasGravityAfterSparge())
+#else
+To calculate mash efficiency, you must enter the volume and gravity after sparge.
+#end
+
+
+
 <h3>Grains</h3>
 
 #if ($batch.hasGrains() && !$batch.grains.isEmpty())

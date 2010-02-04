@@ -19,6 +19,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="mfg" column="manufacturer_id" select="findMfgById"/>
+        <result property="extractPotential" column="extract_potential"/>
         <result property="audit.creationUserId" column="creation_user_id"/>
         <result property="audit.creationDate" column="creation_date"/>
         <result property="audit.lastUpdatedUserId" column="last_updated_user_id"/>
@@ -172,14 +173,14 @@
 
     <!-- GRAIN -->
     <select id="findAllGrains" resultMap="grain">
-    SELECT id, name, manufacturer_id,
+    SELECT id, name, manufacturer_id, extract_potential,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM grains
     ORDER BY name
     </select>
 
     <select id="findGrainById" parameterClass="int" resultMap="grain">
-    SELECT id, name, manufacturer_id,
+    SELECT id, name, manufacturer_id, extract_potential,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM grains
     WHERE id = #value#
@@ -191,8 +192,8 @@
 
     <insert id="insertGrain" parameterClass="com.rcc.brew.bean.Grain">
     INSERT INTO grains
-    (name, manufacturer_id, creation_user_id, last_updated_user_id)
-    VALUES (#name#, #mfg.id#, @user_id, @user_id)
+    (name, manufacturer_id, extract_potential, creation_user_id, last_updated_user_id)
+    VALUES (#name#, #mfg.id#, #extractPotential#, @user_id, @user_id)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
     </selectKey>
@@ -202,6 +203,7 @@
     UPDATE grains
     SET name = #name#,
     manufacturer_id = #mfg.id#,
+    extract_potential = #extractPotential#,
     last_updated_user_id = @user_id
     WHERE id = #id#
     </update>

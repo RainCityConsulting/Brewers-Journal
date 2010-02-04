@@ -204,7 +204,7 @@ function moreMash() {
         </tr>
 
         <tr>
-          <th>Boil Length</th>
+          <th>Boil Time</th>
           <td>
             #springFormInput("b.boilTime.value" "size='4' tabindex='3'")
             #springShowErrors("<br/>" "form-error")
@@ -238,6 +238,58 @@ function moreMash() {
             </select>
           </td>
         </tr>
+
+        <tr>
+          <th>Sparge Time</th>
+          <td>
+            #springFormInput("b.spargeTime.value" "size='4'")
+            #springShowErrors("<br/>" "form-error")
+    
+            #springBind("b.spargeTime.unit")
+            <select name="$status.expression">
+              #foreach ($u in $timeUnits)
+              <option value="$u.id"
+                  #if ("$u.id" == "$!status.value")
+                  selected="selected"
+                  #end >$u.name</option>
+              #end
+            </select>
+          </td>
+        </tr>
+    
+        <tr>
+          <th>Volume After Sparge</th>
+          <td>
+            #springFormInput("b.volumeAfterSparge.value" "size='4'")
+            #springShowErrors("<br/>" "form-error")
+    
+            #springBind("b.volumeAfterSparge.unit")
+            <select name="$status.expression">
+              #foreach ($u in $volumeUnits)
+              <option value="$u.id"
+                  #if ("$u.id" == "$!status.value")
+                  selected="selected"
+                  #end >$u.name</option>
+              #end
+            </select>
+          </td>
+    
+        <tr>
+          <th>Gravity After Sparge</th>
+          <td>
+            #springFormInput("b.gravityAfterSparge.value" "size='4'")
+            #springShowErrors("<br/>" "form-error")
+    
+            #springBind("b.gravityAfterSparge.unit")
+            <select name="$status.expression">
+              #foreach ($u in $gravityUnits)
+              <option value="$u.id"
+                  #if ("$u.id" == "$!status.value")
+                  selected="selected"
+                  #end >$u.name</option>
+              #end
+            </select>
+          </td>
     
       </table>
     </div>

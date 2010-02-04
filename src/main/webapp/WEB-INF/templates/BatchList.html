@@ -17,11 +17,17 @@
 
   <tr>
     <th>Name</th>
+    <th>Volume</th>
+    <th>Boil</th>
+    <th>Date</th>
   </tr>
 
   #foreach ($b in $batches)
   <tr>
     <td><a href="#springUrl('/batch.s')?id=$b.id">$b.name</a></td>
+    <td sorttable_customkey="$!$b.volume.mlVolume()">#volume($b.volume)</td>
+    <td sorttable_customkey="$!$b.boilTime.secondTime()">#time($b.boilTime)</td>
+    <td sorttable_customkey="$!$b.date.time">#date($b.date)</td>
   </tr>
   #end
 

@@ -9,10 +9,24 @@
         <result property="id" column="id"/>
         <result property="date" column="brew_date"/>
         <result property="name" column="name"/>
+
         <result property="volume.value" column="volume"/>
         <result property="volume.unit" column="volume_unit_id" select="findVolumeUnitById"/>
+
         <result property="boilTime.value" column="boil_time"/>
         <result property="boilTime.unit" column="boil_time_unit_id" select="findTimeUnitById"/>
+
+        <result property="volumeAfterSparge.value" column="volume_after_sparge"/>
+        <result property="volumeAfterSparge.unit" column="volume_after_sparge_unit_id"
+                select="findVolumeUnitById"/>
+
+        <result property="spargeTime.value" column="sparge_time"/>
+        <result property="spargeTime.unit" column="sparge_time_unit_id" select="findTimeUnitById"/>
+
+        <result property="gravityAfterSparge.value" column="gravity_after_sparge"/>
+        <result property="gravityAfterSparge.unit" column="gravity_after_sparge_unit_id"
+                select="findGravityUnitById"/>
+
         <result property="grains" column="id" select="findBatchGrainsByBatch"/>
         <result property="hops" column="id" select="findBatchHopsByBatch"/>
         <result property="yeast" column="id" select="findBatchYeastByBatch"/>
@@ -61,8 +75,14 @@
     <insert id="insertBatch" parameterClass="com.rcc.brew.bean.Batch">
     INSERT INTO batches
     (brew_date, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
+    sparge_time, sparge_time_unit_id,
+    volume_after_sparge, volume_after_sparge_unit_id,
+    gravity_after_sparge, gravity_after_sparge_unit_id,
     creation_user_id, last_updated_user_id)
     VALUES (#date#, #name#, #volume.value#, #volume.unit.id#, #boilTime.value#, #boilTime.unit.id#,
+    #spargeTime.value#, #spargeTime.unit.id#,
+    #volumeAfterSparge.value#, #volumeAfterSparge.unit.id#,
+    #gravityAfterSparge.value#, #gravityAfterSparge.unit.id#,
     @user_id, @user_id)
     <selectKey resultClass="int" type="post">
         SELECT LAST_INSERT_ID()
@@ -77,12 +97,21 @@
     volume_unit_id = #volume.unit.id#,
     boil_time = #boilTime.value#,
     boil_time_unit_id = #boilTime.unit.id#,
+    volume_after_sparge = #volumeAfterSparge.value#,
+    volume_after_sparge_unit_id = #volumeAfterSparge.unit.id#,
+    gravity_after_sparge = #gravityAfterSparge.value#,
+    gravity_after_sparge_unit_id = #gravityAfterSparge.unit.id#,
+    sparge_time = #spargeTime.value#,
+    sparge_time_unit_id = #spargeTime.unit.id#,
     last_updated_user_id = @user_id
     WHERE id = #id#
     </update>
 
     <select id="findBatchById" parameterClass="int" resultMap="batch">
     SELECT id, brew_date, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
+    sparge_time, sparge_time_unit_id,
+    volume_after_sparge, volume_after_sparge_unit_id,
+    gravity_after_sparge, gravity_after_sparge_unit_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM batches
     WHERE id = #value#
@@ -90,6 +119,9 @@
 
     <select id="findBatchesByUser" parameterClass="int" resultMap="batch">
     SELECT id, brew_date, name, volume, volume_unit_id, boil_time, boil_time_unit_id,
+    sparge_time, sparge_time_unit_id,
+    volume_after_sparge, volume_after_sparge_unit_id,
+    gravity_after_sparge, gravity_after_sparge_unit_id,
     creation_user_id, creation_date, last_updated_user_id, last_updated_date
     FROM batches
     WHERE creation_user_id = #value#

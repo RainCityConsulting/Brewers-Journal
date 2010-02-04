@@ -1,0 +1,46 @@
+UPDATE gravity_reading_types
+SET name = 'Sparge BK',
+description = 'Sparge - taken from the boil kettle'
+WHERE name = 'Sparge';
+
+INSERT INTO gravity_reading_types
+(name, description, creation_user_id, last_updated_user_id)
+VALUES ('Sparge Hose', 'Sparge - taken from the hose connected to the mash tun', 1, 1);
+
+ALTER TABLE batches
+ADD volume_after_sparge decimal(9, 2) unsigned NULL AFTER volume_unit_id,
+ADD volume_after_sparge_unit_id INTEGER UNSIGNED NULL AFTER volume_after_sparge,
+ADD FOREIGN KEY (volume_after_sparge_unit_id) REFERENCES volume_units (id);
+
+ALTER TABLE batches
+ADD gravity_after_sparge decimal(9, 2) unsigned NULL AFTER volume_after_sparge_unit_id,
+ADD gravity_after_sparge_unit_id INTEGER UNSIGNED NULL AFTER gravity_after_sparge,
+ADD FOREIGN KEY (gravity_after_sparge_unit_id) REFERENCES gravity_units (id);
+
+ALTER TABLE batches
+ADD sparge_time decimal(9, 2) unsigned NULL AFTER boil_time_unit_id,
+ADD sparge_time_unit_id INTEGER UNSIGNED NULL AFTER sparge_time,
+ADD FOREIGN KEY (sparge_time_unit_id) REFERENCES time_units (id);
+
+ALTER TABLE grains
+ADD extract_potential decimal(8, 4) unsigned NOT NULL AFTER manufacturer_id;
+
+ALTER TABLE batch_adjuncts
+DROP FOREIGN KEY batch_adjuncts_ibfk_3,
+DROP weight_unit_id;
+
+ALTER TABLE batch_grains
+DROP FOREIGN KEY batch_grains_ibfk_3,
+DROP weight_unit_id;
+
+ALTER TABLE weight_units
+DROP PRIMARY KEY,
+DROP id,
+DROP gram_conversion,
+MODIFY name CHAR(4),
+ADD PRIMARY KEY (name);
+
+ALTER TABLE batch_adjuncts
+DROP weight_unit_id,
+ADD weight_unit CHAR(4) NULL AFTER weight,
+ADD FOREIGN KEY (weight_unit) REFERENCES weight_units (name);

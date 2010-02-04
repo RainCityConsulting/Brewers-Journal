@@ -256,12 +256,6 @@
             </bean>
         </property>
 
-        <property name="weightUnitEditor">
-            <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
-                <property name="beanQuery" ref="weightUnitQuery"/>
-            </bean>
-        </property>
-
         <property name="hopsAdditionTypeEditor">
             <bean class="com.rcc.brew.web.bean.propertyeditor.IdentifiableIdPropertyEditor">
                 <property name="beanQuery" ref="hopsAdditionTypeQuery"/>

@@ -20,7 +20,6 @@ import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.User;
 import com.rcc.brew.bean.VolumeUnit;
-import com.rcc.brew.bean.WeightUnit;
 import com.rcc.brew.bean.Yeast;
 import com.rcc.brew.bean.YeastInstance;
 
@@ -82,14 +81,6 @@ public interface Model {
     public List<Hops> findAllHops(int offset, int limit);
     public int findHopsCount();
     /* END HOPS */
-
-    /* WEIGHT */
-    public WeightUnit findWeightUnitById(int id);
-    public WeightUnit findWeightUnitByName(String name);
-    public List<WeightUnit> findAllWeightUnits();
-    public List<WeightUnit> findAllWeightUnits(int offset, int limit);
-    public int findWeightUnitCount();
-    /* END WEIGHT */
 
     /* VOLUME */
     public VolumeUnit findVolumeUnitById(int id);

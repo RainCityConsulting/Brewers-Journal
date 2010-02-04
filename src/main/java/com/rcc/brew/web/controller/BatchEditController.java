@@ -5,6 +5,8 @@ import com.rcc.brew.bean.AdjunctInstance;
 import com.rcc.brew.bean.Batch;
 import com.rcc.brew.bean.Grain;
 import com.rcc.brew.bean.GrainInstance;
+import com.rcc.brew.bean.Gravity;
+import com.rcc.brew.bean.GravityUnit;
 import com.rcc.brew.bean.HopsAdditionType;
 import com.rcc.brew.bean.HopsInstance;
 import com.rcc.brew.bean.MashStep;
@@ -56,12 +58,15 @@ public class BatchEditController extends AbstractEditController {
 
         batch.setVolume(new Volume(new VolumeUnit()));
         batch.setBoilTime(new Time(new TimeUnit()));
+        batch.setVolumeAfterSparge(new Volume(new VolumeUnit()));
+        batch.setSpargeTime(new Time(new TimeUnit()));
+        batch.setGravityAfterSparge(new Gravity(new GravityUnit()));
 
         List<AdjunctInstance> adjuncts = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             AdjunctInstance ai = new AdjunctInstance();
-                            ai.setWeight(new Weight(new WeightUnit()));
+                            ai.setWeight(new Weight());
                             ai.setVolume(new Volume(new VolumeUnit()));
                             return ai;
                         }
@@ -73,7 +78,7 @@ public class BatchEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             GrainInstance gi = new GrainInstance();
-                            gi.setWeight(new Weight(new WeightUnit()));
+                            gi.setWeight(new Weight());
                             return gi;
                         }
         });
@@ -83,7 +88,7 @@ public class BatchEditController extends AbstractEditController {
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
                     HopsInstance hi = new HopsInstance();
-                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setWeight(new Weight());
                     hi.setTime(new Time(new TimeUnit()));
                     hi.setAdditionType(new HopsAdditionType());
                     return hi;
@@ -122,11 +127,23 @@ public class BatchEditController extends AbstractEditController {
     protected Identifiable formExistingBackingObject(int id) throws Exception {
         Batch batch = this.model.findBatchById(id);
 
+        if (!batch.hasSpargeTime()) {
+            batch.setSpargeTime(new Time(new TimeUnit()));
+        }
+
+        if (!batch.hasVolumeAfterSparge()) {
+            batch.setVolumeAfterSparge(new Volume(new VolumeUnit()));
+        }
+
+        if (!batch.hasGravityAfterSparge()) {
+            batch.setGravityAfterSparge(new Gravity(new GravityUnit()));
+        }
+
         List<AdjunctInstance> adjuncts = new AutoPopulatingList(
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             AdjunctInstance ai = new AdjunctInstance();
-                            ai.setWeight(new Weight(new WeightUnit()));
+                            ai.setWeight(new Weight());
                             ai.setVolume(new Volume(new VolumeUnit()));
                             return ai;
                         }
@@ -135,7 +152,7 @@ public class BatchEditController extends AbstractEditController {
             adjuncts.addAll(batch.getAdjuncts());
             for (AdjunctInstance a : adjuncts) {
                 if (!a.hasWeight()) {
-                    a.setWeight(new Weight(new WeightUnit()));
+                    a.setWeight(new Weight());
                 }
                 if (!a.hasVolume()) {
                     a.setVolume(new Volume(new VolumeUnit()));
@@ -150,7 +167,7 @@ public class BatchEditController extends AbstractEditController {
                 new AutoPopulatingList.ElementFactory() {
                         public Object createElement(int index) {
                             GrainInstance gi = new GrainInstance();
-                            gi.setWeight(new Weight(new WeightUnit()));
+                            gi.setWeight(new Weight());
                             return gi;
                         }
         });
@@ -164,7 +181,7 @@ public class BatchEditController extends AbstractEditController {
         List<HopsInstance> hops = new AutoPopulatingList(new AutoPopulatingList.ElementFactory() {
                 public Object createElement(int index) {
                     HopsInstance hi = new HopsInstance();
-                    hi.setWeight(new Weight(new WeightUnit()));
+                    hi.setWeight(new Weight());
                     hi.setTime(new Time(new TimeUnit()));
                     hi.setAdditionType(new HopsAdditionType());
                     return hi;
@@ -223,10 +240,11 @@ public class BatchEditController extends AbstractEditController {
     }
 
     protected void referenceData(Map map) {
-        map.put("weightUnits", this.model.findAllWeightUnits());
+        map.put("weightUnits", WeightUnit.values());
         map.put("volumeUnits", this.model.findAllVolumeUnits());
         map.put("timeUnits", this.model.findAllTimeUnits());
         map.put("tempUnits", this.model.findAllTempUnits());
+        map.put("gravityUnits", this.model.findAllGravityUnits());
         map.put("hats", this.model.findAllHopsAdditionTypes());
         map.put("msts", this.model.findAllMashStepTypes());
     }

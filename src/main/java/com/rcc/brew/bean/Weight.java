@@ -7,11 +7,11 @@ public class Weight extends com.rcc.brew.bean.gen.Weight {
         this.unit = u;
     }
 
-    public int gramWeight() {
+    public double gramWeight() {
         if (this.unit == null) {
             throw new RuntimeException("Cannot calculate gram weight with a null WeightUnit");
         }
-        return (int) Math.round(this.value * this.unit.getConversion());
+        return this.value * this.unit.getGramConversion();
     }
 
     public double convert(WeightUnit u) {
@@ -19,12 +19,12 @@ public class Weight extends com.rcc.brew.bean.gen.Weight {
             throw new RuntimeException("Cannot convert weight with a null WeightUnit");
         }
 
-        if (this.unit.getId() == u.getId()) {
+        if (this.unit == u) {
             return this.value;
         }
 
-        double val = this.value * this.unit.getConversion();
+        double grams = this.gramWeight();
 
-        return val / u.getConversion();
+        return grams / u.getGramConversion();
     }
 }

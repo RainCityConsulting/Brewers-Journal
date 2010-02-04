@@ -114,15 +114,6 @@
         </property>
     </bean>
 
-    <bean id="weightUnitQuery" parent="modelTxn">
-        <property name="target">
-            <bean class="com.rcc.brew.model.WeightUnitQueryImpl">
-                <property name="sqlMapClient" ref="sqlMapClient"/>
-                <property name="model" ref="model"/>
-            </bean>
-        </property>
-    </bean>
-
     <bean id="volumeUnitQuery" parent="modelTxn">
         <property name="target">
             <bean class="com.rcc.brew.model.VolumeUnitQueryImpl">

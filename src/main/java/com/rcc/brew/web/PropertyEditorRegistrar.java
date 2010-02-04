@@ -10,7 +10,6 @@ import com.rcc.brew.bean.MashStepType;
 import com.rcc.brew.bean.TempUnit;
 import com.rcc.brew.bean.TimeUnit;
 import com.rcc.brew.bean.VolumeUnit;
-import com.rcc.brew.bean.WeightUnit;
 import com.rcc.brew.bean.Yeast;
 import com.rcc.brew.web.bean.propertyeditor.AutoCompletePropertyEditor;
 import com.rcc.brew.web.bean.propertyeditor.GrainNameResolver;
@@ -33,7 +32,6 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
     private IdentifiableIdPropertyEditor gravityReadingTypeEditor;
     private IdentifiableIdPropertyEditor tempUnitEditor;
     private IdentifiableIdPropertyEditor timeUnitEditor;
-    private IdentifiableIdPropertyEditor weightUnitEditor;
     private IdentifiableIdPropertyEditor volumeUnitEditor;
     private IdentifiableIdPropertyEditor hopsAdditionTypeEditor;
     private IdentifiableIdPropertyEditor mashStepTypeEditor;
@@ -83,10 +81,6 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
         this.mashStepTypeEditor = mashStepTypeEditor;
     }
 
-    public void setWeightUnitEditor(IdentifiableIdPropertyEditor weightUnitEditor) {
-        this.weightUnitEditor = weightUnitEditor;
-    }
-
     public void registerCustomEditors(PropertyEditorRegistry registry) {
         AutoCompletePropertyEditor grainEditor = new AutoCompletePropertyEditor();
         grainEditor.setNameResolver(new GrainNameResolver());
@@ -99,7 +93,6 @@ public class PropertyEditorRegistrar implements org.springframework.beans.Proper
         registry.registerCustomEditor(HopsAdditionType.class, this.hopsAdditionTypeEditor);
         registry.registerCustomEditor(VolumeUnit.class, this.volumeUnitEditor);
         registry.registerCustomEditor(MashStepType.class, this.mashStepTypeEditor);
-        registry.registerCustomEditor(WeightUnit.class, this.weightUnitEditor);
         registry.registerCustomEditor(TempUnit.class, this.tempUnitEditor);
         registry.registerCustomEditor(GravityUnit.class, this.gravityUnitEditor);
         registry.registerCustomEditor(GravityReadingType.class, this.gravityReadingTypeEditor);
